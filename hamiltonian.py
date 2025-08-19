@@ -84,13 +84,13 @@ def waveFunction(choice: int, qmax: int, kpoint: str, fileData: dict, model: dic
 
         eigenvals, eigenvecs = LA.eigh(Ham)
 
-        band2q_d0 = eigenvecs[:, coeff * qmax + 12]
-        band2q_d1 = eigenvecs[:, coeff * qmax + 13]
-        band2q_d2 = eigenvecs[:, coeff * qmax + 14]
+        band2q_d0 = eigenvecs[:, coeff * qmax + 9]
+        band2q_d1 = eigenvecs[:, coeff * qmax + 10]
+        band2q_d2 = eigenvecs[:, coeff * qmax + 11]
 
-        band2q1_d0 = eigenvecs[:, coeff * qmax + 15]
-        band2q1_d1 = eigenvecs[:, coeff * qmax + 16]
-        band2q1_d2 = eigenvecs[:, coeff * qmax + 17]
+        band2q1_d0 = eigenvecs[:, coeff * qmax + 12]
+        band2q1_d1 = eigenvecs[:, coeff * qmax + 13]
+        band2q1_d2 = eigenvecs[:, coeff * qmax + 14]
 
         for i in range(coeff * qmax):
             psi_band2q_d0[i] += band2q_d0[0 * coeff * qmax + i]
