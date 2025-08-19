@@ -1,0 +1,311 @@
+%\documentclass{article}
+\documentclass{article}
+\usepackage[utf8]{vietnam}
+\usepackage[utf8]{inputenc}
+\usepackage{anyfontsize,fontsize}
+\changefontsize[13pt]{13pt}	
+\usepackage{commath}
+\usepackage{parskip,setspace}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage[d]{esvect}
+\usepackage[nottoc,notlot,notlof]{tocbibind}
+\usepackage{slashed,cancel}
+\usepackage{indentfirst,titlesec}
+\usepackage{pdfpages}
+\usepackage{graphicx,subcaption,floatrow,adjustbox,rotating}
+\usepackage{nccmath}
+\usepackage{mathtools}
+\usepackage{amsfonts,esint}
+\usepackage[printonlyused,withpage]{acronym}
+\usepackage{wrapfig}
+\usepackage[toc,page]{appendix}
+\usepackage{amsmath,systeme}
+\usepackage[thinc]{esdiff}
+\usepackage{hyperref,tikz}
+\usepackage{bm,physics,nicematrix}
+\usepackage[numbers,comma,sort&compress]{natbib}
+%footnote
+\usepackage{fancyhdr}
+\usepackage{array,tocbibind}
+\usepackage{enumitem}
+\pagestyle{empty}
+
+
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	total={170mm,257mm},
+	left=20mm,
+	top=20mm,
+}
+
+
+
+\newcommand{\image}[1]{
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{pic/#1}
+	\end{center}
+}
+
+
+
+
+\renewcommand{\l}{\ell}
+\newcommand{\dps}{\displaystyle}
+
+\newcommand{\f}[2]{\dfrac{#1}{#2}}
+\newcommand{\at}[2]{\bigg\rvert_{#1}^{#2} }
+
+
+\renewcommand{\baselinestretch}{1.5}
+
+
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black,
+	filecolor=magenta,      
+	urlcolor=cyan,
+	pdftitle={UT},
+	citecolor=green,
+	pdfpagemode=FullScreen,
+}
+
+\urlstyle{same}
+
+\titleformat{\chapter}[display]
+{\centering\large\bfseries} 
+{\textbf{\MakeUppercase{\chaptername}} \ \thechapter\vspace{15pt}}{20pt}
+{\large} 
+
+%\newcommand{\thesistitlee}{Three-band tight binding model for TMD monolayers in the presence of a magnetic field}
+\newcommand{\thesistitlee}{title}
+\newcommand{\address}{NATIONAL UNIVERSITY OF HO CHI MINH CITY UNIVERSITY OF SCIENCE}
+\newcommand{\department}{FACULTY OF PHYSICS - ENGINEERING PHYSICS}
+\newcommand{\thesisauthor}{Tran Khoi Nguyen}
+\newcommand{\thesisadvisor}{Your Advisor's Name}
+\newcommand{\graddate}{Ho Chi Minh City, 2025}
+\newcommand{\thesisdedication}{To all the Ph.D. pursuing brave souls}
+
+\newlist{abbrv}{itemize}{1}
+\setlist[abbrv,1]{label=,labelwidth=1in,align=parleft,itemsep=0.1\baselineskip,leftmargin=!}
+\begin{document}
+%\setlength{\parindent}{20pt}
+%\begin{titlepage}
+%	\begin{center}
+%		{\bfseries
+%			
+%			{\large {\bf \address}}\\
+%			{{\textbf{\department}}}\\
+%			{---------------------o0o--------------------}
+%			\vspace{1.5cm}
+%			
+%			{\large {\bf UNDERGRADUATE THESIS}}\\
+%			\vspace{3.0cm}
+%			
+%		}
+%		
+%	\end{center}
+%	\textit{\textbf{\underline{Thesis title:}}}\\
+%	\begin{center}
+%		{\bfseries
+%			
+%			{\largerrr\thesistitlee}
+%			\vspace{1in}
+%			
+%		}
+%	\end{center}
+%	\noindent
+%	\makebox[\textwidth]{\hfill\makebox[3in]{\hrulefill}}\\
+%	\begin{center}
+%		\makebox[\textwidth]{\hfill\makebox[3in]{\hfill \textbf{Student: Tran Khoi Nguyen}\hfill}}
+%		\makebox[\textwidth]{\hfill\makebox[3in]{\hfill \textbf{Supervisor: Dr. Huynh Thanh Duc}\hfill}}
+%	\end{center}
+%	\begin{tikzpicture}[remember picture, overlay]
+%		\draw[line width=2pt]
+%		([xshift=1.5cm, yshift=1.5cm] current page.south west)
+%		rectangle
+%		([xshift=-1.5cm, yshift=-1.5cm] current page.north east);
+%	\end{tikzpicture}
+%	\begin{center}
+%		\vspace{2.5in}
+%		{\graddate}
+%	\end{center}
+%\end{titlepage}
+%\begin{titlepage}
+%	\begin{center}
+%		{\bfseries
+%			
+%			{\large {\bf \address}}\\
+%			{{\textbf{\department}}}\\
+%			\vspace{2.5cm}
+%			
+%			{\large {\bf UNDERGRADUATE THESIS}}\\
+%			\vspace{3.0cm}
+%			
+%		}
+%		
+%	\end{center}
+%	\textit{\textbf{\underline{Thesis title:}}}\\
+%	\begin{center}
+%		{\bfseries
+%			
+%			{\largerrr\thesistitlee}
+%			\vspace{1in}
+%			
+%		}
+%	\end{center}
+%	\noindent
+%	\makebox[\textwidth]{\hfill\makebox[3in]{\hrulefill}}\\
+%	\begin{center}
+%		\makebox[\textwidth]{\hfill\makebox[3in]{\hfill \textbf{Student: Tran Khoi Nguyen}\hfill}}
+%		\makebox[\textwidth]{\hfill\makebox[3in]{\hfill \textbf{Supervisor: Dr. Huynh Thanh Duc}\hfill}}
+%	\end{center}
+%	\begin{center}
+%		\vspace{2.5in}
+%		{\graddate}
+%	\end{center}
+%\end{titlepage}
+%
+%\newpage
+%\pagenumbering{roman}
+%\pagestyle{fancy}
+%\renewcommand{\headrulewidth}{0pt}
+%\fancyhf{}
+%\fancyfoot[C]{\hspace{0cm} \thepage}
+%\setcounter{page}{1}
+%\pagenumbering{arabic}
+\section{Solution}
+%\noindent In the presence of a magnetic field, the vector potential induces the Peierls phases to accumulate in the Bloch wave functions. A flux quantum $\Phi$ over a triangular TMDC's corresponds to a magnetic field of the order of 46,928 T. For smaller $\Phi_{0}$, the unit cell has contain $2q$ atoms and the Hamiltonian becomes an $6q \times 6q$ matrix. However the magnetic field $B\approx 500$~T in the calculation is extremely large compared to the maximum experimental value $B \approx 50$~T, so we need to have another way to diagonalize the Hamiltonian. For the field reachable in experimetnts, it requires huge computing time to solve the Hamiltonian.
+In the case $B \neq 0$, wave function can be expressed as the coefficients of $C_{ji}^{\lambda}$ in the tight-binding wave function
+\begin{gather}
+	\psi_{\lambda,\mathbf{k}}(\mathbf{r}) = \sum_{j}^{3}\sum_{i}^{2q} C_{ji}^{\lambda}(\mathbf{k}) \sum_{{\alpha}}^{N_{\text{UC}}} e^{i\mathbf{k}\cdot(\mathbf{R}_{\alpha} + \mathbf{r}_{i})} \phi_{j}(\mathbf{r} - \mathbf{R}_{\alpha} - \mathbf{r}_{i}).
+\end{gather}
+where $i = 1 ... 2q$. We have shown that, under an uniform magnetic field, Bloch bands $\lambda$ construct Landau levels at small fields and become fractal-structured at strong fields, which is known as the Hofstadter butterfly.
+
+%\begin{figure*}[htb]
+%	\centering
+%	\includegraphics[width=\linewidth]{imgs/plotWaveFunction.pdf}
+%	\caption{band $d_{z^{2}}$}
+%\end{figure*}
+%\begin{figure*}[htb]
+%	\centering
+%	\includegraphics[width=0.9\linewidth]{imgs/plotWaveFunctiond2.pdf}
+%	\caption{band $d_{xy}$}
+%\end{figure*}
+%\begin{figure*}[htb]
+%	\centering
+%	\includegraphics[width=0.9\linewidth]{imgs/plotWaveFunctiond3.pdf}
+%	\caption{band $d_{x^{2} - y^{2}}$}
+%\end{figure*}
+%\newpage
+We now consider a new basis consisting of three eigenfunctions of the angular momentum operators $L^2$ and $L_{z}$, for $l = 2, m = 0, \pm 2$,
+\begin{gather}
+	\ket{\tilde{\phi}_{1}} = \ket{d_{m = 0}}, \quad
+	\ket{\tilde{\phi}_{2}} = \ket{d_{m = +2}}, \quad
+	\ket{\tilde{\phi}_{3}} = \ket{d_{m = -2}}.
+\end{gather}
+The new basis can be obtained from the old one by the transformation
+\begin{gather}
+	W =
+	\begin{pNiceMatrix}
+		1 & 0                  & 0                   \\
+		0 & \frac{1}{\sqrt{2}} & \frac{i}{\sqrt{2}}  \\
+		0 & \frac{1}{\sqrt{2}} & -\frac{i}{\sqrt{2}}
+	\end{pNiceMatrix}.
+\end{gather}
+The TB Hamiltonian in new basis reads
+\begin{equation}
+	\begin{aligned}
+		\tilde{H}^{\text{NN}} (\mathbf{k}) & = W H^{NN}(\mathbf{k}) W^{\dagger} \\
+		                                   & =
+		\begin{pNiceMatrix}
+			h_{0}                                        & \frac{1}{\sqrt{2}} (h_{1} - i h_{2})          & \frac{1}{\sqrt{2}} (h_{1} + i h_{2})           \\
+			\frac{1}{\sqrt{2}} (h_{1}^{*} + i h_{2}^{*}) & \frac{1}{2} (h_{11} + h_{22} + 2 \Im{h_{12}}) & \frac{1}{2} (h_{11} - h_{22} + 2i \Re{h_{12}}) \\
+			\frac{1}{\sqrt{2}} (h_{1}^{*} - i h_{2}^{*}) & \frac{1}{2} (h_{11} - h_{22} - 2 \Im{h_{12}}) & \frac{1}{2} (h_{11} + h_{22} - 2i \Re{h_{12}})
+		\end{pNiceMatrix}.
+	\end{aligned}
+\end{equation}
+\begin{figure*}[htb]
+	\centering
+	\includegraphics[width=0.75\linewidth]{imgs/BSDFT.pdf}
+	\caption{Bandstructure lấy từ bài Liu.}
+\end{figure*}
+\begin{figure*}[htb]
+	\centering
+	\includegraphics[width=0.75\linewidth]{imgs/NN-Tran-d0-d1-d2-2q-2q1.pdf}
+	\caption{Wavefunctions using NN model.}
+\end{figure*}
+%\begin{figure*}[htb]
+%	\centering
+%	\includegraphics[width=\linewidth]{imgs/TNN-Tran-d0-d1-d2-2q-2q1.pdf}
+%	\caption{Wavefunctions using TNN model.}
+%\end{figure*}
+Ở {Hình~1}, tại điểm $K$, dải hoá trị có đóng góp chủ yếu từ hai orbital $d_{xy}$ và $d_{x^{2} - y^{2}}$, trong khi dải dẫn chủ yếu đến từ orbital $d_{z^{2}}$. Khi có mặt từ trường, vùng Brillouin zone bị thu nhỏ lại $2q$ lần so với vùng Brillouin gốc, khiến các điểm $K$ và $K'$ co lại và nằm gần điểm $\Gamma$. Do đó, trong bài này, chúng tôi chỉ xét phổ Hofstadter butterfly tại điểm $\Gamma$.
+
+Ở {Hình~2}, khi có từ trường, hàm sóng được biểu diễn tại $\Gamma = (0,0)$. Cụ thể, các hình {(a)}, {(b)}, {(c)} tương ứng với mức $2q$ (dải hoá trị), trong khi các hình {(d)}, {(e)}, {(f)} tương ứng với mức $2q+1$ (dải dẫn).
+
+\subsection{Cyclotron frequency}
+Tại $p = 1$, $q = 4723$, tần số cyclotron được tính theo công thức
+\begin{equation}
+	\begin{aligned}
+		\hbar \omega_{c}       & = E_{n+1} - E_{n}                \\
+		\Rightarrow \omega_{c} & = \frac{E_{n+1} - E_{n}}{\hbar},
+	\end{aligned}
+\end{equation}
+và khối lượng hiệu dụng cyclotrong được tính bằng công thức
+\begin{equation}
+	\begin{aligned}
+		\omega_{c}        & = \frac{eB}{m^{*}}
+		\Rightarrow m^{*} & =  \frac{eB}{\omega_{c}} = \frac{eB}{\frac{E_{n+1} - E_{n}}{\hbar}} = \frac{eB \hbar}{E_{n+1} - E_{n}}
+	\end{aligned}
+\end{equation}
+trong đó $n$ là chỉ số mức Landau. Hàm sóng của 2 mức Landau kế tiếp nhau ở điểm $K$ được thể hiện qua Fig.3. Ở hình 3(a),(b),(c) là hàm sóng ở mức Landau $n=1$, với dải $2q+4$, hình 3(d),(e),(f) là hàm sóng ở mức Landau $n=2$ với dải $2q+8$
+\begin{figure*}[htb]
+	\centering
+	\includegraphics[width=0.75\linewidth]{imgs/landaulevel_ketiep.pdf}
+	\caption{Hàm sóng của 2 mức Landau kế tiếp nhau.}
+\end{figure*}
+
+\begin{table}[h]
+	\label{Table 2.1}
+	\begin{equation*}
+		\renewcommand{\arraystretch}{1.5}
+		\begin{NiceArray}{c c | c c}
+			\hline
+			\hline
+			\text{Band} \; \lambda & \text{Label} & \text{Band} \; \lambda & \text{Label}  \\
+			\hline
+			2q+1                   & \ev{0,0}_{K'} & 2q+7                   & \ev{0,2}_{K}  \\
+			2q+2                   & \ev{0,0}_{K'} & 2q+8                   & \ev{0,2}_{K}  \\
+			2q+3                   & \ev{0,1}_{K}  & 2q+9                   & \ev{0,1}_{K'} \\
+			2q+4                   & \ev{0,1}_{K}  & 2q+10                  & \ev{0,1}_{K'} \\
+			2q+5                   & \ev{0,0}_{K'} & 2q+11                  & \ev{0,2}_{K}  \\
+			2q+6                   & \ev{0,0}_{K'} & 2q+12                  & \ev{0,3}_{K}  \\
+			\hline
+			\hline
+		\end{NiceArray}
+	\end{equation*}
+	\caption{Dán nhãn cho từng band $\lambda$.}
+\end{table}
+Từ Eq.(6) ta tính ra được khối lượng hiệu dụng $m^{*}/m_{0}$ và tần số cyclotron, được biểu diễn trong hình.4 và hình.5
+\begin{figure*}[htb]
+	\centering
+	\includegraphics[width=0.75\linewidth]{imgs/meff1.pdf}
+	\caption{Khối lượng hiệu dụng $m*/m_{0}$ tại $q = 4723$.}
+\end{figure*}
+\begin{figure*}[htb]
+	\centering
+	\includegraphics[width=0.75\linewidth]{imgs/meffTNN.pdf}
+	\caption{Khối lượng hiệu dụng $m*/m_{0}$ tại $q = 4723$.}
+\end{figure*}
+trong đó $m_{0}$ là khối lượng electron.
+
+Ở hình.4 khối lượng hiệu dụng ở $B=40$~T đột ngột tăng lên bất thường là do năng lượng ở 2 mức Landau kết tiếp nhau $\Delta E \approxeq 0$ dẫn đến tăng lên đột ngột. Điều này có thể thấy ở hình.5 tần số Cyloctron giảm từ $\approx 3\times10^{13}$ xuống còn $5\times10^{12}$ Hz
+
+
+
+
+
+\end{document}
