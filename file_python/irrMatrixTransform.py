@@ -5,8 +5,8 @@ from numpy import pi, sin, cos, sqrt
 W = np.array(
     [
         [1, 0, 0],
-        [0, 1 / sqrt(2), 1j / sqrt(2)],
         [0, 1 / sqrt(2), -1j / sqrt(2)],
+        [0, 1 / sqrt(2), 1j / sqrt(2)],
     ]
 )
 

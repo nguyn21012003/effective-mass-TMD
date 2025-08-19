@@ -29,16 +29,20 @@ def waveFunction(choice: int, qmax: int, kpoint: str, fileData: dict, model: dic
     data = functionMapping[modelNeighbor](choice, modelParameters)
     alattice = data["alattice"]
 
-    E0, h1, h2, h3, h4, h5, h6 = IR_tran(data)
-    # v1, v2, v3, v4, v5, v6 = IRNN_tran(data)
-    # o1, o2, o3, o4, o5, o6 = IRTNN_tran(data)
+    E0, h1, h2, h3, h4, h5, h6 = IR(data)
+
+    v1 = v2 = v3 = v4 = v5 = v6 = 0
+    o1 = o2 = o3 = o4 = o5 = o6 = 0
+    if modelNeighbor == "TNN":
+        v1, v2, v3, v4, v5, v6 = IRNN(data)
+        o1, o2, o3, o4, o5, o6 = IRTNN(data)
 
     # if modelNeighbor == "TNN":
 
     irreducibleMatrix = {
         "NN": [E0, h1, h2, h3, h4, h5, h6],
-        # "NNN": [v1, v2, v3, v4, v5, v6],
-        # "TNN": [o1, o2, o3, o4, o5, o6],
+        "NNN": [v1, v2, v3, v4, v5, v6],
+        "TNN": [o1, o2, o3, o4, o5, o6],
     }
 
     p = 1
@@ -84,22 +88,22 @@ def waveFunction(choice: int, qmax: int, kpoint: str, fileData: dict, model: dic
 
         eigenvals, eigenvecs = LA.eigh(Ham)
 
-        band2q_d0 = eigenvecs[:, coeff * qmax + 9]
-        band2q_d1 = eigenvecs[:, coeff * qmax + 10]
-        band2q_d2 = eigenvecs[:, coeff * qmax + 11]
+        band2q_d0 = eigenvecs[:, coeff * qmax + 2]
+        band2q_d1 = eigenvecs[:, coeff * qmax + 2]
+        band2q_d2 = eigenvecs[:, coeff * qmax + 2]
 
-        band2q1_d0 = eigenvecs[:, coeff * qmax + 12]
-        band2q1_d1 = eigenvecs[:, coeff * qmax + 13]
-        band2q1_d2 = eigenvecs[:, coeff * qmax + 14]
+        band2q1_d0 = eigenvecs[:, coeff * qmax + 3]
+        band2q1_d1 = eigenvecs[:, coeff * qmax + 3]
+        band2q1_d2 = eigenvecs[:, coeff * qmax + 3]
 
         for i in range(coeff * qmax):
             psi_band2q_d0[i] += band2q_d0[0 * coeff * qmax + i]
-            psi_band2q_d1[i] += band2q_d1[0 * coeff * qmax + i]
-            psi_band2q_d2[i] += band2q_d2[0 * coeff * qmax + i]
+            psi_band2q_d1[i] += band2q_d1[1 * coeff * qmax + i]
+            psi_band2q_d2[i] += band2q_d2[2 * coeff * qmax + i]
 
             psi_band2q1_d0[i] += band2q1_d0[0 * coeff * qmax + i]
-            psi_band2q1_d1[i] += band2q1_d1[0 * coeff * qmax + i]
-            psi_band2q1_d2[i] += band2q1_d2[0 * coeff * qmax + i]
+            psi_band2q1_d1[i] += band2q1_d1[1 * coeff * qmax + i]
+            psi_band2q1_d2[i] += band2q1_d2[2 * coeff * qmax + i]
 
             dataArr["PositionAtoms"].append(iArr[i])
 
@@ -288,7 +292,7 @@ def main():
     bandNumber = 3
     bandSelector = "A"
     modelPara = "GGA"
-    modelNeighbor = "NN"
+    modelNeighbor = "TNN"
     model = {"modelParameters": modelPara, "modelNeighbor": modelNeighbor}
     kpoint1 = "G"
     # kpoint2 = "K1"
