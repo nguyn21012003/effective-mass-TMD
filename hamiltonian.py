@@ -1,13 +1,12 @@
 import csv
 import os
 from datetime import datetime
-
+from time import time
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy import linalg as LA
-from numpy import pi, sqrt
+from numpy import pi, shape, sqrt
 from tqdm import tqdm
-import torch
 
 from file_python.HamTMD import Hamiltonian as HamNN
 from file_python.HamTMDNN import HamTNN
@@ -16,148 +15,104 @@ from file_python.irrMatrixTransform import IR as IR_tran
 from file_python.irrMatrixTransform import IRNN as IRNN_tran
 from file_python.irrMatrixTransform import IRTNN as IRTNN_tran
 from file_python.parameters import paraNN, paraTNN
-from file_python.plotbyGNU import PlotMatrixGNU
 
 
 def waveFunction(choice: int, qmax: int, kpoint: str, fileData: dict, model: dict):
+    ##### chi so dau vao
+    p = 1
+    coeff = 2
+    numberWave = 40  # so ham song can khao sat
     fileSave = fileData[f"file{kpoint}"]
-
     modelParameters = model["modelParameters"]
     modelNeighbor = model["modelNeighbor"]
     functionMapping = {"TNN": paraTNN, "NN": paraNN}
-
     data = functionMapping[modelNeighbor](choice, modelParameters)
     alattice = data["alattice"]
-
-    E0, h1, h2, h3, h4, h5, h6 = IR(data)
-
+    E0, h1, h2, h3, h4, h5, h6 = IR_tran(data)
     v1 = v2 = v3 = v4 = v5 = v6 = 0
     o1 = o2 = o3 = o4 = o5 = o6 = 0
     if modelNeighbor == "TNN":
-        v1, v2, v3, v4, v5, v6 = IRNN(data)
-        o1, o2, o3, o4, o5, o6 = IRTNN(data)
-
-    # if modelNeighbor == "TNN":
-
+        v1, v2, v3, v4, v5, v6 = IRNN_tran(data)
+        o1, o2, o3, o4, o5, o6 = IRTNN_tran(data)
     irreducibleMatrix = {
         "NN": [E0, h1, h2, h3, h4, h5, h6],
         "NNN": [v1, v2, v3, v4, v5, v6],
         "TNN": [o1, o2, o3, o4, o5, o6],
     }
-
-    p = 1
-    coeff = 2
     kpoints = {
         "G": [0, 0],
         "K1": [4 * pi / (3 * alattice), 0],
         "K2": [-4 * pi / (3 * alattice), 0],
         "M": [pi / (alattice), pi / (sqrt(3) * alattice)],
     }
-    dataArr = {
-        "d0_Lambda2q": [],
-        "d1_Lambda2q": [],
-        "d2_Lambda2q": [],
-        "d0_Lambda2q1": [],
-        "d1_Lambda2q1": [],
-        "d2_Lambda2q1": [],
-        "PositionAtoms": [],
-    }
-
     kx = kpoints[kpoint][0]
     ky = kpoints[kpoint][1]
+    ##### tao array de luu ket qua
+    dataArr = {"PositionAtoms": []}
+    for i in range(numberWave + 1):
+        dataArr[f"lambda2q_band_{i}"] = []
 
-    psi_band2q_d0 = np.zeros(coeff * qmax, dtype=complex)
-    psi_band2q_d1 = np.zeros(coeff * qmax, dtype=complex)
-    psi_band2q_d2 = np.zeros(coeff * qmax, dtype=complex)
+    #### tinh toan chi tiet
+    #### bat dau bang viec khoi tao mang de chua psi va abs(psi)**2
+    arrContainer = {}
+    iArr = np.arange(coeff * qmax)  # chi so atom thu i
+    for i in range(numberWave + 1):
+        #### Tinh cho d_z^2
+        arrContainer[f"psi_band2q_d0_{i}"] = np.zeros(coeff * qmax, dtype=complex)
+        arrContainer[f"absPsi_band2q_d0_{i}"] = np.zeros(coeff * qmax, dtype=float)
+        #### Tinh cho d_-2
+        arrContainer[f"psi_band2q_d1_{i}"] = np.zeros(coeff * qmax, dtype=complex)
+        arrContainer[f"absPsi_band2q_d1_{i}"] = np.zeros(coeff * qmax, dtype=float)
+        #### Tinh cho d_2
+        arrContainer[f"psi_band2q_d2_{i}"] = np.zeros(coeff * qmax, dtype=complex)
+        arrContainer[f"absPsi_band2q_d1_{i}"] = np.zeros(coeff * qmax, dtype=float)
+        ##### Unused
+        arrContainer[f"psi_band2q1_d0_{i}"] = np.zeros(coeff * qmax, dtype=complex)
+        arrContainer[f"psi_band2q1_d1_{i}"] = np.zeros(coeff * qmax, dtype=complex)
+        arrContainer[f"psi_band2q1_d2_{i}"] = np.zeros(coeff * qmax, dtype=complex)
 
-    psi_band2q1_d0 = np.zeros(coeff * qmax, dtype=complex)
-    psi_band2q1_d1 = np.zeros(coeff * qmax, dtype=complex)
-    psi_band2q1_d2 = np.zeros(coeff * qmax, dtype=complex)
-
-    iArr = np.arange(coeff * qmax)
     Ham = None
-
     if modelNeighbor == "NN":
         Ham = HamNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
     elif modelNeighbor == "TNN":
         Ham = HamTNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
 
     if np.gcd(p, qmax) == 1:
-
-        # HamNewBasis = Wfull @ Ham @ np.conjugate(Wfull).T
-
         eigenvals, eigenvecs = LA.eigh(Ham)
+        for i in tqdm(range(numberWave + 1), desc="Calc eigenvectors", colour="green"):
+            #### i la chi so 2q + i trong so band 6q
+            arrContainer[f"psi_band2q_d0_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax + i][0 * coeff * qmax : 1 * coeff * qmax]
+            arrContainer[f"psi_band2q_d1_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax + i][1 * coeff * qmax : 2 * coeff * qmax]
+            arrContainer[f"psi_band2q_d2_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax + i][2 * coeff * qmax : 3 * coeff * qmax]
 
-        band2q_d0 = eigenvecs[:, coeff * qmax + 2]
-        band2q_d1 = eigenvecs[:, coeff * qmax + 2]
-        band2q_d2 = eigenvecs[:, coeff * qmax + 2]
-
-        band2q1_d0 = eigenvecs[:, coeff * qmax + 3]
-        band2q1_d1 = eigenvecs[:, coeff * qmax + 3]
-        band2q1_d2 = eigenvecs[:, coeff * qmax + 3]
+            arrContainer[f"absPsi_band2q_d0_{i}"] = np.abs(arrContainer[f"psi_band2q_d0_{i}"]) ** 2
+            arrContainer[f"absPsi_band2q_d1_{i}"] = np.abs(arrContainer[f"psi_band2q_d1_{i}"]) ** 2
+            arrContainer[f"absPsi_band2q_d2_{i}"] = np.abs(arrContainer[f"psi_band2q_d2_{i}"]) ** 2
 
         for i in range(coeff * qmax):
-            psi_band2q_d0[i] += band2q_d0[0 * coeff * qmax + i]
-            psi_band2q_d1[i] += band2q_d1[1 * coeff * qmax + i]
-            psi_band2q_d2[i] += band2q_d2[2 * coeff * qmax + i]
-
-            psi_band2q1_d0[i] += band2q1_d0[0 * coeff * qmax + i]
-            psi_band2q1_d1[i] += band2q1_d1[1 * coeff * qmax + i]
-            psi_band2q1_d2[i] += band2q1_d2[2 * coeff * qmax + i]
-
             dataArr["PositionAtoms"].append(iArr[i])
 
-        absPsi_band2q_d0 = np.abs(psi_band2q_d0) ** 2
-        absPsi_band2q_d1 = np.abs(psi_band2q_d1) ** 2
-        absPsi_band2q_d2 = np.abs(psi_band2q_d2) ** 2
-
-        absPsi_band2q1_d0 = np.abs(psi_band2q1_d0) ** 2
-        absPsi_band2q1_d1 = np.abs(psi_band2q1_d1) ** 2
-        absPsi_band2q1_d2 = np.abs(psi_band2q1_d2) ** 2
-
-        dataArr["d0_Lambda2q"].append(absPsi_band2q_d0)
-        dataArr["d1_Lambda2q"].append(absPsi_band2q_d1)
-        dataArr["d2_Lambda2q"].append(absPsi_band2q_d2)
-
-        dataArr["d0_Lambda2q1"].append(absPsi_band2q1_d0)
-        dataArr["d1_Lambda2q1"].append(absPsi_band2q1_d1)
-        dataArr["d2_Lambda2q1"].append(absPsi_band2q1_d2)
-
         with open(fileSave, "w", newline="") as writefile:
-            header = [
-                "x",
-                "d0_Lambda2q",
-                "d1_Lambda2q",
-                "d2_Lambda2q",
-                "d0_Lambda2q1",
-                "d1_Lambda2q1",
-                "d2_Lambda2q1",
-            ]
+            header = ["x"]
+            dArr = ["d0", "d1", "d2"]
+            for d in dArr:
+                for i in range(numberWave + 1):
+                    header.append(f"{d}_lambda_{i}")
 
             writer = csv.DictWriter(writefile, fieldnames=header, delimiter=",")
             writer.writeheader()
             iPosition = dataArr["PositionAtoms"]
-            band_Lambda2q_d0 = dataArr["d0_Lambda2q"][0]
-            band_Lambda2q_d1 = dataArr["d1_Lambda2q"][0]
-            band_Lambda2q_d2 = dataArr["d2_Lambda2q"][0]
 
-            band_Lambda2q1_d0 = dataArr["d0_Lambda2q1"][0]
-            band_Lambda2q1_d1 = dataArr["d1_Lambda2q1"][0]
-            band_Lambda2q1_d2 = dataArr["d2_Lambda2q1"][0]
-
-            for q in range(coeff * qmax):
-                row = {
-                    "x": iPosition[q],
-                    "d0_Lambda2q": band_Lambda2q_d0[q],
-                    "d1_Lambda2q": band_Lambda2q_d1[q],
-                    "d2_Lambda2q": band_Lambda2q_d2[q],
-                    "d0_Lambda2q1": band_Lambda2q1_d0[q],
-                    "d1_Lambda2q1": band_Lambda2q1_d1[q],
-                    "d2_Lambda2q1": band_Lambda2q1_d2[q],
-                }
+            for q in tqdm(range(coeff * qmax), desc="Write file", colour="blue"):
+                row = {"x": iPosition[q]}
+                for i in range(numberWave + 1):
+                    row[f"d0_lambda_{i}"] = arrContainer[f"absPsi_band2q_d0_{i}"][q]
+                    row[f"d1_lambda_{i}"] = arrContainer[f"absPsi_band2q_d1_{i}"][q]
+                    row[f"d2_lambda_{i}"] = arrContainer[f"absPsi_band2q_d2_{i}"][q]
                 writer.writerow(row)
-        # saveMatrix(Ham, fileMatrix)
-        # plotMatrix(H)
+
+    elif np.gcd(p, qmax) != 1:
+        print("p,q pairs not co-prime!")
 
     return None
 
@@ -243,7 +198,7 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
             E_2q1 = eigenvals[coeff * qmax + 9]
             E_2q2 = eigenvals[coeff * qmax - 17]
 
-            En_valence = eigenvals[coeff * qmax - 17] + eigenvals[coeff * qmax - 18]
+            En_valence = eigenvals[coeff * qmax - 15] + eigenvals[coeff * qmax - 16]
             En1_valence = eigenvals[coeff * qmax - 27] + eigenvals[coeff * qmax - 28]
 
             En_conduction = eigenvals[coeff * qmax]
@@ -260,7 +215,7 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
             # print("\n", En, "\n")
             # print(En1, "\n")
             # print(m_eff, "\n")
-            # print("\n", m_ratio_v, "\n")
+            print("\n", m_ratio_v, "\n")
             # print(m_ratio_c, "\n")
             # print(B, "\n")
             for i in range(coeff * band * qmax):
@@ -321,11 +276,11 @@ def main():
     filegnu = f"{bandNumber}band_plotHofstadterButterfly_q={qmax}.gnuplot"
 
     print("file data buttefly K1: ", fileButterflyK1)
-    # print("file data buttefly K2: ", fileButterflyK2)
     print("file data: ", filePlotC_k1)
-    print("file gnuplot: ", filegnu)
-    print("file Matrix: ", fileMatrix)
-    print("file Matrix GNU: ", file_plot_Matrix_Gnu)
+    # print("file data buttefly K2: ", fileButterflyK2)
+    # print("file gnuplot: ", filegnu)
+    # print("file Matrix: ", fileMatrix)
+    # print("file Matrix GNU: ", file_plot_Matrix_Gnu)
 
     fileData = {
         "fileButterfly_K1": fileButterflyK1,
@@ -339,7 +294,10 @@ def main():
     # butterflyK1 = butterfly(bandNumber, choice, qmax, kpoint1, fileButterflyK1, model)
     # # butterflyK2 = butterfly(bandNumber, choice, qmax, kpoint2, fileData, model)
 
+    start = time()
     dataK1 = waveFunction(choice, qmax, kpoint1, fileData, model)
+    end = time()
+    print(f"Time calculating wavefunction: {end - start}s")
     # dataK2 = waveFunction(bandNumber, choice, qmax, kpoint2, fileData, model)
     # dataK3 = waveFunction(bandNumber, choice, qmax, kpoint3, fileData, model)
     # dataK4 = waveFunction(bandNumber, choice, qmax, kpoint4, fileData, model)
