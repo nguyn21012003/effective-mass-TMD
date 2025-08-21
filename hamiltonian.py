@@ -55,7 +55,7 @@ def waveFunction(choice: int, qmax: int, kpoint: str, fileData: dict, model: dic
     #### tinh toan chi tiet
     #### bat dau bang viec khoi tao mang de chua psi va abs(psi)**2
     arrContainer = {}
-    iArr = np.arange(coeff * qmax)  # chi so atom thu i
+    iArr = np.arange(coeff * qmax)  # chi so atom thu i, do 3 ham song thi la 3*2*qmax = 6qmax, nhung 1 ham song thi la 2qmax
     for i in range(numberWave + 1):
         #### Tinh cho d_z^2
         arrContainer[f"psi_band2q_d0_{i}"] = np.zeros(coeff * qmax, dtype=complex)
@@ -79,6 +79,7 @@ def waveFunction(choice: int, qmax: int, kpoint: str, fileData: dict, model: dic
 
     if np.gcd(p, qmax) == 1:
         eigenvals, eigenvecs = LA.eigh(Ham)
+        # print(eigenvecs.shape)
         for i in tqdm(range(numberWave + 1), desc="Calc eigenvectors", colour="green"):
             #### i la chi so 2q + i trong so band 6q
             arrContainer[f"psi_band2q_d0_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax + i][0 * coeff * qmax : 1 * coeff * qmax]
@@ -194,9 +195,10 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
             # HamNewBasis = Wfull @ Ham @ np.conj(Wfull).T
 
             eigenvals = LA.eigvalsh(Ham)
-            E_2q = eigenvals[coeff * qmax + 8]
-            E_2q1 = eigenvals[coeff * qmax + 9]
-            E_2q2 = eigenvals[coeff * qmax - 17]
+            # print(eigenvals.shape)
+            E_bandValence = eigenvals[: coeff * qmax]
+            E_bandConduction1 = eigenvals[coeff * qmax : 2 * coeff * qmax]
+            E_bandConduction2 = eigenvals[2 * coeff * qmax : 3 * coeff * qmax]
 
             En_valence = eigenvals[coeff * qmax - 15] + eigenvals[coeff * qmax - 16]
             En1_valence = eigenvals[coeff * qmax - 27] + eigenvals[coeff * qmax - 28]
@@ -215,27 +217,24 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
             # print("\n", En, "\n")
             # print(En1, "\n")
             # print(m_eff, "\n")
-            print("\n", m_ratio_v, "\n")
+            # print("\n", m_ratio_v, "\n")
             # print(m_ratio_c, "\n")
             # print(B, "\n")
-            for i in range(coeff * band * qmax):
-                writer.writerow(
-                    {
-                        "eta": eta,
-                        "B_values": B,
-                        "evalues": eigenvals[i],
-                        "E_level1": E_2q,
-                        "E_level2": E_2q1,
-                        # "E_level3": E_2q2,
-                        "m*_v": m_ratio_v,
-                        "m*_c": m_ratio_c,
-                        "ω_v": omega_valence,
-                        "ω_c": omega_conduction,
-                    }
-                )
+            for i in tqdm(range(coeff * band * qmax), desc="write file butterfly", colour="red"):
+                row = {
+                    "eta": eta,
+                    "B_values": B,
+                    "evalues": eigenvals[i],
+                    # "E_level1": E_bandValence,
+                    # "E_level2": E_bandConduction1,
+                    # "E_level3": E_2q2,
+                    "m*_v": m_ratio_v,
+                    "m*_c": m_ratio_c,
+                    "ω_v": omega_valence,
+                    "ω_c": omega_conduction,
+                }
+                writer.writerow(row)
             # writefile.write("\n")
-            # saveMatrix(Ham, fileMatrix)
-            # plotMatrix(H)
 
     return None
 
@@ -291,11 +290,11 @@ def main():
     }
 
     # print(torch.cuda.is_available())
-    # butterflyK1 = butterfly(bandNumber, choice, qmax, kpoint1, fileButterflyK1, model)
     # # butterflyK2 = butterfly(bandNumber, choice, qmax, kpoint2, fileData, model)
 
     start = time()
-    dataK1 = waveFunction(choice, qmax, kpoint1, fileData, model)
+    # dataK1 = waveFunction(choice, qmax, kpoint1, fileData, model)
+    butterflyK1 = butterfly(bandNumber, choice, qmax, kpoint1, fileButterflyK1, model)
     end = time()
     print(f"Time calculating wavefunction: {end - start}s")
     # dataK2 = waveFunction(bandNumber, choice, qmax, kpoint2, fileData, model)
