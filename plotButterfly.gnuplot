@@ -29,7 +29,7 @@ TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_297_MoS2_GGA_G.dat" u 1:6 w l
 TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_297_MoS2_GGA_G.dat" u 1:6 with points pt 7 ps 0.3 lc rgb "purple" title "omega_{c}"
 
 # plot 1.5 with points pt 7 ps 3 lc rgb "#bdbdbd"
-plot for [i=4:20] TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_2001_MoS2_GGA_G.dat" u 2:i with points pt 7 ps 0.5 lc rgb "#bdbdbd" notitle "2q+1" ,\
+plot for [i=4:84] TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_2001_MoS2_GGA_G.dat" u 2:i with points pt 7 ps 0.5 lc rgb "#bdbdbd" notitle "2q+1" ,\
       TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_2001_MoS2_GGA_G.dat" u 2:4 w l lw 2 lc rgb "blue" notitle,\
       TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_2001_MoS2_GGA_G.dat" u 2:6 w l lw 2 lc rgb "blue" notitle,\
       TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_2001_MoS2_GGA_G.dat" u 2:10 w l lw 2 lc rgb "blue" notitle,\
