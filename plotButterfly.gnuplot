@@ -30,11 +30,13 @@ TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_297_MoS2_GGA_G.dat" u 1:6 wit
 
 # plot 1.5 with points pt 7 ps 3 lc rgb "#bdbdbd"
 plot for [i=4:84] TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_2001_MoS2_GGA_G.dat" u 2:i with points pt 7 ps 0.5 lc rgb "#bdbdbd" notitle "2q+1" ,\
-      TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_2001_MoS2_GGA_G.dat" u 2:4 w l lw 2 lc rgb "blue" notitle,\
-      TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_2001_MoS2_GGA_G.dat" u 2:6 w l lw 2 lc rgb "blue" notitle,\
-      TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_2001_MoS2_GGA_G.dat" u 2:10 w l lw 2 lc rgb "blue" notitle,\
-      TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_2001_MoS2_GGA_G.dat" u 2:10 w l lw 2 lc rgb "blue" notitle,\
-      TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_2001_MoS2_GGA_G.dat" u 2:8 w l lw 2 lc rgb "purple" notitle,\
+      TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_2001_MoS2_GGA_G.dat" u 2:4 w l lw 2 lc rgb "red" notitle,\
+      TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_2001_MoS2_GGA_G.dat" u 2:6 w l lw 2 lc rgb "red" notitle,\
+      TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_2001_MoS2_GGA_G.dat" u 2:10 w l lw 2 lc rgb "red" notitle,\
+      TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_2001_MoS2_GGA_G.dat" u 2:12 w l lw 2 lc rgb "red" notitle,\
+      TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_2001_MoS2_GGA_G.dat" u 2:14 w l lw 2 lc rgb "red" notitle,\
+      TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_2001_MoS2_GGA_G.dat" u 2:16 w l lw 2 lc rgb "red" notitle,\
+      TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_2001_MoS2_GGA_G.dat" u 2:8 w l lw 2 lc rgb "red" notitle,\
 
 
 
@@ -42,14 +44,14 @@ plot for [i=4:84] TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_2001_MoS2_G
  # TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_297_MoS2_GGA_G.dat" u 1:5 with points pt 7 ps 0.3 lc rgb "red" title "m^{*}_{h}/m_{0} in NN case",\
      # TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_297_MoS2_GGA_G.dat" u 1:8 with lines lw 5 lc rgb "magenta" title "m^{*}_{h}/m_{0} TNN case"
     # NNdir . "3band_Lambda2q_dataHofstadterButterfly_q_797_MoS2_GGA_G.dat" u 2:6 with points pt 6 ps 3 lc rgb "orange" title "m^{*}_{e}/m_{0} in NN case",\
-    TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_797_MoS2_GGA_G.dat" u 2:6 with points pt 2 ps 3 lc rgb "blue" title "m^{*}_{e}/m_{0} TNN case",\
+    TNNdir . "3band_Lambda2q_dataHofstadterButterfly_q_797_MoS2_GGA_G.dat" u 2:6 with points pt 2 ps 3 lc rgb "red" title "m^{*}_{e}/m_{0} TNN case",\
     
 
 
-    # "./Sat-08-16/TNN/3band_Lambda2q_dataHofstadterButterfly_q_797_MoS2_GGA_G.dat" u 2:7 with points pt 4 ps 3 lc rgb "blue" title "TNN case",\
+    # "./Sat-08-16/TNN/3band_Lambda2q_dataHofstadterButterfly_q_797_MoS2_GGA_G.dat" u 2:7 with points pt 4 ps 3 lc rgb "red" title "TNN case",\
 
    # "./Sat-08-16/NN/3band_Lambda2q_dataHofstadterButterfly_q_797_MoS2_GGA_G.dat" u 2:7 with lines lw 5 lc rgb "red" notitle "NN case",\
-    "./Sat-08-16/TNN/3band_Lambda2q_dataHofstadterButterfly_q_797_MoS2_GGA_G.dat" u 2:7 with lines lw 5 lc rgb "blue" notitle "TNN case"
+    "./Sat-08-16/TNN/3band_Lambda2q_dataHofstadterButterfly_q_797_MoS2_GGA_G.dat" u 2:7 with lines lw 5 lc rgb "red" notitle "TNN case"
 
 
 
