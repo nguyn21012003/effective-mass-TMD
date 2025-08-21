@@ -114,6 +114,7 @@ def waveFunction(choice: int, qmax: int, kpoint: str, fileData: dict, model: dic
                 writer.writerow(row)
 
     elif np.gcd(p, qmax) != 1:
+    elif np.gcd(p, qmax) != 1:  # check coprime
         print("p,q pairs not co-prime!")
 
     return None
