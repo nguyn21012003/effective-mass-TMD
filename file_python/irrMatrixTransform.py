@@ -9,6 +9,7 @@ W = np.array(
         [0, 1 / sqrt(2), 1j / sqrt(2)],
     ]
 )
+### d_0, d_-2, d_2
 
 
 def IRTNN(data):

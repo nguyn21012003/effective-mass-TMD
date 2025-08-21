@@ -6,7 +6,7 @@
 \changefontsize[13pt]{13pt}	
 \usepackage{commath}
 \usepackage{parskip,setspace}
-\usepackage{xcolor}
+\usepackage[table]{xcolor}
 \usepackage{amssymb}
 \usepackage[d]{esvect}
 \usepackage[nottoc,notlot,notlof]{tocbibind}
@@ -290,22 +290,84 @@ trong đó $n$ là chỉ số mức Landau. Hàm sóng của 2 mức Landau kế
 	\caption{Dán nhãn cho từng band $\lambda$.}
 \end{table}
 Từ Eq.(6) ta tính ra được khối lượng hiệu dụng $m^{*}/m_{0}$ và tần số cyclotron, được biểu diễn trong hình.4 và hình.5
-\begin{figure*}[htb]
-	\centering
-	\includegraphics[width=0.75\linewidth]{imgs/meff1.pdf}
-	\caption{Khối lượng hiệu dụng $m*/m_{0}$ tại $q = 4723$.}
-\end{figure*}
-\begin{figure*}[htb]
-	\centering
-	\includegraphics[width=0.75\linewidth]{imgs/meffTNN.pdf}
-	\caption{Khối lượng hiệu dụng $m*/m_{0}$ tại $q = 4723$.}
-\end{figure*}
-trong đó $m_{0}$ là khối lượng electron.
+%\begin{figure*}[htb]
+%	\centering
+%	\includegraphics[width=0.5\linewidth]{imgs/meff1.pdf}
+%	\caption{Khối lượng hiệu dụng $m*/m_{0}$ tại $q = 4723$.}
+%\end{figure*}
+%\begin{figure*}[htb]
+%	\centering
+%	\includegraphics[width=0.5\linewidth]{imgs/meffTNN.pdf}
+%	\caption{Khối lượng hiệu dụng $m*/m_{0}$ tại $q = 4723$.}
+%\end{figure*}
+%trong đó $m_{0}$ là khối lượng electron.
 
 Ở hình.4 khối lượng hiệu dụng ở $B=40$~T đột ngột tăng lên bất thường là do năng lượng ở 2 mức Landau kết tiếp nhau $\Delta E \approxeq 0$ dẫn đến tăng lên đột ngột. Điều này có thể thấy ở hình.5 tần số Cyloctron giảm từ $\approx 3\times10^{13}$ xuống còn $5\times10^{12}$ Hz
 
+\newpage
 
 
+\begin{table}[h]
+	\begin{equation*}
+		\renewcommand{\arraystretch}{1.5}
+		\begin{NiceArray}{c c}
+			\hline
+			\hline
+			\text{Band} \; \lambda & \text{Label} \\
+			\hline
+			2q - 1 & \ev{2,0}_{K'} \\
+			2q - 2 & \ev{2,0}_{K'} \\
+			2q - 3 & \ev{0,0}_{\Gamma} \\
+			2q - 4 & \ev{0,0}_{\Gamma} \\
+			2q - 5 & \ev{0,1}_{\Gamma} \\
+			2q - 6 & \ev{0,1}_{\Gamma} \\
+			2q - 7 & \ev{2,1}_{K'} \\
+			2q - 8 & \ev{2,1}_{K'} \\
+			2q - 9 & \ev{2,2}_{\Gamma} \\
+			2q - 10 & \ev{0,2}_{\Gamma} \\
+			2q - 11 & \ev{0,3}_{\Gamma} \\
+			2q - 12 & \ev{0,3}_{\Gamma} \\
+			2q - 13 & \ev{0,4}_{\Gamma} \\
+			2q - 14 & \ev{0,4}_{\Gamma} \\
+			\cellcolor{yellow} 2q - 15 & \cellcolor{yellow} \ev{2,0}_{K} \\
+			\cellcolor{yellow} 2q - 16 & \cellcolor{yellow} \ev{2,0}_{K} \\
+			2q - 17 & \ev{2,2}_{K'} \\
+			2q - 18 & \ev{2,2}_{K'} \\
+			2q - 19 & \ev{0,5}_{\Gamma} \\
+			2q - 20 & \ev{0,5}_{\Gamma} \\
+			2q - 21 & \ev{0,6}_{\Gamma} \\
+			2q - 22 & \ev{0,6}_{\Gamma} \\
+			2q - 23 & \ev{0,7}_{\Gamma} \\
+			2q - 24 & \ev{0,7}_{\Gamma} \\
+			2q - 25 & \ev{2,3}_{K'} \\
+			2q - 26 & \ev{2,3}_{K'} \\
+			\cellcolor{yellow} 2q - 27 & \cellcolor{yellow} \ev{2,1}_{K} \\
+			\cellcolor{yellow} 2q - 28 & \cellcolor{yellow} \ev{2,1}_{K} \\
+			2q - 29 & \ev{0,8}_{\Gamma} \\
+			2q - 30 & \ev{0,8}_{\Gamma} \\
+			\hline
+			\hline
+		\end{NiceArray}
+	\end{equation*}
+	\caption{Dán nhãn cho từng band $\lambda$.}
+\end{table}
+
+\begin{table}[h]
+	\begin{equation*}
+		\renewcommand{\arraystretch}{1.5}
+		\begin{NiceArray}{c c}
+			\hline
+			\hline
+			\text{Band} \; \lambda & \text{Label} \\
+			\hline
+			2q + 1 & \ev{0,0}_{K'}\\
+			2q + 1 & \ev{0,0}_{K'}\\
+			\hline
+			\hline
+		\end{NiceArray}
+	\end{equation*}
+	\caption{Dán nhãn cho từng band $\lambda$.}
+\end{table}
 
 
 \end{document}

@@ -81,6 +81,7 @@ def waveFunction(choice: int, qmax: int, kpoint: str, fileData: dict, model: dic
         eigenvals, eigenvecs = LA.eigh(Ham)
         # print(eigenvecs.shape)
         for i in tqdm(range(numberWave + 1), desc="Calc eigenvectors", colour="green"):
+            # print(i)
             #### i la chi so 2q + i trong so band 6q
             arrContainer[f"psi_band2q_d0_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax + i][0 * coeff * qmax : 1 * coeff * qmax]
             arrContainer[f"psi_band2q_d1_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax + i][1 * coeff * qmax : 2 * coeff * qmax]
@@ -183,7 +184,7 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
             if np.gcd(p, qmax) != 1:
                 continue
             eta = p / (qmax)
-            coeff = 1
+            coeff = 2
 
             B = eta * phi0 / S
 
@@ -220,7 +221,8 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
             # print("\n", m_ratio_v, "\n")
             # print(m_ratio_c, "\n")
             # print(B, "\n")
-            for i in tqdm(range(coeff * band * qmax), desc="write file butterfly", colour="red"):
+            startW = time()
+            for i in range(coeff * band * qmax):
                 row = {
                     "eta": eta,
                     "B_values": B,
@@ -234,6 +236,8 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
                     "ω_c": omega_conduction,
                 }
                 writer.writerow(row)
+            endW = time()
+            print(f"Write complete in {endW - startW}s")
             # writefile.write("\n")
 
     return None
@@ -293,8 +297,8 @@ def main():
     # # butterflyK2 = butterfly(bandNumber, choice, qmax, kpoint2, fileData, model)
 
     start = time()
-    # dataK1 = waveFunction(choice, qmax, kpoint1, fileData, model)
-    butterflyK1 = butterfly(bandNumber, choice, qmax, kpoint1, fileButterflyK1, model)
+    dataK1 = waveFunction(choice, qmax, kpoint1, fileData, model)
+    # butterflyK1 = butterfly(bandNumber, choice, qmax, kpoint1, fileButterflyK1, model)
     end = time()
     print(f"Time calculating wavefunction: {end - start}s")
     # dataK2 = waveFunction(bandNumber, choice, qmax, kpoint2, fileData, model)
