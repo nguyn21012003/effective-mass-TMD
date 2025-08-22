@@ -196,6 +196,7 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
             # HamNewBasis = Wfull @ Ham @ np.conj(Wfull).T
 
             eigenvals = LA.eigvalsh(Ham)
+            print(eigenvals.shape)
             # print(eigenvals.shape)
             E_bandValence = eigenvals[: coeff * qmax]
             E_bandConduction1 = eigenvals[coeff * qmax : 2 * coeff * qmax]
@@ -244,7 +245,7 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
 
 
 def main():
-    qmax = 797
+    qmax = 297
     n_levels = 8
     choice = 0
     bandNumber = 3
