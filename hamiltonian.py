@@ -15,7 +15,7 @@ from file_python.irrMatrixTransform import IR as IR_tran
 from file_python.irrMatrixTransform import IRNN as IRNN_tran
 from file_python.irrMatrixTransform import IRTNN as IRTNN_tran
 from file_python.parameters import paraNN, paraTNN
-
+1
 
 def waveFunction(choice: int, qmax: int, kpoint: str, fileData: dict, model: dict):
     ##### chi so dau vao
