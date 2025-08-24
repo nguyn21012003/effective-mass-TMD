@@ -79,8 +79,23 @@ def waveFunction(choice: int, qmax: int, kpoint: str, fileData: dict, model: dic
     elif modelNeighbor == "TNN":
         Ham = HamTNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
 
+    #### Tracking gia tri rieng theo ham rieng
+
+    prevVecs = None
     if np.gcd(p, qmax) == 1:
         eigenvals, eigenvecs = LA.eigh(Ham)
+        if prevVecs == None:
+            eigenvalsSorted = eigenvals
+            eigenvecsSorted = eigenvecs
+            prevVecs = eigenvecs
+
+        else:
+            S = np.abs(np.conjugate(prevVecs).T @ eigenvecs)
+            idxMax = np.argmax(S, axis=1)
+            eigenvalsSorted = eigenvals[idxMax]
+            eigenvecsSorted = eigenvecs[:, idxMax]
+            prevVecs = eigenvecsSorted
+
         # print(eigenvecs.shape)
         for i in tqdm(range(numberWave + 1), desc="Calc eigenvectors", colour="green"):
             # print(i)
@@ -195,9 +210,8 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
             elif modelNeighbor == "TNN":
                 Ham = HamTNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
 
-            # HamNewBasis = Wfull @ Ham @ np.conj(Wfull).T
+            eigenvals, eigenvecs = LA.eigh(Ham)
 
-            eigenvals = LA.eigvalsh(Ham)
             # print(eigenvals.shape)
             E_bandValence = eigenvals[coeff * qmax - 1]
             E_bandConduction1 = eigenvals[coeff * qmax : 2 * coeff * qmax]
@@ -246,7 +260,7 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
 
 
 def main():
-    qmax = 297
+    qmax = 2001
     n_levels = 8
     choice = 0
     bandNumber = 3
