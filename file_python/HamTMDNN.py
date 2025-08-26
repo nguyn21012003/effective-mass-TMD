@@ -1,10 +1,11 @@
 import numpy as np
-from numpy import exp, pi, sqrt
+from numpy import complex128, exp, pi, sqrt
+from numpy.typing import NDArray
 
 from file_python.condition import pbc
 
 
-def HamTNN(alattice, p, q, kx, ky, IM):
+def HamTNN(alattice, p, q, kx, ky, IM) -> NDArray[np.complex128]:
     eta = p / q
     alpha = 1 / 2 * kx * alattice
     beta = sqrt(3) / 2 * ky * alattice

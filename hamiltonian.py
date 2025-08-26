@@ -11,6 +11,7 @@ from numpy import linalg as LA
 from numpy import pi, shape, sqrt
 from tqdm import tqdm
 
+from detectCross import track_eigenvalues
 from file_python.HamTMD import Hamiltonian as HamNN
 from file_python.HamTMDNN import HamTNN
 from file_python.irrMatrix import IR, IRNN, IRTNN
@@ -83,21 +84,9 @@ def waveFunction(choice: int, qmax: int, kpoint: str, fileData: dict, model: dic
 
     #### Tracking gia tri rieng theo ham rieng
 
-    prevVecs = None
     if np.gcd(p, qmax) == 1:
 
         eigenvals, eigenvecs = LA.eigh(Ham)
-        if prevVecs == None:
-            eigenvalsSorted = eigenvals
-            eigenvecsSorted = eigenvecs
-            prevVecs = eigenvecs
-
-        else:
-            S = np.abs(np.conjugate(prevVecs).T @ eigenvecs)
-            idxMax = np.argmax(S, axis=1)
-            eigenvalsSorted = eigenvals[idxMax]
-            eigenvecsSorted = eigenvecs[:, idxMax]
-            prevVecs = eigenvecsSorted
 
         # print(eigenvecs.shape)
         for i in tqdm(range(numberWave + 1), desc="Calc eigenvectors", colour="green"):
@@ -116,7 +105,6 @@ def waveFunction(choice: int, qmax: int, kpoint: str, fileData: dict, model: dic
 
         with open(fileSave, "w", newline="") as writefile:
             header = ["x"]
-
             dArr = ["d0", "d1", "d2"]
             for d in dArr:
                 for i in range(numberWave + 1):
@@ -185,9 +173,13 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
     ky = kpoints[kpoint][1]
     Hamiltonian = None
     # p = 1  # fixed p
+    listEigens = {}
+    listVectors = {}
     qrange = [9368, 4693, 3129, 2346, 1877, 1564, 1341, 1173, 1043, 939, 853, 782, 722, 670, 626, 587, 552, 521, 494, 469]
+
     numWave = 80
     coeff = 1
+
     with open(fileData, "w", newline="") as writefile:
         header = [
             "eta",
@@ -216,8 +208,9 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
             elif modelNeighbor == "TNN":
                 Hamiltonian = HamTNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
 
-            # eigenvals, eigenvecs = LA.eigh(Hamiltonian)
-            eigenvals = LA.eigvalsh(Hamiltonian)
+            eigenvals, eigenvecs = LA.eigh(Hamiltonian)
+
+            # eigenvals = LA.eigvalsh(Hamiltonian)
             valuesBandLambda = {}
             for i in range(numWave + 1):
                 valuesBandLambda[f"E_2q{i}"] = eigenvals[coeff * qmax - i]
@@ -268,7 +261,7 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
 
 
 def main():
-    qmax = 297
+    qmax = 97
     n_levels = 8
     choice = 0
     bandNumber = 3
