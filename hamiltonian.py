@@ -2,13 +2,14 @@ import csv
 import os
 from datetime import datetime
 from time import time
+
+from eigenshuffle import eigenshuffle_eigh
 import matplotlib.pyplot as plt
 import numpy as np
+import sympy as syp
 from numpy import linalg as LA
 from numpy import pi, shape, sqrt
 from tqdm import tqdm
-
-from scipy.sparse import csc_matrix
 
 from file_python.HamTMD import Hamiltonian as HamNN
 from file_python.HamTMDNN import HamTNN
@@ -78,11 +79,13 @@ def waveFunction(choice: int, qmax: int, kpoint: str, fileData: dict, model: dic
         Ham = HamNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
     elif modelNeighbor == "TNN":
         Ham = HamTNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
+    print(type(Ham))
 
     #### Tracking gia tri rieng theo ham rieng
 
     prevVecs = None
     if np.gcd(p, qmax) == 1:
+
         eigenvals, eigenvecs = LA.eigh(Ham)
         if prevVecs == None:
             eigenvalsSorted = eigenvals
@@ -113,6 +116,7 @@ def waveFunction(choice: int, qmax: int, kpoint: str, fileData: dict, model: dic
 
         with open(fileSave, "w", newline="") as writefile:
             header = ["x"]
+
             dArr = ["d0", "d1", "d2"]
             for d in dArr:
                 for i in range(numberWave + 1):
@@ -179,88 +183,92 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
 
     kx = kpoints[kpoint][0]
     ky = kpoints[kpoint][1]
-    Ham = None
-
+    Hamiltonian = None
+    # p = 1  # fixed p
+    qrange = [9368, 4693, 3129, 2346, 1877, 1564, 1341, 1173, 1043, 939, 853, 782, 722, 670, 626, 587, 552, 521, 494, 469]
+    numWave = 80
+    coeff = 1
     with open(fileData, "w", newline="") as writefile:
         header = [
             "eta",
             "B_values",
-            "evalues",
-            # "E_level1",
-            # "E_level2",
-            # "E_level3",
-            "m*_v",
-            "m*_c",
-            "ω_c",
-            "ω_v",
+            # "evalues",
+            # "m*_v",
+            # "m*_c",
+            # "ω_c",
+            # "ω_v",
         ]
+
+        for i in range(numWave + 1):
+            header.append(f"E2q{i}")
 
         writer = csv.DictWriter(writefile, fieldnames=header, delimiter=",")
         writer.writeheader()
-        for p in tqdm(range(1, qmax + 1), ascii=" #", desc=f"{matt}"):
+        for p in tqdm(range(1, qmax + 1), ascii=" #", desc=f"Solve Hamiltonian"):
             if np.gcd(p, qmax) != 1:
                 continue
             eta = p / (qmax)
-            coeff = 2
 
             B = eta * phi0 / S
 
             if modelNeighbor == "NN":
-                Ham = HamNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
+                Hamiltonian = HamNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
             elif modelNeighbor == "TNN":
-                Ham = HamTNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
+                Hamiltonian = HamTNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
 
-            eigenvals, eigenvecs = LA.eigh(Ham)
+            # eigenvals, eigenvecs = LA.eigh(Hamiltonian)
+            eigenvals = LA.eigvalsh(Hamiltonian)
+            valuesBandLambda = {}
+            for i in range(numWave + 1):
+                valuesBandLambda[f"E_2q{i}"] = eigenvals[coeff * qmax - i]
 
-            # print(eigenvals.shape)
-            E_bandValence = eigenvals[coeff * qmax - 1]
-            E_bandConduction1 = eigenvals[coeff * qmax : 2 * coeff * qmax]
-            E_bandConduction2 = eigenvals[2 * coeff * qmax : 3 * coeff * qmax]
+            # En_valence = eigenvals[coeff * qmax - 17] + eigenvals[coeff * qmax - 18]
+            # En1_valence = eigenvals[coeff * qmax - 27] + eigenvals[coeff * qmax - 28]
 
-            En_valence = eigenvals[coeff * qmax - 15] + eigenvals[coeff * qmax - 16]
-            En1_valence = eigenvals[coeff * qmax - 27] + eigenvals[coeff * qmax - 28]
+            # En_conduction = eigenvals[coeff * qmax + 4]
+            # En1_conduction = eigenvals[coeff * qmax + 8]
 
-            En_conduction = eigenvals[coeff * qmax + 4]
-            En1_conduction = eigenvals[coeff * qmax + 8]
+            # omega_valence = abs((En1_valence - En_valence) * charge / hbar)
+            # omega_conduction = (En1_conduction - En_conduction) * charge / hbar
+            # m_eff_v = charge * B / omega_valence
+            # m_eff_c = charge * B / omega_conduction
 
-            omega_valence = abs((En1_valence - En_valence) * charge / hbar)
-            omega_conduction = (En1_conduction - En_conduction) * charge / hbar
-            m_eff_v = charge * B / omega_valence
-            m_eff_c = charge * B / omega_conduction
-
-            m_ratio_v = m_eff_v / m_e
-            m_ratio_c = m_eff_c / m_e
-
-            # print("\n", En, "\n")
-            # print(En1, "\n")
-            # print(m_eff, "\n")
-            # print("\n", m_ratio_v, "\n")
-            # print(m_ratio_c, "\n")
-            # print(B, "\n")
-            startW = time()
-            for i in range(coeff * band * qmax):
-                row = {
-                    "eta": eta,
-                    "B_values": B,
-                    "evalues": E_bandValence,
-                    # "E_level1": E_bandValence,
-                    # "E_level2": E_bandConduction1,
-                    # "E_level3": E_2q2,
-                    # "m*_v": m_ratio_v,
-                    # "m*_c": m_ratio_c,
-                    # "ω_v": omega_valence,
-                    # "ω_c": omega_conduction,
-                }
-                writer.writerow(row)
-            endW = time()
-            # print(f"Write complete in {endW - startW}s")
+            # m_ratio_v = m_eff_v / m_e
+            # m_ratio_c = m_eff_c / m_e
+            row = {
+                "eta": eta,
+                "B_values": B,
+            }
+            # row["m*_v"] = m_ratio_v
+            # row["m*_c"] = m_ratio_c
+            # row["ω_v"] = omega_valence
+            # row["ω_c"] = omega_conduction
+            for i in range(numWave + 1):
+                row[f"E2q{i}"] = valuesBandLambda[f"E_2q{i}"]
+            # for i in range(coeff * band * qmax):
+            #    row["evalues"] = eigenvals[i]
+            writer.writerow(row)
+            #    writer.writerow(
+            #        {
+            #            "eta": eta,
+            #            "B_values": B,
+            #            "evalues": eigenvals[i],
+            # "E_level3": E_2q2,
+            # "m*_v": m_ratio_v,
+            # "m*_c": m_ratio_c,
+            # "ω_v": omega_valence,
+            # "ω_c": omega_conduction,
+            #        }
+            #    )
             # writefile.write("\n")
+            # saveMatrix(Ham, fileMatrix)
+            # plotMatrix(H)
 
     return None
 
 
 def main():
-    qmax = 2001
+    qmax = 297
     n_levels = 8
     choice = 0
     bandNumber = 3
@@ -313,8 +321,8 @@ def main():
     # # butterflyK2 = butterfly(bandNumber, choice, qmax, kpoint2, fileData, model)
 
     start = time()
-    dataK1 = waveFunction(choice, qmax, kpoint1, fileData, model)
-    # butterflyK1 = butterfly(bandNumber, choice, qmax, kpoint1, fileButterflyK1, model)
+    # dataK1 = waveFunction(choice, qmax, kpoint1, fileData, model)
+    butterflyK1 = butterfly(bandNumber, choice, qmax, kpoint1, fileButterflyK1, model)
     end = time()
     print(f"Time calculating wavefunction: {end - start}s")
     # dataK2 = waveFunction(bandNumber, choice, qmax, kpoint2, fileData, model)
