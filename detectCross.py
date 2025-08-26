@@ -5,57 +5,52 @@ import matplotlib.pyplot as plt
 import munkres
 import numpy as np
 import pandas as pd
-from cupy import shape
-from numpy import sqrt
+from tqdm import tqdm
 
 
 def track_eigenvalues(D, V, Asequence):
     # n la tong so ma tran co cung size p x p
-    # size cua D la n,p
+    # size cua D la nxp
+    # D la ma tran tri rieng da cheo hoa cua n Hamiltonian co size la p x p = 3q x 3q
+    # V la ma tran ham rieng da cheo hoa cua n Hamiltonian co size la p x p = 3q x 3q
 
     Dshape = np.shape(D)
-    print(Dshape)
+
     n = Dshape[0]
     p = Dshape[-1]
 
-    print(n, p)
-    Vseq = np.zeros((n, p, p), dtype=complex)
-    Dseq = np.zeros((n, p), dtype=complex)
+    # the initial eigenvalues/vectors in nominal order
+    Dseq = np.zeros([n, p])  # De luu ma tran tri rieng moi theo thu tu n voi size la p
+    Vseq = np.zeros((n, p, p), dtype=complex)  # De luu ma tran vector rieng moi theo thu tu n voi size la pxp
 
-    print(D)
-    for i in range(n):
-        # initial ordering is purely in decreasing order.
-        # If any are complex, the sort is in terms of the
-        # real part.
-        tags = np.argsort(np.real(D), axis=0)[::-1]
-        print(np.shape(tags))
+    for i in tqdm(range(n), desc="sort index 1"):
+        tags = np.argsort(D[i])
 
-        Dseq[i] = D[:, tags]
-        Vseq[i] = V[:, tags]
+        Dseq[i] = D[i][tags]
+        Vseq[i] = V[i][:, tags]
 
     # now, treat each eigenproblem in sequence (after the first one.)
     m = munkres.Munkres()
-    for i in range(1, n):
+    for i in tqdm(range(1, n), desc="sort using munkres"):
         # compute distance between systems
         D1 = Dseq[i - 1]
         D2 = Dseq[i]
         V1 = Vseq[i - 1]
         V2 = Vseq[i]
-        dist = (1 - np.abs(np.dot(np.transpose(V1), V2))) * np.sqrt(distancematrix(D1.real, D2.real) ** 2 + distancematrix(D1.imag, D2.imag) ** 2)
+        dist = (1 - np.abs(np.dot(np.transpose(V1), V2))) * np.sqrt(distancematrix(D1, D2) ** 2)
 
         # Is there a best permutation? use munkres.
         reorder = m.compute(np.transpose(dist))
         reorder = [coord[1] for coord in reorder]
 
-        Vs = Vseq[i]
-        Vseq[i] = Vseq[i][:, reorder]
         Dseq[i] = Dseq[i, reorder]
+        Vseq[i] = Vseq[i][:, reorder]
 
         # also ensure the signs of each eigenvector pair
         # were consistent if possible
         S = np.squeeze(np.sum(Vseq[i - 1] * Vseq[i], 0).real) < 0
 
-        Vseq[i] = Vseq[i] * (-S * 2 - 1)
+        Vseq[i] = Vseq[i] * (-S.astype(int) * 2 - 1)
 
     return Dseq, Vseq
 
