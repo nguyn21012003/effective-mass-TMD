@@ -1,52 +1,69 @@
-from os import defpath
-import pandas as pd
 from copy import copy, deepcopy
-import numpy as np
+from os import defpath
+
 import matplotlib.pyplot as plt
+import munkres
+import numpy as np
+import pandas as pd
+from cupy import shape
+from numpy import sqrt
 
 
-def track_eigenvalues(eigenArrInit, Barr):
+def track_eigenvalues(D, V, Asequence):
+    # n la tong so ma tran co cung size p x p
+    # size cua D la n,p
 
-    arr1 = None
-    arr2 = None
-    arr3 = None
-    arr4 = None
-    keys = []
-    eigenArrNew = deepcopy(eigenArrInit)
-    for key in eigenArrInit:
-        keys.append(key)
-    for qi in range(0, len(keys) - 3):
+    Dshape = np.shape(D)
+    print(Dshape)
+    n = Dshape[0]
+    p = Dshape[-1]
 
-        key1 = keys[qi + 0]
-        key2 = keys[qi + 1]
-        key3 = keys[qi + 2]
-        key4 = keys[qi + 3]
+    print(n, p)
+    Vseq = np.zeros((n, p, p), dtype=complex)
+    Dseq = np.zeros((n, p), dtype=complex)
 
-        arr1 = copy(eigenArrInit[key1])
-        arr2 = copy(eigenArrInit[key2])
-        arr3 = copy(eigenArrInit[key3])
-        arr4 = copy(eigenArrInit[key4])
+    print(D)
+    for i in range(n):
+        # initial ordering is purely in decreasing order.
+        # If any are complex, the sort is in terms of the
+        # real part.
+        tags = np.argsort(np.real(D), axis=0)[::-1]
+        print(np.shape(tags))
 
-        for i in range(1, len(Barr) - 1):
-            prev = arr1[i - 1]
-            cur = arr1[i]
-            next = arr1[i + 1]
-            if arr1[i] > arr3[i]:
-                # if (cur - prev) * (next - cur) < 0:
-                print(Barr[i])
-                arr1[i:], arr3[i:] = copy(arr3[i:]), copy(arr1[i:])
-                arr2[i:], arr4[i:] = copy(arr4[i:]), copy(arr2[i:])
-        eigenArrNew[key1] = arr1
-        eigenArrNew[key2] = arr2
-        eigenArrNew[key3] = arr3
-        eigenArrNew[key4] = arr4
+        Dseq[i] = D[:, tags]
+        Vseq[i] = V[:, tags]
 
-    for k in keys[:6]:
-        plt.plot(Barr, eigenArrNew[k], label=k)
-    plt.legend()
-    plt.show()
+    # now, treat each eigenproblem in sequence (after the first one.)
+    m = munkres.Munkres()
+    for i in range(1, n):
+        # compute distance between systems
+        D1 = Dseq[i - 1]
+        D2 = Dseq[i]
+        V1 = Vseq[i - 1]
+        V2 = Vseq[i]
+        dist = (1 - np.abs(np.dot(np.transpose(V1), V2))) * np.sqrt(distancematrix(D1.real, D2.real) ** 2 + distancematrix(D1.imag, D2.imag) ** 2)
 
-    return None
+        # Is there a best permutation? use munkres.
+        reorder = m.compute(np.transpose(dist))
+        reorder = [coord[1] for coord in reorder]
+
+        Vs = Vseq[i]
+        Vseq[i] = Vseq[i][:, reorder]
+        Dseq[i] = Dseq[i, reorder]
+
+        # also ensure the signs of each eigenvector pair
+        # were consistent if possible
+        S = np.squeeze(np.sum(Vseq[i - 1] * Vseq[i], 0).real) < 0
+
+        Vseq[i] = Vseq[i] * (-S * 2 - 1)
+
+    return Dseq, Vseq
+
+
+def distancematrix(vec1, vec2):
+    """simple interpoint distance matrix"""
+    v1, v2 = np.meshgrid(vec1, vec2)
+    return np.abs(v1 - v2)
 
 
 def main():
@@ -64,7 +81,7 @@ def main():
     B_arr = dataframe["B_values"].values
     for i in range(numLevels + 1):
         listAllEigen[f"E2q{i}"] = dataframe[f"E2q{i}"].values
-    track_eigenvalues(listAllEigen, B_arr)
+    track_eigenvalues(listAllEigen, B_arr, lv1)
 
     return None
 
