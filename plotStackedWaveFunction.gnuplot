@@ -4,7 +4,7 @@ set datafile separator ","
 
 set bmargin 4
 
-set yrange [1.58:1.72]
+# set yrange [1.58:1.72]
 set xrange [250:350]
 
 set xtics 25 font "CMU Serif,20"

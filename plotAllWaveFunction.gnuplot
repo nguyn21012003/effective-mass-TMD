@@ -17,10 +17,10 @@ unset xtics
 # unset ytics
 
 
-dir = "./Sat-08-23/TNN/" 
-do for [i=0:79] {
+dir = "./Thu-08-28/TNN/" 
+do for [i=80:159] {
     set label sprintf("(%d)", i+1) at graph 0.05,0.95 front font "Arial,20"
-    plot dir . "3band_PlotEigenVectors_q_4001_MoS2_GGA_G_vals_vecs.dat" using 1:(column(i+2)) w l lw 2 lc "#0197f6" notitle
+    plot dir . "B15.dat" using 1:(column(i+2)) w l lw 2 lc "#0197f6" notitle
     unset label
 }
 unset multiplot

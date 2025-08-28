@@ -794,49 +794,83 @@ def HamNN(band, alattice, p, q, kx, ky, IM):
         phaseR5 = exp(1j * (-alpha + beta))
         phaseR6 = exp(1j * (alpha + beta))
 
-        h0[m, pbc(m + 1, q)] = E_R2[0][0] * exp(-1j * 2 * pi * (m + 1 / 2) * eta) * phaseR2 + E_R6[0][0] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * phaseR6
+        h0[m, pbc(m + 1, q)] = (
+            E_R2[0][0] * exp(-1j * 2 * pi * (m + 1 / 2) * eta) * phaseR2 + E_R6[0][0] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * phaseR6
+        )
         h0[m, pbc(m + 2, q)] = E_R1[0][0] * phaseR1
-        h0[m, pbc(m - 1, q)] = E_R5[0][0] * exp(1j * 2 * pi * (m - 1 / 2) * eta) * phaseR5 + E_R3[0][0] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * phaseR3
+        h0[m, pbc(m - 1, q)] = (
+            E_R5[0][0] * exp(1j * 2 * pi * (m - 1 / 2) * eta) * phaseR5 + E_R3[0][0] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * phaseR3
+        )
         h0[m, pbc(m - 2, q)] = E_R4[0][0] * phaseR4
 
-        h11[m, pbc(m + 1, q)] = E_R2[1][1] * exp(-1j * 2 * pi * (m + 1 / 2) * eta) * phaseR2 + E_R6[1][1] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * phaseR6
+        h11[m, pbc(m + 1, q)] = (
+            E_R2[1][1] * exp(-1j * 2 * pi * (m + 1 / 2) * eta) * phaseR2 + E_R6[1][1] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * phaseR6
+        )
         h11[m, pbc(m + 2, q)] = E_R1[1][1] * phaseR1
-        h11[m, pbc(m - 1, q)] = E_R5[1][1] * exp(1j * 2 * pi * (m - 1 / 2) * eta) * phaseR5 + E_R3[1][1] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * phaseR3
+        h11[m, pbc(m - 1, q)] = (
+            E_R5[1][1] * exp(1j * 2 * pi * (m - 1 / 2) * eta) * phaseR5 + E_R3[1][1] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * phaseR3
+        )
         h11[m, pbc(m - 2, q)] = E_R4[1][1] * phaseR4
 
-        h12T[m, pbc(m + 1, q)] = E_R2[2][1] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * cp.conjugate(phaseR2) + E_R6[2][1] * exp(-1j * 2 * pi * (m + 1 / 2) * eta) * cp.conjugate(phaseR6)
+        h12T[m, pbc(m + 1, q)] = E_R2[2][1] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * cp.conjugate(phaseR2) + E_R6[2][1] * exp(
+            -1j * 2 * pi * (m + 1 / 2) * eta
+        ) * cp.conjugate(phaseR6)
         h12T[m, pbc(m + 2, q)] = E_R1[2][1] * cp.conjugate(phaseR1)
-        h12T[m, pbc(m - 1, q)] = E_R5[2][1] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * cp.conjugate(phaseR5) + E_R3[2][1] * exp(1j * 2 * pi * (m - 1 / 2) * eta) * cp.conjugate(phaseR3)
+        h12T[m, pbc(m - 1, q)] = E_R5[2][1] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * cp.conjugate(phaseR5) + E_R3[2][1] * exp(
+            1j * 2 * pi * (m - 1 / 2) * eta
+        ) * cp.conjugate(phaseR3)
         h12T[m, pbc(m - 2, q)] = E_R4[2][1] * cp.conjugate(phaseR4)
 
-        h12[m, pbc(m + 1, q)] = E_R2[1][2] * exp(-1j * 2 * pi * (m + 1 / 2) * eta) * phaseR2 + E_R6[1][2] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * phaseR6
+        h12[m, pbc(m + 1, q)] = (
+            E_R2[1][2] * exp(-1j * 2 * pi * (m + 1 / 2) * eta) * phaseR2 + E_R6[1][2] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * phaseR6
+        )
         h12[m, pbc(m + 2, q)] = E_R1[1][2] * phaseR1
-        h12[m, pbc(m - 1, q)] = E_R5[1][2] * exp(1j * 2 * pi * (m - 1 / 2) * eta) * phaseR5 + E_R3[1][2] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * phaseR3
+        h12[m, pbc(m - 1, q)] = (
+            E_R5[1][2] * exp(1j * 2 * pi * (m - 1 / 2) * eta) * phaseR5 + E_R3[1][2] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * phaseR3
+        )
         h12[m, pbc(m - 2, q)] = E_R4[1][2] * phaseR4
 
-        h1T[m, pbc(m + 1, q)] = E_R2[1][0] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * cp.conjugate(phaseR2) + E_R6[1][0] * exp(-1j * 2 * pi * (m + 1 / 2) * eta) * cp.conjugate(phaseR6)
+        h1T[m, pbc(m + 1, q)] = E_R2[1][0] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * cp.conjugate(phaseR2) + E_R6[1][0] * exp(
+            -1j * 2 * pi * (m + 1 / 2) * eta
+        ) * cp.conjugate(phaseR6)
         h1T[m, pbc(m + 2, q)] = E_R1[1][0] * cp.conjugate(phaseR1)
-        h1T[m, pbc(m - 1, q)] = E_R5[1][0] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * cp.conjugate(phaseR5) + E_R3[1][0] * exp(1j * 2 * pi * (m - 1 / 2) * eta) * cp.conjugate(phaseR3)
+        h1T[m, pbc(m - 1, q)] = E_R5[1][0] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * cp.conjugate(phaseR5) + E_R3[1][0] * exp(
+            1j * 2 * pi * (m - 1 / 2) * eta
+        ) * cp.conjugate(phaseR3)
         h1T[m, pbc(m - 2, q)] = E_R4[1][0] * cp.conjugate(phaseR4)
 
-        h1[m, pbc(m + 1, q)] = E_R2[0][1] * exp(-1j * 2 * pi * (m + 1 / 2) * eta) * phaseR2 + E_R6[0][1] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * phaseR6
+        h1[m, pbc(m + 1, q)] = (
+            E_R2[0][1] * exp(-1j * 2 * pi * (m + 1 / 2) * eta) * phaseR2 + E_R6[0][1] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * phaseR6
+        )
         h1[m, pbc(m + 2, q)] = E_R1[0][1] * phaseR1
-        h1[m, pbc(m - 1, q)] = E_R5[0][1] * exp(1j * 2 * pi * (m - 1 / 2) * eta) * phaseR5 + E_R3[0][1] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * phaseR3
+        h1[m, pbc(m - 1, q)] = (
+            E_R5[0][1] * exp(1j * 2 * pi * (m - 1 / 2) * eta) * phaseR5 + E_R3[0][1] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * phaseR3
+        )
         h1[m, pbc(m - 2, q)] = E_R4[0][1] * phaseR4
 
-        h22[m, pbc(m + 1, q)] = E_R2[2][2] * exp(-1j * 2 * pi * (m + 1 / 2) * eta) * phaseR2 + E_R6[2][2] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * phaseR6
+        h22[m, pbc(m + 1, q)] = (
+            E_R2[2][2] * exp(-1j * 2 * pi * (m + 1 / 2) * eta) * phaseR2 + E_R6[2][2] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * phaseR6
+        )
         h22[m, pbc(m + 2, q)] = E_R1[2][2] * phaseR1
         h22[m, pbc(m - 1, q)] = E_R5[2][2] * exp(1j * 2 * pi * (m - 1 / 2) * eta) + E_R3[2][2] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * phaseR3
         h22[m, pbc(m - 2, q)] = E_R4[2][2] * phaseR4
 
-        h2T[m, pbc(m + 1, q)] = E_R2[2][0] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * cp.conjugate(phaseR2) + E_R6[2][0] * exp(-1j * 2 * pi * (m + 1 / 2) * eta) * cp.conjugate(phaseR6)
+        h2T[m, pbc(m + 1, q)] = E_R2[2][0] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * cp.conjugate(phaseR2) + E_R6[2][0] * exp(
+            -1j * 2 * pi * (m + 1 / 2) * eta
+        ) * cp.conjugate(phaseR6)
         h2T[m, pbc(m + 2, q)] = E_R1[2][0] * cp.conjugate(phaseR1)
-        h2T[m, pbc(m - 1, q)] = E_R5[2][0] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * cp.conjugate(phaseR5) + E_R3[2][0] * exp(1j * 2 * pi * (m - 1 / 2) * eta) * cp.conjugate(phaseR3)
+        h2T[m, pbc(m - 1, q)] = E_R5[2][0] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * cp.conjugate(phaseR5) + E_R3[2][0] * exp(
+            1j * 2 * pi * (m - 1 / 2) * eta
+        ) * cp.conjugate(phaseR3)
         h2T[m, pbc(m - 2, q)] = E_R4[2][0] * cp.conjugate(phaseR4)
 
-        h2[m, pbc(m + 1, q)] = E_R2[0][2] * exp(-1j * 2 * pi * (m + 1 / 2) * eta) * phaseR2 + E_R6[0][2] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * phaseR6
+        h2[m, pbc(m + 1, q)] = (
+            E_R2[0][2] * exp(-1j * 2 * pi * (m + 1 / 2) * eta) * phaseR2 + E_R6[0][2] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * phaseR6
+        )
         h2[m, pbc(m + 2, q)] = E_R1[0][2] * phaseR1
-        h2[m, pbc(m - 1, q)] = E_R5[0][2] * exp(1j * 2 * pi * (m - 1 / 2) * eta) * phaseR5 + E_R3[0][2] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * phaseR3
+        h2[m, pbc(m - 1, q)] = (
+            E_R5[0][2] * exp(1j * 2 * pi * (m - 1 / 2) * eta) * phaseR5 + E_R3[0][2] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * phaseR3
+        )
         h2[m, pbc(m - 2, q)] = E_R4[0][2] * phaseR4
 
     if band == 1:

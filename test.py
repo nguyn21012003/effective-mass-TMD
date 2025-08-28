@@ -5,10 +5,10 @@ from time import time
 
 import matplotlib.pyplot as plt
 import numpy as np
-import cupy as cp
 from eigenshuffle import eigenshuffle_eigh
 from numpy import linalg as LA
-from numpy import pi, shape, sqrt, vecdot
+from numpy import pi, sqrt
+from numpy.typing import NDArray
 from tqdm import tqdm
 
 from detectCross import track_eigenvalues
@@ -181,7 +181,7 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
     numWave = 80
     coeff = 1
 
-    for p in tqdm(range(1, qmax + 1), ascii=" #", desc=f"Solve Hamiltonian"):
+    for p in tqdm(range(1, qmax + 1), ascii=" #", desc=f"Solve Hamiltonian", colour="magenta"):
         if np.gcd(p, qmax) != 1:
             continue
         eta = p / (qmax)
@@ -196,13 +196,12 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
         startIndex = coeff * qmax - 1
         stopIndex = coeff * qmax - numWave - 1
         listValues.append(eigenvals[startIndex:stopIndex:-1])
-        listVectors.append(eigenvecs[:, startIndex:stopIndex:-1])
+        listVectors.append(eigenvecs[startIndex:stopIndex:-1, startIndex:stopIndex:-1])
 
     listValues = np.array(listValues)
     listVectors = np.array(listVectors)
 
-    print(shape(listValues))
-
+    listValuesSorted = track_eigenvalues(listValues, listVectors)
     with open(fileData, "w", newline="") as writefile:
         header = [
             "eta",
@@ -212,25 +211,21 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
             header.append(f"E2q{i}")
         writer = csv.DictWriter(writefile, fieldnames=header, delimiter=",")
         writer.writeheader()
-        for p in tqdm(range(1, qmax + 1), ascii=" #", desc=f"Solve Hamiltonian"):
+        for p in tqdm(range(1, qmax + 1), ascii=" #", desc=f"Write file", colour="red"):
             if np.gcd(p, qmax) != 1:
                 continue
             eta = p / (qmax)
             B = eta * phi0 / S
 
-            eigenvals, eigenvecs = LA.eigh(Hamiltonian)  ## se unpack ra sau
-            listValuesSorted, listVectorsSorted = track_eigenvalues(listValues, listVectors, Hamiltonian)
-
-            # eigenvals = LA.eigvalsh(Hamiltonian)
             valuesBandLambda = {}
-            for i in range(numWave + 1):
-                valuesBandLambda[f"E_2q{i}"] = eigenvals[coeff * qmax - i]
+            for i in range(numWave):
+                valuesBandLambda[f"E_2q{i}"] = listValuesSorted[p - 1, i]
 
             row = {
                 "eta": eta,
                 "B_values": B,
             }
-            for i in range(numWave + 1):
+            for i in range(numWave):
                 row[f"E2q{i}"] = valuesBandLambda[f"E_2q{i}"]
             writer.writerow(row)
 
