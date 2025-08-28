@@ -3,15 +3,13 @@ import os
 from datetime import datetime
 from time import time
 
-from eigenshuffle import eigenshuffle_eigh
+
 import matplotlib.pyplot as plt
 import numpy as np
-import sympy as syp
 from numpy import linalg as LA
-from numpy import pi, shape, sqrt
+from numpy import pi, sqrt
 from tqdm import tqdm
 
-from detectCross import track_eigenvalues
 from file_python.HamTMD import Hamiltonian as HamNN
 from file_python.HamTMDNN import HamTNN
 from file_python.irrMatrix import IR, IRNN, IRTNN
@@ -76,6 +74,7 @@ def waveFunction(choice: int, qmax: int, kpoint: str, fileData: dict, model: dic
         arrContainer[f"psi_band2q1_d2_{i}"] = np.zeros(coeff * qmax, dtype=complex)
 
     Ham = None
+
     if modelNeighbor == "NN":
         Ham = HamNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
     elif modelNeighbor == "TNN":
