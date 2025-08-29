@@ -3,7 +3,6 @@ import os
 from datetime import datetime
 from time import time
 
-#
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy import linalg as LA
