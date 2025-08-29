@@ -18,12 +18,12 @@ from file_python.irrMatrixTransform import IRTNN as IRTNN_tran
 from file_python.parameters import paraNN, paraTNN
 
 
-def waveFunction(choice: int, qmax: int, kpoint: str, fileData: dict, model: dict):
+def waveFunction(choice: int, qmax: int, kpoint: str, fileData: str, model: dict):
     ##### chi so dau vao
     p = 1
     coeff = 2
     numberWave = 40  # so ham song can khao sat
-    fileSave = fileData[f"file{kpoint}"]
+    fileSave = fileData
     modelParameters = model["modelParameters"]
     modelNeighbor = model["modelNeighbor"]
     functionMapping = {"TNN": paraTNN, "NN": paraNN}
@@ -72,19 +72,18 @@ def waveFunction(choice: int, qmax: int, kpoint: str, fileData: dict, model: dic
         arrContainer[f"psi_band2q1_d1_{i}"] = np.zeros(coeff * qmax, dtype=complex)
         arrContainer[f"psi_band2q1_d2_{i}"] = np.zeros(coeff * qmax, dtype=complex)
 
-    Ham = None
+    Hamiltonian = None
 
     if modelNeighbor == "NN":
-        Ham = HamNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
+        Hamiltonian = HamNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
     elif modelNeighbor == "TNN":
-        Ham = HamTNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
-    print(type(Ham))
+        Hamiltonian = HamTNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
 
     #### Tracking gia tri rieng theo ham rieng
 
     if np.gcd(p, qmax) == 1:
 
-        eigenvals, eigenvecs = LA.eigh(Ham)
+        eigenvals, eigenvecs = LA.eigh(Hamiltonian)
 
         # print(eigenvecs.shape)
         for i in tqdm(range(numberWave + 1), desc="Calc eigenvectors", colour="green"):
@@ -170,27 +169,26 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
     kx = kpoints[kpoint][0]
     ky = kpoints[kpoint][1]
     Hamiltonian = None
-    # p = 1  # fixed p
+    p = 1  # fixed p
     listEigens = {}
     listVectors = {}
-    qrange = [9368, 4693, 3129, 2346, 1877, 1564, 1341, 1173, 1043, 939, 853, 782, 722, 670, 626, 587, 552, 521, 494, 469]
 
     numWave = 80
-    coeff = 1
+    coeff = 2
 
     with open(fileData, "w", newline="") as writefile:
         header = [
             "eta",
             "B_values",
             # "evalues",
-            # "m*_v",
-            # "m*_c",
-            # "ω_c",
-            # "ω_v",
+            "m*_v",
+            "m*_c",
+            "ω_c",
+            "ω_v",
         ]
 
-        for i in range(numWave + 1):
-            header.append(f"E2q{i}")
+        # for i in range(numWave + 1):
+        # header.append(f"E2q{i}")
 
         writer = csv.DictWriter(writefile, fieldnames=header, delimiter=",")
         writer.writeheader()
@@ -206,122 +204,76 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
             elif modelNeighbor == "TNN":
                 Hamiltonian = HamTNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
 
-            eigenvals, eigenvecs = LA.eigh(Hamiltonian)
+            eigenvals = LA.eigvalsh(Hamiltonian)
 
-            # eigenvals = LA.eigvalsh(Hamiltonian)
-            valuesBandLambda = {}
-            for i in range(numWave + 1):
-                valuesBandLambda[f"E_2q{i}"] = eigenvals[coeff * qmax - i]
+            omega_v = 0
+            omega_c = 0
+            meff_v = 0
+            meff_c = 0
+            offset = {3129: (27, 37), 2346: (23, 33), 1877: (21, 31), 1564: (21, 31), 1341: (21, 29), 1173: (19, 29), 1043: (17, 27)}
 
-            # En_valence = eigenvals[coeff * qmax - 17] + eigenvals[coeff * qmax - 18]
-            # En1_valence = eigenvals[coeff * qmax - 27] + eigenvals[coeff * qmax - 28]
+            # valuesBandLambda = {}
+            # for i in range(numWave + 1):
+            # valuesBandLambda[f"E_2q{i}"] = eigenvals[coeff * qmax - i]
 
-            # En_conduction = eigenvals[coeff * qmax + 4]
-            # En1_conduction = eigenvals[coeff * qmax + 8]
+            if qmax in offset:
+                off1, off2 = offset[qmax]
+                En_valence = eigenvals[coeff * qmax - off1]
+                En1_valence = eigenvals[coeff * qmax - off2]
+                omega_v = abs((En1_valence - En_valence) * charge / hbar)
+                meff_v = charge * B / omega_v
 
-            # omega_valence = abs((En1_valence - En_valence) * charge / hbar)
-            # omega_conduction = (En1_conduction - En_conduction) * charge / hbar
-            # m_eff_v = charge * B / omega_valence
-            # m_eff_c = charge * B / omega_conduction
+            En_conduction = eigenvals[coeff * qmax + 4]
+            En1_conduction = eigenvals[coeff * qmax + 8]
+            omega_c = (En1_conduction - En_conduction) * charge / hbar
+            meff_c = charge * B / omega_c
 
-            # m_ratio_v = m_eff_v / m_e
-            # m_ratio_c = m_eff_c / m_e
+            m_ratio_v = meff_v / m_e
+            print(m_ratio_v)
+            m_ratio_c = meff_c / m_e
             row = {
                 "eta": eta,
                 "B_values": B,
             }
-            # row["m*_v"] = m_ratio_v
-            # row["m*_c"] = m_ratio_c
-            # row["ω_v"] = omega_valence
-            # row["ω_c"] = omega_conduction
-            for i in range(numWave + 1):
-                row[f"E2q{i}"] = valuesBandLambda[f"E_2q{i}"]
+            row["m*_v"] = m_ratio_v
+            row["m*_c"] = m_ratio_c
+            row["ω_v"] = omega_v
+            row["ω_c"] = omega_c
+            # for i in range(numWave + 1):
+            #     row[f"E2q{i}"] = valuesBandLambda[f"E_2q{i}"]
             # for i in range(coeff * band * qmax):
             #    row["evalues"] = eigenvals[i]
             writer.writerow(row)
-            #    writer.writerow(
-            #        {
-            #            "eta": eta,
-            #            "B_values": B,
-            #            "evalues": eigenvals[i],
-            # "E_level3": E_2q2,
-            # "m*_v": m_ratio_v,
-            # "m*_c": m_ratio_c,
-            # "ω_v": omega_valence,
-            # "ω_c": omega_conduction,
-            #        }
-            #    )
-            # writefile.write("\n")
-            # saveMatrix(Ham, fileMatrix)
-            # plotMatrix(H)
 
     return None
 
 
 def main():
-    qmax = 97
-    n_levels = 8
+    qmax = 297
+    qrange = [2346, 1877, 1564, 1341, 1173, 1043, 939]
     choice = 0
     bandNumber = 3
-    bandSelector = "A"
     modelPara = "GGA"
-    modelNeighbor = "TNN"
+    modelNeighbor = "NN"
     model = {"modelParameters": modelPara, "modelNeighbor": modelNeighbor}
     kpoint1 = "G"
-    # kpoint2 = "K1"
-    # kpoint3 = "K2"
-    # kpoint4 = "M"
-    # listKpoint = [kpoint1, kpoint2, kpoint3, kpoint4]
     data = paraTNN(choice, model["modelParameters"])
     matt = data["material"]
 
     time_run = datetime.now().strftime("%a-%m-%d")
     dir = f"./{time_run}/{modelNeighbor}/"
-    print("folder direction: ", dir)
     os.makedirs(os.path.dirname(dir), exist_ok=True)
 
-    fileButterflyK1 = f"{dir}{bandNumber}band_Lambda2q_dataHofstadterButterfly_q_{qmax}_{matt}_{modelPara}_{kpoint1}.dat"
-    # fileButterflyK2 = f"{dir}{bandNumber}band_Lambda2q_dataHofstadterButterfly_q_{qmax}_{matt}_{modelPara}_{kpoint2}.dat"
-
-    filePlotC_k1 = f"{dir}{bandNumber}band_PlotEigenVectors_q_{qmax}_{matt}_{modelPara}_{kpoint1}_vals_vecs.dat"
-    filePlotC_k2 = f"{dir}{bandNumber}band_PlotEigenVectors_2q+1_{qmax}_{matt}_{modelPara}_{kpoint1}_vals_vecs.dat"
-    # filePlotC_k3 = f"{dir}{bandNumber}band_PlotEigenVectors_q_{qmax}_{matt}_{modelPara}_{kpoint3}_vals_vecs.dat"
-    # filePlotC_k4 = f"{dir}{bandNumber}band_PlotEigenVectors_q_{qmax}_{matt}_{modelPara}_{kpoint4}_vals_vecs.dat"
-
-    fileMatrix = f"{bandNumber}band_Matrix_q_{qmax}{time_run}.dat"
-    file_plot_Matrix_Gnu = f"{bandNumber}band_Matrix_q_{qmax}{time_run}_h0.gnuplot"
-
-    filegnu = f"{bandNumber}band_plotHofstadterButterfly_q={qmax}.gnuplot"
-
-    print("file data buttefly K1: ", fileButterflyK1)
-    print("file data: ", filePlotC_k1)
-    # print("file data buttefly K2: ", fileButterflyK2)
-    # print("file gnuplot: ", filegnu)
-    # print("file Matrix: ", fileMatrix)
-    # print("file Matrix GNU: ", file_plot_Matrix_Gnu)
-
-    fileData = {
-        "fileButterfly_K1": fileButterflyK1,
-        "fileMatrix": fileMatrix,
-        "filePlotMatrix": file_plot_Matrix_Gnu,
-        "fileWriteGnu": filegnu,
-        "fileG": filePlotC_k1,
-    }
-
-    # print(torch.cuda.is_available())
-    # # butterflyK2 = butterfly(bandNumber, choice, qmax, kpoint2, fileData, model)
+    print("folder direction: ", dir)
 
     start = time()
-    # dataK1 = waveFunction(choice, qmax, kpoint1, fileData, model)
-    butterflyK1 = butterfly(bandNumber, choice, qmax, kpoint1, fileButterflyK1, model)
+    for qmax in tqdm(qrange, ascii=" #", desc=f"Wave function in diff B", colour="magenta"):
+        filePlotC_k1 = f"{dir}{bandNumber}band_PlotEigenVectors_q_{qmax}_{matt}_{modelPara}_{kpoint1}_vals_vecs.dat"
+        fileButterflyK1 = f"{dir}{bandNumber}band_Lambda2q_dataHofstadterButterfly_q_{qmax}_{matt}_{modelPara}_{kpoint1}.dat"
+        # butterflyK1 = butterfly(bandNumber, choice, qmax, kpoint1, fileButterflyK1, model)
+        dataK1 = waveFunction(choice, qmax, kpoint1, filePlotC_k1, model)
     end = time()
     print(f"Time calculating wavefunction: {end - start}s")
-    # dataK2 = waveFunction(bandNumber, choice, qmax, kpoint2, fileData, model)
-    # dataK3 = waveFunction(bandNumber, choice, qmax, kpoint3, fileData, model)
-    # dataK4 = waveFunction(bandNumber, choice, qmax, kpoint4, fileData, model)
-
-    # PlotMatrixGNU(fileMatrix, file_plot_Matrix_Gnu)
-    # saveFunction(currentProg, "fileData")
 
     return None
 
