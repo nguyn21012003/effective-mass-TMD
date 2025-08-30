@@ -40,12 +40,7 @@ def waveFunction(choice: int, qmax: int, kpoint: str, fileData: str, model: dict
         "NNN": [v1, v2, v3, v4, v5, v6],
         "TNN": [o1, o2, o3, o4, o5, o6],
     }
-    kpoints = {
-        "G": [0, 0],
-        "K1": [4 * pi / (3 * alattice), 0],
-        "K2": [-4 * pi / (3 * alattice), 0],
-        "M": [pi / (alattice), pi / (sqrt(3) * alattice)],
-    }
+    kpoints = {"G": [0, 0]}
     kx = kpoints[kpoint][0]
     ky = kpoints[kpoint][1]
     ##### tao array de luu ket qua
@@ -159,19 +154,14 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
         "TNN": [o1, o2, o3, o4, o5, o6],
     }
 
-    kpoints = {
-        "G": [0, 0],
-        "K1": [4 * pi / (3 * alattice), 0],
-        "K2": [-4 * pi / (3 * alattice), 0],
-        "M": [pi / (alattice), pi / (sqrt(3) * alattice)],
-    }
+    kpoints = {"G": [0, 0]}
+    ### the magnetic Brillouin zone now q times smaller than original Brillouin zone
+    ### the K,K' points now are closed to the Gamma kpoint
+    ### so we only consider the Gamma kpoint
+    kx, ky = kpoints[kpoint]
 
-    kx = kpoints[kpoint][0]
-    ky = kpoints[kpoint][1]
     Hamiltonian = None
     p = 1  # fixed p
-    listEigens = {}
-    listVectors = {}
 
     numWave = 80
     coeff = 2
@@ -195,9 +185,8 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
         for p in tqdm(range(1, qmax + 1), ascii=" #", desc=f"Solve Hamiltonian"):
             if np.gcd(p, qmax) != 1:
                 continue
-            eta = p / (qmax)
-
-            B = eta * phi0 / S
+            eta = p / (qmax)  ## the magnetic ratio require that p and q must be co-prime
+            B = eta * phi0 / S  ## the actually B which are taken from eta
 
             if modelNeighbor == "NN":
                 Hamiltonian = HamNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
