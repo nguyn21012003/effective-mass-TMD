@@ -210,7 +210,16 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
             omega_c = 0
             meff_v = 0
             meff_c = 0
-            offset = {3129: (27, 37), 2346: (23, 33), 1877: (21, 31), 1564: (21, 31), 1341: (21, 29), 1173: (19, 29), 1043: (17, 27)}
+            offset = {
+                3129: (27, 37),  # 15
+                2346: (23, 33),  # 20
+                1877: (21, 31),  # 25
+                1564: (21, 31),  # 30
+                1341: (21, 29),  # 35
+                1173: (19, 29),  # 40
+                1043: (17, 27),  # 45
+                939: (17, 27),  # 50
+            }
 
             # valuesBandLambda = {}
             # for i in range(numWave + 1):
@@ -229,8 +238,9 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
             meff_c = charge * B / omega_c
 
             m_ratio_v = meff_v / m_e
-            print(m_ratio_v)
             m_ratio_c = meff_c / m_e
+            print(m_ratio_v)
+            print(m_ratio_c, "\n")
             row = {
                 "eta": eta,
                 "B_values": B,
@@ -249,7 +259,7 @@ def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
 
 
 def main():
-    qmax = 297
+    qmax = 1564
     qrange = [2346, 1877, 1564, 1341, 1173, 1043, 939]
     choice = 0
     bandNumber = 3
@@ -267,11 +277,11 @@ def main():
     print("folder direction: ", dir)
 
     start = time()
-    for qmax in tqdm(qrange, ascii=" #", desc=f"Wave function in diff B", colour="magenta"):
-        filePlotC_k1 = f"{dir}{bandNumber}band_PlotEigenVectors_q_{qmax}_{matt}_{modelPara}_{kpoint1}_vals_vecs.dat"
-        fileButterflyK1 = f"{dir}{bandNumber}band_Lambda2q_dataHofstadterButterfly_q_{qmax}_{matt}_{modelPara}_{kpoint1}.dat"
-        # butterflyK1 = butterfly(bandNumber, choice, qmax, kpoint1, fileButterflyK1, model)
-        dataK1 = waveFunction(choice, qmax, kpoint1, filePlotC_k1, model)
+    # for qmax in tqdm(qrange, ascii=" #", desc=f"Wave function in diff B", colour="magenta"):
+    filePlotC_k1 = f"{dir}{bandNumber}band_PlotEigenVectors_q_{qmax}_{matt}_{modelPara}_{kpoint1}_vals_vecs.dat"
+    fileButterflyK1 = f"{dir}{bandNumber}band_Lambda2q_dataHofstadterButterfly_q_{qmax}_{matt}_{modelPara}_{kpoint1}.dat"
+    # butterflyK1 = butterfly(bandNumber, choice, qmax, kpoint1, fileButterflyK1, model)
+    dataK1 = waveFunction(choice, qmax, kpoint1, filePlotC_k1, model)
     end = time()
     print(f"Time calculating wavefunction: {end - start}s")
 
