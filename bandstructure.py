@@ -13,7 +13,7 @@ from file_python.irrMatrix import IR, IRNN, IRTNN
 from file_python.irrMatrixTransform import IR as IR_tran
 from file_python.irrMatrixTransform import IRNN as IRNN_tran
 from file_python.irrMatrixTransform import IRTNN as IRTNN_tran
-from file_python.parameters import paraNNN, paraTNN
+from file_python.parameters import paraNN, paraTNN
 
 
 hbar = constants.hbar

@@ -9,7 +9,7 @@ from file_python.irrMatrixTransform import IR as IR_tran
 from file_python.irrMatrixTransform import IRNN as IRNN_tran
 from file_python.irrMatrixTransform import IRTNN as IRTNN_tran
 from file_python.mass import calcMass
-from file_python.parameters import paraNNN, paraTNN
+from file_python.parameters import paraNN, paraTNN
 from file_python.waveFunction import waveFunction
 
 
@@ -25,7 +25,7 @@ def solver(qmax, material: str, model: dict, fileSave: dict):
     modelParameters = model["modelParameters"]
     modelNeighbor = model["modelNeighbor"]
 
-    functionMapping = {"TNN": paraTNN, "NNN": paraNNN}
+    functionMapping = {"TNN": paraTNN, "NN": paraNN}
     dataParameters = functionMapping[modelNeighbor](material, modelParameters)
     if tran:
         E0, h1, h2, h3, h4, h5, h6 = IR_tran(dataParameters)

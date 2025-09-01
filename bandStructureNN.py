@@ -11,7 +11,7 @@ from file_python.irrMatrix import IR, IRNN, IRTNN
 from file_python.irrMatrixTransform import IR as IR_tran, IRNN as IRNN_tran, IRTNN as IRTNN_tran
 
 
-from file_python.parameters import paraNNN, paraTNN
+from file_python.parameters import paraNN, paraTNN
 
 hbar = constants.hbar
 B = 0
@@ -22,7 +22,7 @@ N = 201
 
 def eigenvalue(choice, fileBandStruct):
     model = "LDA"
-    data = paraNNN(choice, model)
+    data = paraNN(choice, model)
     # matt, a_lattice, e1, e2, t0, t1, t2, t11, t12, t22 = paraNN(argument)
     a_lattice = data["alattice"]
 
