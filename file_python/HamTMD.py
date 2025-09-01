@@ -6,7 +6,7 @@ from numpy.typing import NDArray
 from file_python.condition import pbc
 
 
-def Hamiltonian(alattice, p, q, kx, ky, IM) -> NDArray[np.complex128]:
+def HamNN(alattice, p, q, kx, ky, IM) -> NDArray[np.complex128]:
     # matt, alattice, e1, e2, t0, t1, t2, t11, t12, t22 = para(argument)
     eta = p / (1 * q)
 
