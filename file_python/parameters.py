@@ -1,4 +1,4 @@
-def paraNNN(material: str, model: str) -> dict:
+def paraNN(material: str, model: str) -> dict:
     matt = ["MoS2", "WS2", "MoSe2", "WSe2", "MoTe2", "WTe2"]
     choice = matt.index(material)
     dataModel = {
