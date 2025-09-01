@@ -1,6 +1,6 @@
-def paraNN(choice: int, model: str) -> dict:
-    choice = int(choice)
+def paraNNN(material: str, model: str) -> dict:
     matt = ["MoS2", "WS2", "MoSe2", "WSe2", "MoTe2", "WTe2"]
+    choice = matt.index(material)
     dataModel = {
         "LDA": {
             "alattice": [3.129, 3.132, 3.254, 3.253, 3.472, 3.476],
@@ -51,8 +51,9 @@ def paraNN(choice: int, model: str) -> dict:
     return data
 
 
-def paraTNN(choice: int, model: str) -> dict:
+def paraTNN(material: str, model: str) -> dict:
     matt = ["MoS2", "WS2", "MoSe2", "WSe2", "MoTe2", "WTe2"]
+    choice = matt.index(material)
 
     dataModel = {
         "LDA": {
