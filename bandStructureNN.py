@@ -11,7 +11,7 @@ from file_python.irrMatrix import IR, IRNN, IRTNN
 from file_python.irrMatrixTransform import IR as IR_tran, IRNN as IRNN_tran, IRTNN as IRTNN_tran
 
 
-from file_python.parameters import paraNN, paraTNN
+from file_python.parameters import paraNNN, paraTNN
 
 hbar = constants.hbar
 B = 0
@@ -22,7 +22,7 @@ N = 201
 
 def eigenvalue(choice, fileBandStruct):
     model = "LDA"
-    data = paraNN(choice, model)
+    data = paraNNN(choice, model)
     # matt, a_lattice, e1, e2, t0, t1, t2, t11, t12, t22 = paraNN(argument)
     a_lattice = data["alattice"]
 
@@ -63,7 +63,15 @@ def eigenvalue(choice, fileBandStruct):
             aky[i][j] = -1 / 2 * (ak1[i] - ak2[j]) * 0
             alpha = akx[i][j] / 2 * a_lattice
             beta = sqrt(3) / 2 * aky[i][j] * a_lattice
-            ham = E0 + exp(2j * alpha) * h1 + exp(1j * (alpha - beta)) * h2 + exp(1j * (-alpha - beta)) * h3 + exp(-2j * alpha) * h4 + exp(1j * (-alpha + beta)) * h5 + exp(1j * (alpha + beta)) * h6
+            ham = (
+                E0
+                + exp(2j * alpha) * h1
+                + exp(1j * (alpha - beta)) * h2
+                + exp(1j * (-alpha - beta)) * h3
+                + exp(-2j * alpha) * h4
+                + exp(1j * (-alpha + beta)) * h5
+                + exp(1j * (alpha + beta)) * h6
+            )
 
             w = LA.eigvalsh(ham)
             L1[i, j] = float(w[0])

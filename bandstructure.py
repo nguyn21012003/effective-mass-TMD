@@ -1,17 +1,20 @@
-import numpy as np
-import csv, os
-from numpy import pi
-from numpy import linalg as LA
-from scipy import constants
-from numpy import sqrt, cos, sin, exp
-
+import csv
+import os
 from datetime import datetime
+
+import numpy as np
+from numpy import cos, exp
+from numpy import linalg as LA
+from numpy import pi, sin, sqrt
+from scipy import constants
 from tqdm import tqdm
+
 from file_python.irrMatrix import IR, IRNN, IRTNN
-from file_python.irrMatrixTransform import IR as IR_tran, IRNN as IRNN_tran, IRTNN as IRTNN_tran
+from file_python.irrMatrixTransform import IR as IR_tran
+from file_python.irrMatrixTransform import IRNN as IRNN_tran
+from file_python.irrMatrixTransform import IRTNN as IRTNN_tran
+from file_python.parameters import paraNNN, paraTNN
 
-
-from file_python.parameters import paraNN, paraTNN
 
 hbar = constants.hbar
 B = 0
