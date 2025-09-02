@@ -15,7 +15,7 @@ from file_python.waveFunction import waveFunction
 
 def solver(qmax, material: str, model: dict, fileSave: dict):
     tran = True
-    p = 1
+    p = 3
     coeff = 2
     kpoint = [0, 0]  # Gamma
     ### the magnetic Brillouin zone now q times smaller than original Brillouin zone
@@ -56,11 +56,11 @@ def solver(qmax, material: str, model: dict, fileSave: dict):
     dataInit["p"] = p
     dataInit["alattice"] = dataParameters["alattice"]
     waveFunction(dataInit, irreducibleMatrix, fileSave["wave"])
-    calcMass(dataInit, irreducibleMatrix, fileSave["mass"])
+    # calcMass(dataInit, irreducibleMatrix, fileSave["mass"])
 
 
 def main():
-    qmax = 1564
+    qmax = 297
     qrange = [2346, 1877, 1564, 1341, 1173, 1043, 939]
     material = "MoS2"
     bandNumber = 3

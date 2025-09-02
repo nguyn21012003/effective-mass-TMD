@@ -1,17 +1,16 @@
 import csv
 
 import numpy as np
+from file_python.HamTMD import HamNN
+from file_python.HamTMDNN import HamTNN
 from numpy import linalg as LA
 from numpy import pi, sqrt
 from tqdm import tqdm
 
-from file_python.HamTMD import HamNN
-from file_python.HamTMDNN import HamTNN
-
 
 def calcMass(dataInit, irreducibleMatrix, fileSave):
     p = dataInit["p"]
-    coeff = dataInit["coeff`"]
+    coeff = dataInit["coeff"]
     numberWave = dataInit["numberWaveFunction"]  # so ham song can khao sat
     modelNeighbor = dataInit["modelNeighbor"]
     alattice = dataInit["alattice"]

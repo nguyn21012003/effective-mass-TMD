@@ -10,7 +10,7 @@ from file_python.HamTMDNN import HamTNN
 def waveFunction(dataInit, irreducibleMatrix, fileSave):
     ##### chi so dau vao
     p = dataInit["p"]
-    coeff = dataInit["coeff`"]
+    coeff = dataInit["coeff"]
     numberWave = dataInit["numberWaveFunction"]  # so ham song can khao sat
     modelNeighbor = dataInit["modelNeighbor"]
     alattice = dataInit["alattice"]
@@ -90,6 +90,6 @@ def waveFunction(dataInit, irreducibleMatrix, fileSave):
                 writer.writerow(row)
 
     elif np.gcd(p, qmax) != 1:  # check coprime
-        print("p,q pairs not co-prime!")
+        raise ValueError(f"{p} & {qmax} not co-prime")
 
     return None
