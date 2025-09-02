@@ -1,28 +1,21 @@
-import numpy as np
-import csv, os
-from numpy import pi
-from numpy import linalg as LA
-from scipy import constants
-from numpy import sqrt, cos, sin, exp
-
+import csv
+import os
 from datetime import datetime
+
+import numpy as np
+from numpy import exp
+from numpy import linalg as LA
+from numpy import pi, sqrt
 from tqdm import tqdm
-from file_python.irrMatrix import IR, IRNN, IRTNN
-from file_python.irrMatrixTransform import IR as IR_tran, IRNN as IRNN_tran, IRTNN as IRTNN_tran
 
-
+from file_python.irrMatrixTransform import IR as IR_tran
 from file_python.parameters import paraNN, paraTNN
 
-hbar = constants.hbar
-B = 0
-e = 9.1e-31
-N = 200
-N = 201
 
-
-def eigenvalue(choice, fileBandStruct):
+def eigenvalue(material: str, fileBandStruct: str):
+    N = 201
     model = "LDA"
-    data = paraNN(choice, model)
+    data = paraNN(material, model)
     # matt, a_lattice, e1, e2, t0, t1, t2, t11, t12, t22 = paraNN(argument)
     a_lattice = data["alattice"]
 
@@ -53,10 +46,6 @@ def eigenvalue(choice, fileBandStruct):
     akx = np.zeros((len(ak1), len(ak2)))
     aky = np.zeros((len(ak1), len(ak2)))
 
-    # kx = np.zeros((N, N))
-    # ky = np.zeros((N, N))
-    # dki = 4 * pi * sqrt(3) / (3 * (N - 1) * a_lattice)
-    # dkj = 4 * pi * sqrt(3) / (3 * (N - 1) * a_lattice)
     for i in tqdm(range(N)):
         for j in range(N):
             akx[i][j] = sqrt(3) / 2 * (ak1[i] + ak2[j])
@@ -106,15 +95,17 @@ def eigenvalue(choice, fileBandStruct):
                     # "Lambda6": L6[i][i],
                 }
             )
+    return None
 
 
 def main():
-    model = "NN"
-    time_run = datetime.now().strftime("%a-%m-%Y")
-    dir = f"./bandstructure/{model}/{time_run}/"
+    modelNeighbor = "NN"
+    material = "MoS2"
+    time_run = datetime.now().strftime("%a-%m-%d")
+    dir = f"./{time_run}/{modelNeighbor}/"
     os.makedirs(os.path.dirname(dir), exist_ok=True)
     fileBandStruct = f"{dir}/eigenvalue.csv"
-    eigenvalue(0, fileBandStruct)
+    eigenvalue(material, fileBandStruct)
 
 
 if __name__ == "__main__":

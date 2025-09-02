@@ -3,10 +3,9 @@ import os
 from datetime import datetime
 
 import numpy as np
-from numpy import cos, exp
+from numpy import exp
 from numpy import linalg as LA
-from numpy import pi, sin, sqrt
-from scipy import constants
+from numpy import pi, sqrt
 from tqdm import tqdm
 
 from file_python.irrMatrix import IR, IRNN, IRTNN
@@ -16,20 +15,14 @@ from file_python.irrMatrixTransform import IRTNN as IRTNN_tran
 from file_python.parameters import paraNN, paraTNN
 
 
-hbar = constants.hbar
-B = 0
-e = 9.1e-31
-N = 200
-N = 201
-
-
 def eigenvalue(choice, fileBandStruct):
-    model = "GGA"
+    N = 200
+    model = "LDA"
     data = paraTNN(choice, model)
     # matt, a_lattice, e1, e2, t0, t1, t2, t11, t12, t22 = paraNN(argument)
     a_lattice = data["alattice"]
 
-    E0, h1, h2, h3, h4, h5, h6 = IR_tran(data)
+    h0, h1, h2, h3, h4, h5, h6 = IR_tran(data)
     o1, o2, o3, o4, o5, o6 = IRTNN_tran(data)
     v1, v2, v3, v4, v5, v6 = IRNN_tran(data)
 
@@ -69,7 +62,7 @@ def eigenvalue(choice, fileBandStruct):
             alpha = akx[i][j] / 2 * a_lattice
             beta = sqrt(3) / 2 * aky[i][j] * a_lattice
             ham = (
-                E0
+                h0
                 + exp(2j * alpha) * h1
                 + exp(1j * (alpha - beta)) * h2
                 + exp(1j * (-alpha - beta)) * h3
@@ -126,12 +119,13 @@ def eigenvalue(choice, fileBandStruct):
 
 
 def main():
-    model = "TNN"
-    time_run = datetime.now().strftime("%a-%m-%Y")
-    dir = f"./bandstructure/{model}/{time_run}/"
+    modelNeighbor = "TNN"
+    material = "MoS2"
+    time_run = datetime.now().strftime("%a-%m-%d")
+    dir = f"./{time_run}/{modelNeighbor}/"
     os.makedirs(os.path.dirname(dir), exist_ok=True)
     fileBandStruct = f"{dir}/eigenvalue.csv"
-    eigenvalue(0, fileBandStruct)
+    eigenvalue(material, fileBandStruct)
 
 
 if __name__ == "__main__":

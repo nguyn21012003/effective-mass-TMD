@@ -28,14 +28,14 @@ def solver(qmax, material: str, model: dict, fileSave: dict):
     functionMapping = {"TNN": paraTNN, "NN": paraNN}
     dataParameters = functionMapping[modelNeighbor](material, modelParameters)
     if tran:
-        E0, h1, h2, h3, h4, h5, h6 = IR_tran(dataParameters)
+        h0, h1, h2, h3, h4, h5, h6 = IR_tran(dataParameters)
         v1 = v2 = v3 = v4 = v5 = v6 = 0
         o1 = o2 = o3 = o4 = o5 = o6 = 0
         if modelNeighbor == "TNN":
             v1, v2, v3, v4, v5, v6 = IRNN_tran(dataParameters)
             o1, o2, o3, o4, o5, o6 = IRTNN_tran(dataParameters)
     else:
-        E0, h1, h2, h3, h4, h5, h6 = IR(dataParameters)
+        h0, h1, h2, h3, h4, h5, h6 = IR(dataParameters)
         v1 = v2 = v3 = v4 = v5 = v6 = 0
         o1 = o2 = o3 = o4 = o5 = o6 = 0
         if modelNeighbor == "TNN":
@@ -43,7 +43,7 @@ def solver(qmax, material: str, model: dict, fileSave: dict):
             o1, o2, o3, o4, o5, o6 = IRTNN(dataParameters)
 
     irreducibleMatrix = {
-        "NN": [E0, h1, h2, h3, h4, h5, h6],
+        "NN": [h0, h1, h2, h3, h4, h5, h6],
         "NNN": [v1, v2, v3, v4, v5, v6],
         "TNN": [o1, o2, o3, o4, o5, o6],
     }
