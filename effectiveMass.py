@@ -1,0 +1,133 @@
+import numpy as np
+from numpy import exp
+from numpy import linalg as LA
+from numpy import pi, sqrt
+from tqdm import tqdm
+
+from file_python.irrMatrix import IR, IRNN, IRTNN
+from file_python.irrMatrixTransform import IR as IR_tran
+from file_python.irrMatrixTransform import IRNN as IRNN_tran
+from file_python.irrMatrixTransform import IRTNN as IRTNN_tran
+from file_python.parameters import paraNN, paraTNN
+
+
+def massTNN(material: str, model: str):
+    data = paraTNN(material, model)
+    # matt, a_lattice, e1, e2, t0, t1, t2, t11, t12, t22 = paraNN(argument)
+    alattice = data["alattice"] * 1e-10
+
+    h0, h1, h2, h3, h4, h5, h6 = IR_tran(data)
+    o1, o2, o3, o4, o5, o6 = IRTNN_tran(data)
+    v1, v2, v3, v4, v5, v6 = IRNN_tran(data)
+
+    G = 4 * pi / (sqrt(3) * alattice)
+    dk = G / 500
+    w = np.zeros([3, 3, 3])
+    meffx = np.zeros(3)
+    meffy = np.zeros(3)
+
+    h = 6.62607007e-34
+    hbar = h / (2 * pi)
+    m_e = 9.10938356e-31
+
+    for i in tqdm(range(3)):
+        for j in range(3):
+            kx = 4 * pi / (3 * alattice) + (i - 1) * dk
+            ky = (j - 1) * dk
+            alpha = kx / 2 * alattice
+            beta = sqrt(3) / 2 * ky * alattice
+            ham = (
+                h0
+                + exp(2j * alpha) * h1
+                + exp(1j * (alpha - beta)) * h2
+                + exp(1j * (-alpha - beta)) * h3
+                + exp(-2j * alpha) * h4
+                + exp(1j * (-alpha + beta)) * h5
+                + exp(1j * (alpha + beta)) * h6
+                + exp(4j * alpha) * o1
+                + exp(2j * (alpha - beta)) * o2
+                + exp(2j * (-alpha - beta)) * o3
+                + exp(-4j * alpha) * o4
+                + exp(2j * (-alpha + beta)) * o5
+                + exp(2j * (alpha + beta)) * o6
+                + exp(1j * (3 * alpha - beta)) * v1
+                + exp(1j * (-2 * beta)) * v2
+                + exp(1j * (-3 * alpha - beta)) * v3
+                + exp(1j * (-3 * alpha + beta)) * v4
+                + exp(1j * (2 * beta)) * v5
+                + exp(1j * (3 * alpha + beta)) * v6
+            )
+
+            vals = LA.eigvalsh(ham)
+            for ib in range(3):
+                w[ib, i, j] = vals[ib] * 1.602176634e-19
+
+    for ib in range(3):
+        d2ex = (w[ib, 2, 1] - 2 * w[ib, 1, 1] + w[ib, 0, 1]) / (dk**2)
+        d2ey = (w[ib, 1, 2] - 2 * w[ib, 1, 1] + w[ib, 1, 0]) / (dk**2)
+        meffx[ib] = (hbar**2) / (d2ex * m_e)
+        meffy[ib] = (hbar**2) / (d2ey * m_e)
+
+    meff_e = meffx[1]
+    meff_h = abs(meffx[0])
+    return meff_e, meff_h
+
+
+def massNN(material: str, model: str):
+    data = paraNN(material, model)
+    # matt, a_lattice, e1, e2, t0, t1, t2, t11, t12, t22 = paraNN(argument)
+    alattice = data["alattice"] * 1e-10
+
+    E0, h1, h2, h3, h4, h5, h6 = IR(data)
+    G = 4 * pi / (sqrt(3) * alattice)
+    dk = G / 500
+    w = np.zeros([3, 3, 3])
+    meffx = np.zeros(3)
+    meffy = np.zeros(3)
+
+    h = 6.62607007e-34
+    hbar = h / (2 * pi)
+    m_e = 9.10938356e-31
+
+    for i in tqdm(range(3)):
+        for j in range(3):
+            kx = 4 * pi / (3 * alattice) + (i - 1) * dk
+            ky = (j - 1) * dk
+            alpha = kx / 2 * alattice
+            beta = sqrt(3) / 2 * ky * alattice
+            ham = (
+                E0
+                + exp(2j * alpha) * h1
+                + exp(1j * (alpha - beta)) * h2
+                + exp(1j * (-alpha - beta)) * h3
+                + exp(-2j * alpha) * h4
+                + exp(1j * (-alpha + beta)) * h5
+                + exp(1j * (alpha + beta)) * h6
+            )
+
+            vals = LA.eigvalsh(ham)
+            for ib in range(3):
+                w[ib, i, j] = vals[ib] * 1.602176634e-19
+
+    for ib in range(3):
+        d2ex = (w[ib, 2, 1] - 2 * w[ib, 1, 1] + w[ib, 0, 1]) / (dk**2)
+        d2ey = (w[ib, 1, 2] - 2 * w[ib, 1, 1] + w[ib, 1, 0]) / (dk**2)
+        meffx[ib] = (hbar**2) / (d2ex * m_e)
+        meffy[ib] = (hbar**2) / (d2ey * m_e)
+
+    meff_e = meffx[1]
+    meff_h = abs(meffx[0])
+    return meff_e, meff_h
+
+
+def main():
+    modelParameter = "GGA"
+    material = "MoS2"
+    meff_e, meff_h = massNN(material, modelParameter)
+    print(meff_e, meff_h)
+    meff_e, meff_h = massTNN(material, modelParameter)
+    print(meff_e, meff_h)
+
+
+if __name__ == "__main__":
+    main()
