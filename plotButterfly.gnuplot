@@ -1,7 +1,7 @@
 set terminal qt size 420,900
 
 NNdir = "./Mon-08-25/NN/"
-TNNdir = "./Sat-08-23/TNN/"
+TNNdir = "./Wed-09-03/TNN/"
 set datafile separator ","
 # set xrange [0:50]
 # set yrange [*:-0.05]
@@ -25,7 +25,9 @@ set ylabel "Energy (eV)" offset -2,0 font "CMU Serif,20"
     NNdir . "3band_Lambda2q_dataHofstadterButterfly_q_2863_MoS2_GGA_G.dat" u 2:6 w lines lw 5 notitle,\
     NNdir . "3band_Lambda2q_dataHofstadterButterfly_q_2863_MoS2_GGA_G.dat" u 2:8 w lines lw 5 notitle
 
-plot for [i=4:80] NNdir . "3band_Lambda2q_dataHofstadterButterfly_q_797_MoS2_GGA_G.dat" u 2:i with lines lw 1 lc rgb "#bdbdbd" notitle "2q+1",\
+plot TNNdir . "Mass_q_297_MoS2_GGA.dat" using 1:3 w points pt 7 ps 0.3 notitle
+
+# plot for [i=4:80] NNdir . "3band_Lambda2q_dataHofstadterButterfly_q_797_MoS2_GGA_G.dat" u 2:i with lines lw 1 lc rgb "#bdbdbd" notitle "2q+1",\
   # NNdir . "3band_Lambda2q_dataHofstadterButterfly_q_797_MoS2_GGA_G.dat" u 2:4 w l lw 3 lc rgb "blue" notitle "|0,0>_{K'}" ,\
   NNdir . "3band_Lambda2q_dataHofstadterButterfly_q_797_MoS2_GGA_G.dat" u 2:6 w l lw 3 lc rgb "red" notitle "|0,0>_{K'}" ,\
   NNdir . "3band_Lambda2q_dataHofstadterButterfly_q_797_MoS2_GGA_G.dat" u 2:8 w l lw 3 lc rgb "orange" notitle "|0,0>_{K'}" ,\

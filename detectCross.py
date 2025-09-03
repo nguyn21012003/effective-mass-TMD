@@ -1,12 +1,12 @@
 from copy import copy, deepcopy
-from time import time
 from os import defpath
+from time import time
 
 import matplotlib.pyplot as plt
 import munkres
 import numpy as np
-from numpy._core.fromnumeric import shape
 import pandas as pd
+from numpy._core.fromnumeric import shape
 from pandas.core.construction import range_to_ndarray
 from tqdm import tqdm
 

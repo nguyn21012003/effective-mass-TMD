@@ -14,7 +14,7 @@ from file_python.parameters import paraNN, paraTNN
 
 def eigenvalue(material: str, fileBandStruct: str):
     N = 201
-    model = "LDA"
+    model = "GGA"
     data = paraNN(material, model)
     # matt, a_lattice, e1, e2, t0, t1, t2, t11, t12, t22 = paraNN(argument)
     a_lattice = data["alattice"]
