@@ -19,14 +19,14 @@ def waveFunction(dataInit, irreducibleMatrix, fileSave):
 
     ##### tao array de luu ket qua
     dataArr = {"PositionAtoms": []}
-    for i in range(numberWave + 1):
+    for i in range(numberWave):
         dataArr[f"lambda2q_band_{i}"] = []
 
     #### tinh toan chi tiet
     #### bat dau bang viec khoi tao mang de chua psi va abs(psi)**2
     arrContainer = {}
     iArr = np.arange(coeff * qmax)  # chi so atom thu i, do 3 ham song thi la 3*2*qmax = 6qmax, nhung 1 ham song thi la 2qmax
-    for i in range(numberWave + 1):
+    for i in range(numberWave):
         #### Tinh cho d_z^2
         arrContainer[f"psi_band2q_d0_{i}"] = np.zeros(coeff * qmax, dtype=complex)
         arrContainer[f"absPsi_band2q_d0_{i}"] = np.zeros(coeff * qmax, dtype=float)
@@ -55,12 +55,12 @@ def waveFunction(dataInit, irreducibleMatrix, fileSave):
         eigenvals, eigenvecs = LA.eigh(Hamiltonian)
 
         # print(eigenvecs.shape)
-        for i in tqdm(range(numberWave + 1), desc="Calc eigenvectors", colour="green"):
+        for i in tqdm(range(numberWave), desc="Calc eigenvectors", colour="green"):
             # print(i)
             #### i la chi so 2q + i trong so band 6q
-            arrContainer[f"psi_band2q_d0_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax - i - 1][0 * coeff * qmax : 1 * coeff * qmax]
-            arrContainer[f"psi_band2q_d1_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax - i - 1][1 * coeff * qmax : 2 * coeff * qmax]
-            arrContainer[f"psi_band2q_d2_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax - i - 1][2 * coeff * qmax : 3 * coeff * qmax]
+            arrContainer[f"psi_band2q_d0_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax + i][0 * coeff * qmax : 1 * coeff * qmax]
+            arrContainer[f"psi_band2q_d1_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax + i][1 * coeff * qmax : 2 * coeff * qmax]
+            arrContainer[f"psi_band2q_d2_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax + i][2 * coeff * qmax : 3 * coeff * qmax]
 
             arrContainer[f"absPsi_band2q_d0_{i}"] = np.abs(arrContainer[f"psi_band2q_d0_{i}"]) ** 2
             arrContainer[f"absPsi_band2q_d1_{i}"] = np.abs(arrContainer[f"psi_band2q_d1_{i}"]) ** 2
@@ -73,7 +73,7 @@ def waveFunction(dataInit, irreducibleMatrix, fileSave):
             header = ["x"]
             dArr = ["d0", "d1", "d2"]
             for d in dArr:
-                for i in range(numberWave + 1):
+                for i in range(numberWave):
                     header.append(f"{d}_lambda_{i}")
 
             writer = csv.DictWriter(writefile, fieldnames=header, delimiter=",")
@@ -82,7 +82,7 @@ def waveFunction(dataInit, irreducibleMatrix, fileSave):
 
             for q in tqdm(range(coeff * qmax), desc="Write file", colour="blue"):
                 row = {"x": iPosition[q]}
-                for i in range(numberWave + 1):
+                for i in range(numberWave):
                     row[f"d0_lambda_{i}"] = arrContainer[f"absPsi_band2q_d0_{i}"][q]
                     row[f"d1_lambda_{i}"] = arrContainer[f"absPsi_band2q_d1_{i}"][q]
                     row[f"d2_lambda_{i}"] = arrContainer[f"absPsi_band2q_d2_{i}"][q]
