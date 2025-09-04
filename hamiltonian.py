@@ -15,7 +15,7 @@ from file_python.waveFunction import waveFunction
 
 def solver(qmax, material: str, model: dict, fileSave: dict):
     tran = True
-    p = 3
+    p = 1
     coeff = 2
     kpoint = [0, 0]  # Gamma
     ### the magnetic Brillouin zone now q times smaller than original Brillouin zone
@@ -63,7 +63,6 @@ def main():
     qmax = 297
     qrange = [2346, 1877, 1564, 1341, 1173, 1043, 939]
     material = "MoS2"
-    bandNumber = 3
     modelPara = "GGA"
     modelNeighbor = "NN"
     model = {"modelParameters": modelPara, "modelNeighbor": modelNeighbor}
@@ -75,14 +74,11 @@ def main():
 
     print("folder direction: ", dir)
 
-    filePlotWaveFunction = f"{dir}{bandNumber}band_PlotEigenVectors_q_{qmax}_{material}_{modelPara}_{kpoint1}.dat"
-    fileMass = f"{dir}{bandNumber}band_dataMass_q_{qmax}_{material}_{modelPara}_{kpoint1}.dat"
-    fileSave = {"wave": filePlotWaveFunction, "mass": fileMass}
-    start = time()
     # for qmax in tqdm(qrange, ascii=" #", desc=f"Wave function in diff B", colour="magenta"):
+    filePlotWaveFunction = f"{dir}WaveFunction_q_{qmax}_{material}_{modelPara}.dat"
+    fileMass = f"{dir}Mass_q_{qmax}_{material}_{modelPara}.dat"
+    fileSave = {"wave": filePlotWaveFunction, "mass": fileMass}
     solver(qmax, material, model, fileSave)
-    end = time()
-    print(f"Time calculating wavefunction: {end - start}s")
 
     return None
 
