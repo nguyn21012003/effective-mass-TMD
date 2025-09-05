@@ -1,18 +1,19 @@
 import csv, os
 from datetime import datetime
-
+from time import time
 import numpy as np
-import cupy as cp
-from cupy import linalg as LA
-from numpy import sqrt, exp, pi, sin, cos
+
+# import cupy as cp
+from numpy import linalg as LA
+from numpy import pi, sqrt, exp, pi, sin, cos
 from tqdm import tqdm
 from numpy.typing import NDArray
-import multiprocessing as mp
+import matplotlib.pyplot as plt
 
 
-def paraNN(choice: int, model: str) -> dict:
-    choice = int(choice)
+def paraNN(material: str, model: str) -> dict:
     matt = ["MoS2", "WS2", "MoSe2", "WSe2", "MoTe2", "WTe2"]
+    choice = matt.index(material)
     dataModel = {
         "LDA": {
             "alattice": [3.129, 3.132, 3.254, 3.253, 3.472, 3.476],
@@ -63,8 +64,9 @@ def paraNN(choice: int, model: str) -> dict:
     return data
 
 
-def paraTNN(choice: int, model: str) -> dict:
+def paraTNN(material: str, model: str) -> dict:
     matt = ["MoS2", "WS2", "MoSe2", "WSe2", "MoTe2", "WTe2"]
+    choice = matt.index(material)
 
     dataModel = {
         "LDA": {
@@ -160,11 +162,11 @@ def paraTNN(choice: int, model: str) -> dict:
     return data
 
 
-W = cp.array(
+W = np.array(
     [
         [1, 0, 0],
-        [0, 1 / sqrt(2), 1j / sqrt(2)],
-        [0, 1 / sqrt(2), -1j / sqrt(2)],
+        [0, 1j / sqrt(2), 1 / sqrt(2)],
+        [0, -1j / sqrt(2), 1 / sqrt(2)],
     ]
 )
 
@@ -177,7 +179,7 @@ def IRTNN_tran(data):
     u11 = data["u11"]
     u22 = data["u22"]
 
-    D_C3 = cp.array(
+    D_C3 = np.array(
         [
             [1, 0, 0],
             [0, cos(-2 * pi / 3), -sin(-2 * pi / 3)],
@@ -185,7 +187,7 @@ def IRTNN_tran(data):
         ]
     )
 
-    D_2C3 = cp.array(
+    D_2C3 = np.array(
         [
             [1, 0, 0],
             [0, cos(-4 * pi / 3), -sin(-4 * pi / 3)],
@@ -193,7 +195,7 @@ def IRTNN_tran(data):
         ]
     )
 
-    D_S = cp.array(
+    D_S = np.array(
         [
             [1, 0, 0],
             [0, -1, 0],
@@ -201,7 +203,7 @@ def IRTNN_tran(data):
         ]
     )
 
-    D_S1 = cp.array(
+    D_S1 = np.array(
         [
             [1, 0, 0],
             [0, 1 / 2, -sqrt(3) / 2],
@@ -209,7 +211,7 @@ def IRTNN_tran(data):
         ]
     )
 
-    D_S2 = cp.array(
+    D_S2 = np.array(
         [
             [1, 0, 0],
             [0, 1 / 2, sqrt(3) / 2],
@@ -217,7 +219,7 @@ def IRTNN_tran(data):
         ]
     )
 
-    E_R7 = cp.array(
+    E_R7 = np.array(
         [
             [u0, u1, u2],
             [-u1, u11, u12],
@@ -231,12 +233,12 @@ def IRTNN_tran(data):
     E_R11 = D_2C3 @ E_R7 @ D_2C3.T
     E_R12 = D_S2 @ E_R7 @ D_S2.T
 
-    E_R7 = W @ E_R7 @ cp.conjugate(W).T
-    E_R8 = W @ E_R8 @ cp.conjugate(W).T
-    E_R9 = W @ E_R9 @ cp.conjugate(W).T
-    E_R10 = W @ E_R10 @ cp.conjugate(W).T
-    E_R11 = W @ E_R11 @ cp.conjugate(W).T
-    E_R12 = W @ E_R12 @ cp.conjugate(W).T
+    E_R7 = W @ E_R7 @ np.conjugate(W).T
+    E_R8 = W @ E_R8 @ np.conjugate(W).T
+    E_R9 = W @ E_R9 @ np.conjugate(W).T
+    E_R10 = W @ E_R10 @ np.conjugate(W).T
+    E_R11 = W @ E_R11 @ np.conjugate(W).T
+    E_R12 = W @ E_R12 @ np.conjugate(W).T
 
     return E_R7, E_R8, E_R9, E_R10, E_R11, E_R12
 
@@ -248,7 +250,7 @@ def IRNN_tran(data):
     r12 = data["r12"]
     r11 = data["r11"]
 
-    D4 = cp.array(
+    D4 = np.array(
         [
             [1, 0, 0],
             [0, -1, 0],
@@ -256,7 +258,7 @@ def IRNN_tran(data):
         ]
     )
 
-    D5 = cp.array(
+    D5 = np.array(
         [
             [1, 0, 0],
             [0, -1 / 2, -sqrt(3) / 2],
@@ -264,7 +266,7 @@ def IRNN_tran(data):
         ]
     )
 
-    v1 = cp.array(
+    v1 = np.array(
         [
             [r0, r1, -r1 / sqrt(3)],
             [r2, r11, r12],
@@ -272,7 +274,7 @@ def IRNN_tran(data):
         ]
     )
 
-    v4 = cp.array(
+    v4 = np.array(
         [
             [r0, r2, -r2 / sqrt(3)],
             [r1, r11, r12],
@@ -285,12 +287,12 @@ def IRNN_tran(data):
     v5 = D5 @ v1 @ D5.T
     v6 = D4 @ v4 @ D4.T
 
-    v1 = W @ v1 @ cp.conjugate(W).T
-    v2 = W @ v2 @ cp.conjugate(W).T
-    v3 = W @ v3 @ cp.conjugate(W).T
-    v4 = W @ v4 @ cp.conjugate(W).T
-    v5 = W @ v5 @ cp.conjugate(W).T
-    v6 = W @ v6 @ cp.conjugate(W).T
+    v1 = W @ v1 @ np.conjugate(W).T
+    v2 = W @ v2 @ np.conjugate(W).T
+    v3 = W @ v3 @ np.conjugate(W).T
+    v4 = W @ v4 @ np.conjugate(W).T
+    v5 = W @ v5 @ np.conjugate(W).T
+    v6 = W @ v6 @ np.conjugate(W).T
 
     return v1, v2, v3, v4, v5, v6
 
@@ -305,7 +307,7 @@ def IR_tran(data):
     t11 = data["t11"]
     t22 = data["t22"]
 
-    D_C3 = cp.array(
+    D_C3 = np.array(
         [
             [1, 0, 0],
             [0, cos(-2 * pi / 3), -sin(-2 * pi / 3)],
@@ -313,7 +315,7 @@ def IR_tran(data):
         ]
     )
 
-    D_2C3 = cp.array(
+    D_2C3 = np.array(
         [
             [1, 0, 0],
             [0, cos(-4 * pi / 3), -sin(-4 * pi / 3)],
@@ -321,7 +323,7 @@ def IR_tran(data):
         ]
     )
 
-    D_S = cp.array(
+    D_S = np.array(
         [
             [1, 0, 0],
             [0, -1, 0],
@@ -329,7 +331,7 @@ def IR_tran(data):
         ]
     )
 
-    D_S1 = cp.array(
+    D_S1 = np.array(
         [
             [1, 0, 0],
             [0, 1 / 2, -sqrt(3) / 2],
@@ -337,7 +339,7 @@ def IR_tran(data):
         ]
     )
 
-    D_S2 = cp.array(
+    D_S2 = np.array(
         [
             [1, 0, 0],
             [0, 1 / 2, sqrt(3) / 2],
@@ -345,7 +347,7 @@ def IR_tran(data):
         ]
     )
 
-    E_R0 = cp.array(
+    E_R0 = np.array(
         [
             [e1, 0, 0],
             [0, e2, 0],
@@ -353,7 +355,7 @@ def IR_tran(data):
         ]
     )
 
-    E_R1 = cp.array(
+    E_R1 = np.array(
         [
             [t0, t1, t2],
             [-t1, t11, t12],
@@ -367,13 +369,13 @@ def IR_tran(data):
     E_R5 = D_2C3 @ E_R1 @ D_2C3.T
     E_R6 = D_S2 @ E_R1 @ D_S2.T
 
-    E_R0 = W @ E_R0 @ cp.conjugate(W).T
-    E_R1 = W @ E_R1 @ cp.conjugate(W).T
-    E_R2 = W @ E_R2 @ cp.conjugate(W).T
-    E_R3 = W @ E_R3 @ cp.conjugate(W).T
-    E_R4 = W @ E_R4 @ cp.conjugate(W).T
-    E_R5 = W @ E_R5 @ cp.conjugate(W).T
-    E_R6 = W @ E_R6 @ cp.conjugate(W).T
+    E_R0 = W @ E_R0 @ np.conjugate(W).T
+    E_R1 = W @ E_R1 @ np.conjugate(W).T
+    E_R2 = W @ E_R2 @ np.conjugate(W).T
+    E_R3 = W @ E_R3 @ np.conjugate(W).T
+    E_R4 = W @ E_R4 @ np.conjugate(W).T
+    E_R5 = W @ E_R5 @ np.conjugate(W).T
+    E_R6 = W @ E_R6 @ np.conjugate(W).T
 
     return (E_R0, E_R1, E_R2, E_R3, E_R4, E_R5, E_R6)
 
@@ -382,6 +384,129 @@ def gcd(a, b):
     if b == 0:
         return a
     return gcd(b, a % b)
+
+
+def process(N: int, band: int, choice: int, qmax: int, fileData: dict, model: str):
+
+    fileEnergy = fileData["fileEnergy"]
+    fileMoment = fileData["fileMoment"]
+
+    data = paraTNN(choice, model)
+    a_lattice = data["alattice"]
+    E0, h1, h2, h3, h4, h5, h6 = IR(data)
+    v1, v2, v3, v4, v5, v6 = IRNN(data)
+    o1, o2, o3, o4, o5, o6 = IRTNN(data)
+    m0 = 5.6770736 / 100
+    hb = 0.658229
+    irreducibleMatrix = {
+        "NN": [E0, h1, h2, h3, h4, h5, h6],
+        "NNN": [v1, v2, v3, v4, v5, v6],
+        "TNN": [o1, o2, o3, o4, o5, o6],
+    }
+
+    p = 1
+
+    PxArr = np.zeros((N, N))
+    PyArr = np.zeros((N, N))
+    pPlusArr = np.zeros((N, N))
+    pMinusArr = np.zeros((N, N))
+    moduloPArr = np.zeros((N, N))
+    # dHam_kx = np.zeros((6 * qmax, 6 * qmax), dtype=complex)
+    # dHam_ky = np.zeros((6 * qmax, 6 * qmax), dtype=complex)
+
+    arrEigen = {}
+    for q in tqdm(range(6 * qmax), desc="Create array eigenvalue"):
+        arrEigen[f"L_{q}"] = np.zeros([N, N])
+
+    akx, aky = np.zeros((N, N)), np.zeros((N, N))
+    dk = (4 * pi / a_lattice) / (N - 1)
+    for i1 in range(N):
+        for j1 in range(N):
+            akx[i1][j1] = (-2 * pi / a_lattice + (i1) * dk) * 1
+            aky[i1][j1] = (-2 * pi / a_lattice + (j1) * dk) * 1
+
+    for i in tqdm(range(N), desc="vong lap i"):
+        for j in range(N):
+            if np.gcd(p, qmax) != 1:
+                continue
+
+            Ham = HamTNN(band, a_lattice, p, 2 * qmax, akx[i][j], aky[i][j], irreducibleMatrix)
+            dHam_kx = HamTNN_kx(band, a_lattice, p, 2 * qmax, akx[i][j], aky[i][j], irreducibleMatrix)
+            dHam_ky = HamTNN_ky(band, a_lattice, p, 2 * qmax, akx[i][j], aky[i][j], irreducibleMatrix)
+
+            eigenvalue, eigenvector = LA.eigh(Ham)
+
+            for q in range(6 * qmax):
+                arrEigen[f"L_{q}"] = eigenvalue[q]
+
+            sumpx = 0 + 0j
+            sumpy = 0 + 0j
+            for bandi in range(6 * qmax):
+                for bandj in range(6 * qmax):
+
+                    sumpx += np.conjugate(eigenvector[2 * qmax][bandj]) * dHam_kx[bandi][bandj] * eigenvector[2 * qmax + 1][bandi]
+                    sumpy += np.conjugate(eigenvector[2 * qmax][bandj]) * dHam_ky[bandi][bandj] * eigenvector[2 * qmax + 1][bandi]
+            px = sumpx * m0 / hb
+            py = sumpy * m0 / hb
+            moduloP = sqrt(abs(px) ** 2 + abs(py) ** 2)
+            pPlus = px + 1j * py
+            pMinus = px - 1j * py
+
+            PxArr = px
+            PyArr = py
+
+            moduloPArr[i][j] = moduloP
+            pPlusArr[i][j] = abs(pPlus)
+            pMinusArr[i][j] = abs(pMinus)
+
+    with open(fileEnergy, "w", newline="") as writefile:
+        header = [
+            "kx",
+            "ky",
+        ]
+        for q in range(6 * qmax):
+            header.append(list(arrEigen.keys())[q])
+
+        writer = csv.DictWriter(writefile, fieldnames=header, delimiter=",")
+        writer.writeheader()
+        row = {}
+        for i in range(N):
+            for j in range(N):
+                row["kx"] = akx[i][j] / (2 * pi / a_lattice)
+                row["ky"] = aky[i][j] / (2 * pi / a_lattice)
+
+                for k in range(6 * qmax):
+                    row[f"L_{k}"] = arrEigen[f"L_{k}"]
+
+                writer.writerow(row)
+            writefile.write("\n")
+
+    with open(fileMoment, "w", newline="") as writefile:
+        print(pPlusArr)
+        print(len(pPlusArr))
+        header = [
+            "kx",
+            "ky",
+            "pPlus",
+            "pMinus",
+            "pAbs",
+        ]
+
+        writer = csv.DictWriter(writefile, fieldnames=header, delimiter=",")
+        writer.writeheader()
+        row = {}
+        for i in range(N):
+            for j in range(N):
+                row["kx"] = akx[i][j] / (2 * pi / a_lattice)
+                row["ky"] = aky[i][j] / (2 * pi / a_lattice)
+                row["pPlus"] = pPlusArr[i][j]
+                row["pMinus"] = pMinusArr[i][j]
+                row["pAbs"] = moduloPArr[i][j]
+
+                writer.writerow(row)
+            writefile.write("\n")
+
+    return None
 
 
 def pbc(i, q):
@@ -448,17 +573,17 @@ def HamTNN_ky(band: int, alattice: float, p: int, q: int, kx: float, ky: float, 
     v5 = IM["NNN"][4] * vR5 * (sqrt(3) * 1j)
     v6 = IM["NNN"][5] * vR6 * (sqrt(3) * 1j / 2)
 
-    H0 = cp.zeros([q, q], dtype=complex)
-    H1 = cp.zeros([q, q], dtype=complex)
-    H1T = cp.zeros([q, q], dtype=complex)
-    H2 = cp.zeros([q, q], dtype=complex)
-    H2T = cp.zeros([q, q], dtype=complex)
-    H11 = cp.zeros([q, q], dtype=complex)
-    H22 = cp.zeros([q, q], dtype=complex)
-    H12 = cp.zeros([q, q], dtype=complex)
-    H12T = cp.zeros([q, q], dtype=complex)
-    H = cp.zeros([3 * q, 3 * q], dtype=complex)
-    H2band = cp.zeros([2 * q, 2 * q], dtype=complex)
+    H0 = np.zeros([q, q], dtype=complex)
+    H1 = np.zeros([q, q], dtype=complex)
+    H1T = np.zeros([q, q], dtype=complex)
+    H2 = np.zeros([q, q], dtype=complex)
+    H2T = np.zeros([q, q], dtype=complex)
+    H11 = np.zeros([q, q], dtype=complex)
+    H22 = np.zeros([q, q], dtype=complex)
+    H12 = np.zeros([q, q], dtype=complex)
+    H12T = np.zeros([q, q], dtype=complex)
+    H = np.zeros([3 * q, 3 * q], dtype=complex)
+    H2band = np.zeros([2 * q, 2 * q], dtype=complex)
 
     for m in range(0, q):
 
@@ -625,17 +750,17 @@ def HamTNN_kx(band: int, alattice: float, p: int, q: int, kx: float, ky: float, 
     v5 = IM["NNN"][4] * vR5 * 0
     v6 = IM["NNN"][5] * vR6 * (3 / 2j)
 
-    H0 = cp.zeros([q, q], dtype=complex)
-    H1 = cp.zeros([q, q], dtype=complex)
-    H1T = cp.zeros([q, q], dtype=complex)
-    H2 = cp.zeros([q, q], dtype=complex)
-    H2T = cp.zeros([q, q], dtype=complex)
-    H11 = cp.zeros([q, q], dtype=complex)
-    H22 = cp.zeros([q, q], dtype=complex)
-    H12 = cp.zeros([q, q], dtype=complex)
-    H12T = cp.zeros([q, q], dtype=complex)
-    H = cp.zeros([3 * q, 3 * q], dtype=complex)
-    H2band = cp.zeros([2 * q, 2 * q], dtype=complex)
+    H0 = np.zeros([q, q], dtype=complex)
+    H1 = np.zeros([q, q], dtype=complex)
+    H1T = np.zeros([q, q], dtype=complex)
+    H2 = np.zeros([q, q], dtype=complex)
+    H2T = np.zeros([q, q], dtype=complex)
+    H11 = np.zeros([q, q], dtype=complex)
+    H22 = np.zeros([q, q], dtype=complex)
+    H12 = np.zeros([q, q], dtype=complex)
+    H12T = np.zeros([q, q], dtype=complex)
+    H = np.zeros([3 * q, 3 * q], dtype=complex)
+    H2band = np.zeros([2 * q, 2 * q], dtype=complex)
 
     for m in range(0, q):
 
@@ -742,7 +867,7 @@ def HamTNN_kx(band: int, alattice: float, p: int, q: int, kx: float, ky: float, 
     return H
 
 
-def HamNN(band, alattice, p, q, kx, ky, IM):
+def HamNN(alattice, p, q, kx, ky, IM):
     # matt, alattice, e1, e2, t0, t1, t2, t11, t12, t22 = para(argument)
     eta = p / (1 * q)
 
@@ -764,17 +889,17 @@ def HamNN(band, alattice, p, q, kx, ky, IM):
     E_R5 = IM["NN"][5] * hR5
     E_R6 = IM["NN"][6] * hR6
 
-    h0 = cp.zeros([q, q], dtype=complex)
-    h1 = cp.zeros([q, q], dtype=complex)
-    h1T = cp.zeros([q, q], dtype=complex)
-    h2 = cp.zeros([q, q], dtype=complex)
-    h2T = cp.zeros([q, q], dtype=complex)
-    h11 = cp.zeros([q, q], dtype=complex)
-    h22 = cp.zeros([q, q], dtype=complex)
-    h12 = cp.zeros([q, q], dtype=complex)
-    h12T = cp.zeros([q, q], dtype=complex)
-    H2band = cp.zeros([2 * q, 2 * q], dtype=complex)
-    H = cp.zeros([3 * q, 3 * q], dtype=complex)
+    h0 = np.zeros([q, q], dtype=complex)
+    h1 = np.zeros([q, q], dtype=complex)
+    h1T = np.zeros([q, q], dtype=complex)
+    h2 = np.zeros([q, q], dtype=complex)
+    h2T = np.zeros([q, q], dtype=complex)
+    h11 = np.zeros([q, q], dtype=complex)
+    h22 = np.zeros([q, q], dtype=complex)
+    h12 = np.zeros([q, q], dtype=complex)
+    h12T = np.zeros([q, q], dtype=complex)
+    H2band = np.zeros([2 * q, 2 * q], dtype=complex)
+    H = np.zeros([3 * q, 3 * q], dtype=complex)
 
     for m in range(0, q):
         h0[m][m] = E_R0[0][0]
@@ -812,14 +937,14 @@ def HamNN(band, alattice, p, q, kx, ky, IM):
         )
         h11[m, pbc(m - 2, q)] = E_R4[1][1] * phaseR4
 
-        h12T[m, pbc(m + 1, q)] = E_R2[2][1] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * cp.conjugate(phaseR2) + E_R6[2][1] * exp(
+        h12T[m, pbc(m + 1, q)] = E_R2[2][1] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * np.conjugate(phaseR2) + E_R6[2][1] * exp(
             -1j * 2 * pi * (m + 1 / 2) * eta
-        ) * cp.conjugate(phaseR6)
-        h12T[m, pbc(m + 2, q)] = E_R1[2][1] * cp.conjugate(phaseR1)
-        h12T[m, pbc(m - 1, q)] = E_R5[2][1] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * cp.conjugate(phaseR5) + E_R3[2][1] * exp(
+        ) * np.conjugate(phaseR6)
+        h12T[m, pbc(m + 2, q)] = E_R1[2][1] * np.conjugate(phaseR1)
+        h12T[m, pbc(m - 1, q)] = E_R5[2][1] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * np.conjugate(phaseR5) + E_R3[2][1] * exp(
             1j * 2 * pi * (m - 1 / 2) * eta
-        ) * cp.conjugate(phaseR3)
-        h12T[m, pbc(m - 2, q)] = E_R4[2][1] * cp.conjugate(phaseR4)
+        ) * np.conjugate(phaseR3)
+        h12T[m, pbc(m - 2, q)] = E_R4[2][1] * np.conjugate(phaseR4)
 
         h12[m, pbc(m + 1, q)] = (
             E_R2[1][2] * exp(-1j * 2 * pi * (m + 1 / 2) * eta) * phaseR2 + E_R6[1][2] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * phaseR6
@@ -830,14 +955,14 @@ def HamNN(band, alattice, p, q, kx, ky, IM):
         )
         h12[m, pbc(m - 2, q)] = E_R4[1][2] * phaseR4
 
-        h1T[m, pbc(m + 1, q)] = E_R2[1][0] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * cp.conjugate(phaseR2) + E_R6[1][0] * exp(
+        h1T[m, pbc(m + 1, q)] = E_R2[1][0] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * np.conjugate(phaseR2) + E_R6[1][0] * exp(
             -1j * 2 * pi * (m + 1 / 2) * eta
-        ) * cp.conjugate(phaseR6)
-        h1T[m, pbc(m + 2, q)] = E_R1[1][0] * cp.conjugate(phaseR1)
-        h1T[m, pbc(m - 1, q)] = E_R5[1][0] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * cp.conjugate(phaseR5) + E_R3[1][0] * exp(
+        ) * np.conjugate(phaseR6)
+        h1T[m, pbc(m + 2, q)] = E_R1[1][0] * np.conjugate(phaseR1)
+        h1T[m, pbc(m - 1, q)] = E_R5[1][0] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * np.conjugate(phaseR5) + E_R3[1][0] * exp(
             1j * 2 * pi * (m - 1 / 2) * eta
-        ) * cp.conjugate(phaseR3)
-        h1T[m, pbc(m - 2, q)] = E_R4[1][0] * cp.conjugate(phaseR4)
+        ) * np.conjugate(phaseR3)
+        h1T[m, pbc(m - 2, q)] = E_R4[1][0] * np.conjugate(phaseR4)
 
         h1[m, pbc(m + 1, q)] = (
             E_R2[0][1] * exp(-1j * 2 * pi * (m + 1 / 2) * eta) * phaseR2 + E_R6[0][1] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * phaseR6
@@ -855,14 +980,14 @@ def HamNN(band, alattice, p, q, kx, ky, IM):
         h22[m, pbc(m - 1, q)] = E_R5[2][2] * exp(1j * 2 * pi * (m - 1 / 2) * eta) + E_R3[2][2] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * phaseR3
         h22[m, pbc(m - 2, q)] = E_R4[2][2] * phaseR4
 
-        h2T[m, pbc(m + 1, q)] = E_R2[2][0] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * cp.conjugate(phaseR2) + E_R6[2][0] * exp(
+        h2T[m, pbc(m + 1, q)] = E_R2[2][0] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * np.conjugate(phaseR2) + E_R6[2][0] * exp(
             -1j * 2 * pi * (m + 1 / 2) * eta
-        ) * cp.conjugate(phaseR6)
-        h2T[m, pbc(m + 2, q)] = E_R1[2][0] * cp.conjugate(phaseR1)
-        h2T[m, pbc(m - 1, q)] = E_R5[2][0] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * cp.conjugate(phaseR5) + E_R3[2][0] * exp(
+        ) * np.conjugate(phaseR6)
+        h2T[m, pbc(m + 2, q)] = E_R1[2][0] * np.conjugate(phaseR1)
+        h2T[m, pbc(m - 1, q)] = E_R5[2][0] * exp(-1j * 2 * pi * (m - 1 / 2) * eta) * np.conjugate(phaseR5) + E_R3[2][0] * exp(
             1j * 2 * pi * (m - 1 / 2) * eta
-        ) * cp.conjugate(phaseR3)
-        h2T[m, pbc(m - 2, q)] = E_R4[2][0] * cp.conjugate(phaseR4)
+        ) * np.conjugate(phaseR3)
+        h2T[m, pbc(m - 2, q)] = E_R4[2][0] * np.conjugate(phaseR4)
 
         h2[m, pbc(m + 1, q)] = (
             E_R2[0][2] * exp(-1j * 2 * pi * (m + 1 / 2) * eta) * phaseR2 + E_R6[0][2] * exp(1j * 2 * pi * (m + 1 / 2) * eta) * phaseR6
@@ -873,31 +998,20 @@ def HamNN(band, alattice, p, q, kx, ky, IM):
         )
         h2[m, pbc(m - 2, q)] = E_R4[0][2] * phaseR4
 
-    if band == 1:
-        return h0
+    H[0:q, 0:q] = h0
+    H[0:q, q : 2 * q] = h1
+    H[0:q, 2 * q : 3 * q] = h2
+    H[q : 2 * q, 0:q] = h1T
+    H[q : 2 * q, q : 2 * q] = h11
+    H[q : 2 * q, 2 * q : 3 * q] = h12
+    H[2 * q : 3 * q, 0:q] = h2T
+    H[2 * q : 3 * q, q : 2 * q] = h12T
+    H[2 * q : 3 * q, 2 * q : 3 * q] = h22
 
-    elif band == 2:
-        H2band[0:q, 0:q] = h1
-        H2band[0:q, q : 2 * q] = h2
-        H2band[q : 2 * q, 0:q] = h1T
-        H2band[q : 2 * q, q : 2 * q] = h2T
-        return H2band
-
-    elif band == 3:
-        H[0:q, 0:q] = h0
-        H[0:q, q : 2 * q] = h1
-        H[0:q, 2 * q : 3 * q] = h2
-        H[q : 2 * q, 0:q] = h1T
-        H[q : 2 * q, q : 2 * q] = h11
-        H[q : 2 * q, 2 * q : 3 * q] = h12
-        H[2 * q : 3 * q, 0:q] = h2T
-        H[2 * q : 3 * q, q : 2 * q] = h12T
-        H[2 * q : 3 * q, 2 * q : 3 * q] = h22
-
-        return H
+    return H
 
 
-def HamTNN(band: int, alattice: float, p: int, q: int, kx: float, ky: float, IM: dict) -> NDArray:
+def HamTNN(alattice: float, p: int, q: int, kx: float, ky: float, IM: dict) -> NDArray:
     """[Summary]
 
     Define a Hamiltonian for the TMD 3 band using Ref Phys.rev.B 88,085433
@@ -957,16 +1071,16 @@ def HamTNN(band: int, alattice: float, p: int, q: int, kx: float, ky: float, IM:
     v5 = IM["NNN"][4] * vR5
     v6 = IM["NNN"][5] * vR6
 
-    H0 = cp.zeros([q, q], dtype=complex)
-    H1 = cp.zeros([q, q], dtype=complex)
-    H1T = cp.zeros([q, q], dtype=complex)
-    H2 = cp.zeros([q, q], dtype=complex)
-    H2T = cp.zeros([q, q], dtype=complex)
-    H11 = cp.zeros([q, q], dtype=complex)
-    H22 = cp.zeros([q, q], dtype=complex)
-    H12 = cp.zeros([q, q], dtype=complex)
-    H12T = cp.zeros([q, q], dtype=complex)
-    H = cp.zeros([3 * q, 3 * q], dtype=complex)
+    H0 = np.zeros([q, q], dtype=complex)
+    H1 = np.zeros([q, q], dtype=complex)
+    H1T = np.zeros([q, q], dtype=complex)
+    H2 = np.zeros([q, q], dtype=complex)
+    H2T = np.zeros([q, q], dtype=complex)
+    H11 = np.zeros([q, q], dtype=complex)
+    H22 = np.zeros([q, q], dtype=complex)
+    H12 = np.zeros([q, q], dtype=complex)
+    H12T = np.zeros([q, q], dtype=complex)
+    H = np.zeros([3 * q, 3 * q], dtype=complex)
 
     for m in range(0, q):
 
@@ -1073,306 +1187,344 @@ def HamTNN(band: int, alattice: float, p: int, q: int, kx: float, ky: float, IM:
     return H
 
 
-def process(N: int, band: int, choice: int, qmax: int, fileData: dict, model: str):
+def waveFunction(dataInit, irreducibleMatrix, fileSave):
+    ##### chi so dau vao
+    p = dataInit["p"]
+    coeff = dataInit["coeff"]
+    numberWave = dataInit["numberWaveFunction"]  # so ham song can khao sat
+    modelNeighbor = dataInit["modelNeighbor"]
+    alattice = dataInit["alattice"]
+    kx, ky = dataInit["kpoint"]
+    qmax = dataInit["qmax"]
 
-    fileEnergy = fileData["fileEnergy"]
-    fileMoment = fileData["fileMoment"]
+    ##### tao array de luu ket qua
+    dataArr = {"PositionAtoms": []}
+    for i in range(numberWave):
+        dataArr[f"lambda2q_band_{i}"] = []
 
-    data = paraTNN(choice, model)
-    a_lattice = data["alattice"]
-    E0, h1, h2, h3, h4, h5, h6 = IR(data)
-    v1, v2, v3, v4, v5, v6 = IRNN(data)
-    o1, o2, o3, o4, o5, o6 = IRTNN(data)
-    m0 = 5.6770736 / 100
-    hb = 0.658229
-    irreducibleMatrix = {
-        "NN": [E0, h1, h2, h3, h4, h5, h6],
-        "NNN": [v1, v2, v3, v4, v5, v6],
-        "TNN": [o1, o2, o3, o4, o5, o6],
-    }
+    #### tinh toan chi tiet
+    #### bat dau bang viec khoi tao mang de chua psi va abs(psi)**2
+    arrContainer = {}
+    iArr = np.arange(coeff * qmax)  # chi so atom thu i, do 3 ham song thi la 3*2*qmax = 6qmax, nhung 1 ham song thi la 2qmax
+    for i in range(numberWave):
+        #### Tinh cho d_z^2
+        arrContainer[f"psi_band2q_d0_{i}"] = np.zeros(coeff * qmax, dtype=complex)
+        arrContainer[f"absPsi_band2q_d0_{i}"] = np.zeros(coeff * qmax, dtype=float)
+        #### Tinh cho d_-2
+        arrContainer[f"psi_band2q_d1_{i}"] = np.zeros(coeff * qmax, dtype=complex)
+        arrContainer[f"absPsi_band2q_d1_{i}"] = np.zeros(coeff * qmax, dtype=float)
+        #### Tinh cho d_2
+        arrContainer[f"psi_band2q_d2_{i}"] = np.zeros(coeff * qmax, dtype=complex)
+        arrContainer[f"absPsi_band2q_d1_{i}"] = np.zeros(coeff * qmax, dtype=float)
+        ##### Unused
+        arrContainer[f"psi_band2q1_d0_{i}"] = np.zeros(coeff * qmax, dtype=complex)
+        arrContainer[f"psi_band2q1_d1_{i}"] = np.zeros(coeff * qmax, dtype=complex)
+        arrContainer[f"psi_band2q1_d2_{i}"] = np.zeros(coeff * qmax, dtype=complex)
 
-    p = 1
+    Hamiltonian = None
 
-    PxArr = cp.zeros((N, N))
-    PyArr = cp.zeros((N, N))
-    pPlusArr = cp.zeros((N, N))
-    pMinusArr = cp.zeros((N, N))
-    moduloPArr = cp.zeros((N, N))
-    # dHam_kx = cp.zeros((6 * qmax, 6 * qmax), dtype=complex)
-    # dHam_ky = cp.zeros((6 * qmax, 6 * qmax), dtype=complex)
+    if modelNeighbor == "NN":
+        Hamiltonian = HamNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
+    elif modelNeighbor == "TNN":
+        Hamiltonian = HamTNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
 
-    arrEigen = {}
-    for q in tqdm(range(6 * qmax), desc="Create array eigenvalue"):
-        arrEigen[f"L_{q}"] = cp.zeros([N, N])
+    if np.gcd(p, qmax) == 1:
 
-    akx, aky = cp.zeros((N, N)), cp.zeros((N, N))
-    dk = (4 * pi / a_lattice) / (N - 1)
-    for i1 in range(N):
-        for j1 in range(N):
-            akx[i1][j1] = (-2 * pi / a_lattice + (i1) * dk) * 1
-            aky[i1][j1] = (-2 * pi / a_lattice + (j1) * dk) * 1
+        eigenvals, eigenvecs = LA.eigh(Hamiltonian)
 
-    for i in tqdm(range(N), desc="vong lap i"):
-        for j in range(N):
-            if cp.gcd(p, qmax) != 1:
-                continue
+        # print(eigenvecs.shape)
+        for i in tqdm(range(numberWave), desc="Calc eigenvectors", colour="green"):
+            # print(i)
+            #### i la chi so 2q + i trong so band 6q
+            arrContainer[f"psi_band2q_d0_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax - i - 1][0 * coeff * qmax : 1 * coeff * qmax]
+            arrContainer[f"psi_band2q_d1_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax - i - 1][1 * coeff * qmax : 2 * coeff * qmax]
+            arrContainer[f"psi_band2q_d2_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax - i - 1][2 * coeff * qmax : 3 * coeff * qmax]
 
-            Ham = HamTNN(band, a_lattice, p, 2 * qmax, akx[i][j], aky[i][j], irreducibleMatrix)
-            dHam_kx = HamTNN_kx(band, a_lattice, p, 2 * qmax, akx[i][j], aky[i][j], irreducibleMatrix)
-            dHam_ky = HamTNN_ky(band, a_lattice, p, 2 * qmax, akx[i][j], aky[i][j], irreducibleMatrix)
+            arrContainer[f"absPsi_band2q_d0_{i}"] = np.abs(arrContainer[f"psi_band2q_d0_{i}"]) ** 2
+            arrContainer[f"absPsi_band2q_d1_{i}"] = np.abs(arrContainer[f"psi_band2q_d1_{i}"]) ** 2
+            arrContainer[f"absPsi_band2q_d2_{i}"] = np.abs(arrContainer[f"psi_band2q_d2_{i}"]) ** 2
 
-            eigenvalue, eigenvector = LA.eigh(Ham)
+        for i in range(coeff * qmax):
+            dataArr["PositionAtoms"].append(iArr[i])
 
-            for q in range(6 * qmax):
-                arrEigen[f"L_{q}"] = eigenvalue[q]
+        with open(fileSave, "w", newline="") as writefile:
+            header = ["x"]
+            dArr = ["d0", "d1", "d2"]
+            for d in dArr:
+                for i in range(numberWave):
+                    header.append(f"{d}_lambda_{i}")
 
-            sumpx = 0 + 0j
-            sumpy = 0 + 0j
-            for bandi in range(6 * qmax):
-                for bandj in range(6 * qmax):
+            writer = csv.DictWriter(writefile, fieldnames=header, delimiter=",")
+            writer.writeheader()
+            iPosition = dataArr["PositionAtoms"]
 
-                    sumpx += cp.conjugate(eigenvector[2 * qmax][bandj]) * dHam_kx[bandi][bandj] * eigenvector[2 * qmax + 1][bandi]
-                    sumpy += cp.conjugate(eigenvector[2 * qmax][bandj]) * dHam_ky[bandi][bandj] * eigenvector[2 * qmax + 1][bandi]
-            px = sumpx * m0 / hb
-            py = sumpy * m0 / hb
-            moduloP = sqrt(abs(px) ** 2 + abs(py) ** 2)
-            pPlus = px + 1j * py
-            pMinus = px - 1j * py
-
-            PxArr = px
-            PyArr = py
-
-            moduloPArr[i][j] = moduloP
-            pPlusArr[i][j] = abs(pPlus)
-            pMinusArr[i][j] = abs(pMinus)
-
-    with open(fileEnergy, "w", newline="") as writefile:
-        header = [
-            "kx",
-            "ky",
-        ]
-        for q in range(6 * qmax):
-            header.append(list(arrEigen.keys())[q])
-
-        writer = csv.DictWriter(writefile, fieldnames=header, delimiter=",")
-        writer.writeheader()
-        row = {}
-        for i in range(N):
-            for j in range(N):
-                row["kx"] = akx[i][j] / (2 * pi / a_lattice)
-                row["ky"] = aky[i][j] / (2 * pi / a_lattice)
-
-                for k in range(6 * qmax):
-                    row[f"L_{k}"] = arrEigen[f"L_{k}"]
+            for q in tqdm(range(coeff * qmax), desc="Write file", colour="blue"):
+                row = {"x": iPosition[q]}
+                for i in range(numberWave):
+                    row[f"d0_lambda_{i}"] = arrContainer[f"absPsi_band2q_d0_{i}"][q]
+                    row[f"d1_lambda_{i}"] = arrContainer[f"absPsi_band2q_d1_{i}"][q]
+                    row[f"d2_lambda_{i}"] = arrContainer[f"absPsi_band2q_d2_{i}"][q]
 
                 writer.writerow(row)
-            writefile.write("\n")
 
-    with open(fileMoment, "w", newline="") as writefile:
-        print(pPlusArr)
-        print(len(pPlusArr))
-        header = [
-            "kx",
-            "ky",
-            "pPlus",
-            "pMinus",
-            "pAbs",
-        ]
-
-        writer = csv.DictWriter(writefile, fieldnames=header, delimiter=",")
-        writer.writeheader()
-        row = {}
-        for i in range(N):
-            for j in range(N):
-                row["kx"] = akx[i][j] / (2 * pi / a_lattice)
-                row["ky"] = aky[i][j] / (2 * pi / a_lattice)
-                row["pPlus"] = pPlusArr[i][j]
-                row["pMinus"] = pMinusArr[i][j]
-                row["pAbs"] = moduloPArr[i][j]
-
-                writer.writerow(row)
-            writefile.write("\n")
+    elif np.gcd(p, qmax) != 1:  # check coprime
+        print("p,q pairs not co-prime!")
 
     return None
 
 
-def solve_p(args):
-    p, qmax, coeff, band, alattice, kx, ky, irreducibleMatrix, modelNeighbor, phi0, S, charge, hbar, m_e = args
+def calcMass(dataInit, irreducibleMatrix, fileSave):
+    p = dataInit["p"]
+    coeff = dataInit["coeff"]
+    print(coeff)
+    numberWave = dataInit["numberWaveFunction"]  # so ham song can khao sat
+    modelNeighbor = dataInit["modelNeighbor"]
+    alattice = dataInit["alattice"]
+    kx, ky = dataInit["kpoint"]
+    qmax = dataInit["qmax"]
+    alattice = dataInit["alattice"] * 1e-10
 
-    if cp.gcd(p, qmax) != 1:
-        return None  # bỏ qua
+    h = 6.62607007e-34
+    hbar = h / (2 * pi)
+    charge = 1.602176621e-19
+    phi0 = h / charge
+    S = sqrt(3) * alattice**2 / 2
+    m_e = 9.10938356e-31
 
-    eta = p / qmax
-    B = eta * phi0 / S
+    Hamiltonian = None
+    qrange = [3129, 2346, 1877, 1564, 1341, 1173, 1043, 939]  # , 853, 782, 722, 670, 626, 587, 552, 521, 494, 469]
 
-    # chọn Hamiltonian theo mô hình
-    if modelNeighbor == "NN":
-        Ham = HamNN(band, alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
-    elif modelNeighbor == "TNN":
-        Ham = HamTNN(band, alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
-    else:
-        return None
+    with open(fileSave, "w", newline="") as writefile:
+        header = [
+            # "eta",
+            "B_values",
+            # "evalues",
+            # "m*_v",
+            # "m*_c",
+            # "ω_c",
+            # "ω_v",
+        ]
+        header.extend(["EKp1", "EKp2", "EKp3", "EKm1", "EKm2", "EKm3", "EG1", "EG2", "EG3"])
+        # for i in range(numberWave):
+        #    header.append(f"E2q{i}")
+        writer = csv.DictWriter(writefile, fieldnames=header, delimiter=",")
+        writer.writeheader()
+        for qmax in tqdm(qrange, ascii=" #", desc=f"Solve Hamiltonian", colour="blue"):
+            if np.gcd(p, qmax) != 1:
+                continue
+            eta = p / (qmax)  ## the magnetic ratio require that p and q must be co-prime
+            B = eta * phi0 / S  ## the actually B which are taken from eta
 
-    eigenvals = LA.eigvalsh(Ham)
+            if modelNeighbor == "NN":
+                Hamiltonian = HamNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
+            elif modelNeighbor == "TNN":
+                Hamiltonian = HamTNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
 
-    E_2q = eigenvals[coeff * qmax + 8]
-    E_2q1 = eigenvals[coeff * qmax + 9]
-    E_2q2 = eigenvals[coeff * qmax - 17]
+            eigenvals = LA.eigvalsh(Hamiltonian)
 
-    En_valence = eigenvals[coeff * qmax - 17] + eigenvals[coeff * qmax - 18]
-    En1_valence = eigenvals[coeff * qmax - 27] + eigenvals[coeff * qmax - 28]
-
-    En_conduction = eigenvals[coeff * qmax]
-    En1_conduction = eigenvals[coeff * qmax + 9]
-
-    omega_valence = abs((En1_valence - En_valence) * charge / hbar)
-    omega_conduction = (En1_conduction - En_conduction) * charge / hbar
-    m_eff_v = charge * B / omega_valence
-    m_eff_c = charge * B / omega_conduction
-
-    m_ratio_v = m_eff_v / m_e
-    m_ratio_c = m_eff_c / m_e
-
-    # trả về toàn bộ dòng dữ liệu cho mỗi eigenvalue
-    rows = []
-    for i in range(coeff * band * qmax):
-        rows.append(
-            {
-                "eta": eta,
-                "B_values": B,
-                "evalues": eigenvals[i],
-                "E_level1": E_2q,
-                "E_level2": E_2q1,
-                # "E_level3": E_2q2,
-                "m*_v": m_ratio_v,
-                "m*_c": m_ratio_c,
-                "ω_v": omega_valence,
-                "ω_c": omega_conduction,
+            omega_v = 0
+            omega_c = 0
+            meff_v = 0
+            meff_c = 0
+            ## Only for valence
+            offsetK1 = {
+                3129: (13, 21, 39),  # 15T → NN: 2q-13, 2q-21 | TNN: 2q-3, 2q-15
+                2346: (9, 17, 27),  # 20T → NN: 2q-9, 2q-17  | TNN: 2q-3, 2q-15
+                1877: (7, 15, 25),  # 25T → NN: 2q-7, 2q-15  | TNN: 2q-1, 2q-13
+                1564: (5, 13, 23),  # 30T → NN: 2q-5, 2q-13  | TNN: 2q-1, 2q-13
+                1341: (5, 13, 21),  # 35T → NN: 2q-5, 2q-13  | TNN: 2q-1, 2q-13
+                1173: (3, 11, 21),  # 40T → NN: 2q-3, 2q-11  | TNN: 2q-1, 2q-11
+                1043: (3, 11, 21),  # 45T → NN: 2q-3, 2q-11  | TNN: 2q-1, 2q-11
+                939: (3, 11, 19),  # 50T → NN: 2q-3, 2q-11  | TNN: 2q-1, 2q-11
+                853: (3, 9, 19, 29),  # 55T → NN: 2q-3, 2q-9  | TNN: 2q-1, 2q-11
+                782: (3, 9, 19, 29),  # 60T → NN: 2q-3, 2q-9   | TNN: 2q-1, 2q-11
+                722: (1, 9, 19, 29),  # 65T → NN: 2q-1, 2q-9   | TNN: 2q-1, 2q-11
+                670: (1, 9, 19, 29),  # 70T → NN: 2q-1, 2q-9   | TNN: 2q-1, 2q-11
+                626: (1, 9, 19, 27),  # 75T → NN: 2q-1, 2q-9   | TNN: 2q-1, 2q-11
+                587: (1, 9, 19, 27),  # 80T → NN: 2q-1, 2q-9   | TNN: 2q-1, 2q-11
+                552: (1, 9, 19, 27),  # 85T → NN: 2q-1, 2q-9   | TNN: 2q-1, 2q-11
+                521: (1, 9, 17, 27),  # 90T → NN: 2q-1, 2q-9   | TNN: 2q-1, 2q-11
+                494: (1, 9, 17, 27),  # 95T → NN: 2q-1, 2q-9   | TNN: 2q-1, 2q-11
+                469: (1, 9, 17, 27),  # 100T → NN: 2q-1, 2q-9  | TNN: 2q-1, 2q-9
             }
-        )
-    return rows
+
+            offsetG = {
+                3129: (1, 3, 5),
+                2346: (1, 3, 5),
+                1877: (1, 3, 5),
+                1564: (1, 3, 7),
+                1341: (1, 3, 7),
+                1173: (1, 5, 7),
+                1043: (1, 5, 7),
+                939: (1, 5, 7),
+                853: (),
+                782: (),
+                722: (),
+                670: (),
+                626: (),
+                587: (),
+                552: (),
+                521: (),
+                494: (),
+                469: (),
+            }
+            offsetK2 = {
+                3129: (27, 37, 49),  # 15T → NN: 2q-27, 2q-37 | TNN=(23, 37)
+                2346: (23, 33, 43),  # 20T → NN: 2q-23, 2q-33 | TNN=(21, 35)
+                1877: (21, 31, 41),  # 25T → NN: 2q-21, 2q-31 | TNN=(21, 33)
+                1564: (21, 29, 39),  # 30T → NN: 2q-21, 2q-29 | TNN=(21, 33)
+                1341: (19, 29, 39),  # 35T → NN: 2q-19, 2q-29 | TNN=(19, 33)
+                1173: (19, 29, 37),  # 40T → NN: 2q-19, 2q-29 | TNN=(19, 31)
+                1043: (17, 27, 37),  # 45T → NN: 2q-17, 2q-27 | TNN=(19, 31)
+                939: (17, 27, 37),  # 50T → NN: 2q-17, 2q-27 | TNN=(19, 31)
+                853: (17, 27),  # 55T → NN: 2q-17, 2q-27 | TNN=(19, 31)
+                782: (17, 27),  # 60T → NN: 2q-17, 2q-27 | TNN=(19, 31)
+                722: (17, 27),  # 65T → NN: 2q-17, 2q-27 | TNN=(19, 29)
+                670: (17, 25),  # 70T → NN: 2q-17, 2q-25 | TNN=(17, 29)
+                626: (17, 25),  # 75T → NN: 2q-17, 2q-25 | TNN=(17, 29)
+                587: (15, 25),  # 80T → NN: 2q-15, 2q-25 | TNN=(17, 29)
+                552: (15, 25),  # 85T → NN: 2q-15, 2q-25 | TNN=(17, 29)
+                521: (15, 25),  # 90T → NN: 2q-15, 2q-25 | TNN=(17, 29)
+                494: (15, 25),  # 95T → NN: 2q-15, 2q-25 | TNN=(17, 29)
+                469: (15, 25),  # 100T → NN: 2q-15, 2q-25 | TNN=(17, 29)
+            }
+
+            # valuesBandLambda = {}
+            # for i in range(numberWave):
+            #    valuesBandLambda[f"E_2q{i}"] = eigenvals[coeff * qmax + i]
+
+            EKp1 = EKp2 = EKp3 = 0
+            EKm1 = EKm2 = EKm3 = 0
+            EG1 = EG2 = EG3 = 0
+            if qmax in offsetK2:
+                off1K1, off2K1, off3K1 = offsetK1[qmax]
+                off1K2, off2K2, off3K2 = offsetK2[qmax]
+                off1G, off2G, off3G = offsetG[qmax]
+                En_valence = eigenvals[coeff * qmax - off1K1]  ### Only K-point at Landau level n = 0
+                En1_valence = eigenvals[coeff * qmax - off2K1]  ### Only K-point at Landau level n = 1
+                omega_v = abs((En1_valence - En_valence) * charge / hbar)
+                meff_v = charge * B / omega_v
+
+                EKp1 = eigenvals[coeff * qmax - off1K1]
+                EKp2 = eigenvals[coeff * qmax - off2K1]
+                EKp3 = eigenvals[coeff * qmax - off3K1]
+
+                EKm1 = eigenvals[coeff * qmax - off1K2]
+                EKm2 = eigenvals[coeff * qmax - off2K2]
+                EKm3 = eigenvals[coeff * qmax - off3K2]
+
+                EG1 = eigenvals[coeff * qmax - off1G]
+                EG2 = eigenvals[coeff * qmax - off2G]
+                EG3 = eigenvals[coeff * qmax - off3G]
+
+            En_conduction = eigenvals[coeff * qmax + 5]
+            En1_conduction = eigenvals[coeff * qmax + 9]
+            omega_c = (En1_conduction - En_conduction) * charge / hbar
+            meff_c = charge * B / omega_c
+
+            m_ratio_v = meff_v / m_e
+            m_ratio_c = meff_c / m_e
+            # print(m_ratio_v)
+            # print(m_ratio_c, "\n")
+            row = {
+                # "eta": eta,
+                "B_values": B,
+            }
+            row["EKp1"] = EKp1
+            row["EKp2"] = EKp2
+            row["EKp3"] = EKp3
+
+            row["EKm1"] = EKm1
+            row["EKm2"] = EKm2
+            row["EKm3"] = EKm3
+
+            row["EG1"] = EG1
+            row["EG2"] = EG2
+            row["EG3"] = EG3
+            # row["m*_v"] = m_ratio_v
+            # row["m*_c"] = m_ratio_c
+            # row["ω_v"] = omega_v
+            # row["ω_c"] = omega_c
+
+            # for i in range(numberWave):
+            #    row[f"E2q{i}"] = valuesBandLambda[f"E_2q{i}"]
+            # for i in range(coeff * 3 * qmax):
+            #    row["evalues"] = eigenvals[i]
+            writer.writerow(row)
+
+    return None
 
 
-def butterfly(band, choice: int, qmax: int, kpoint: str, fileData, model: dict):
+def solver(qmax, material: str, model: dict, fileSave: dict):
+    tran = True
+    p = 1
+    coeff = 2
+    kpoint = [0, 0]  # Gamma
+    ### the magnetic Brillouin zone now q times smaller than original Brillouin zone
+    ### the K,K' points now are closed to the Gamma kpoint
+    ### so we only consider the Gamma kpoint
+    numberWaveFunction = 60
     modelParameters = model["modelParameters"]
     modelNeighbor = model["modelNeighbor"]
 
     functionMapping = {"TNN": paraTNN, "NN": paraNN}
-    data = functionMapping[modelNeighbor](choice, modelParameters)
-
-    matt = data["material"]
-    alattice = data["alattice"] * 1e-10
-    E0, h1, h2, h3, h4, h5, h6 = IR_tran(data)
-
-    v1 = v2 = v3 = v4 = v5 = v6 = 0
-    o1 = o2 = o3 = o4 = o5 = o6 = 0
-
-    h = 6.62607007e-34
-    hbar = h / (2 * cp.pi)
-    charge = 1.602176621e-19
-    phi0 = h / charge
-    S = cp.sqrt(3) * alattice**2 / 2
-    m_e = 9.10938356e-31
-
-    if modelNeighbor == "TNN":
-        v1, v2, v3, v4, v5, v6 = IRNN_tran(data)
-        o1, o2, o3, o4, o5, o6 = IRTNN_tran(data)
+    dataParameters = functionMapping[modelNeighbor](material, modelParameters)
+    if tran:
+        E0, h1, h2, h3, h4, h5, h6 = IR_tran(dataParameters)
+        v1 = v2 = v3 = v4 = v5 = v6 = 0
+        o1 = o2 = o3 = o4 = o5 = o6 = 0
+        if modelNeighbor == "TNN":
+            v1, v2, v3, v4, v5, v6 = IRNN_tran(dataParameters)
+            o1, o2, o3, o4, o5, o6 = IRTNN_tran(dataParameters)
+    else:
+        E0, h1, h2, h3, h4, h5, h6 = IR(dataParameters)
+        v1 = v2 = v3 = v4 = v5 = v6 = 0
+        o1 = o2 = o3 = o4 = o5 = o6 = 0
+        if modelNeighbor == "TNN":
+            v1, v2, v3, v4, v5, v6 = IRNN(dataParameters)
+            o1, o2, o3, o4, o5, o6 = IRTNN(dataParameters)
 
     irreducibleMatrix = {
         "NN": [E0, h1, h2, h3, h4, h5, h6],
         "NNN": [v1, v2, v3, v4, v5, v6],
         "TNN": [o1, o2, o3, o4, o5, o6],
     }
-
-    kpoints = {
-        "G": [0, 0],
-        "K1": [4 * cp.pi / (3 * alattice), 0],
-        "K2": [-4 * cp.pi / (3 * alattice), 0],
-        "M": [cp.pi / (alattice), cp.pi / (cp.sqrt(3) * alattice)],
-    }
-
-    kx, ky = kpoints[kpoint]
-
-    coeff = 1
-    args_list = [(p, qmax, coeff, band, alattice, kx, ky, irreducibleMatrix, modelNeighbor, phi0, S, charge, hbar, m_e) for p in range(1, qmax + 1)]
-
-    # chạy song song với 6 core
-    with mp.Pool(processes=6) as pool:
-        results = list(tqdm(pool.imap(solve_p, args_list), total=qmax, desc=f"{matt}", ascii=" #"))
-
-    # ghi file CSV
-    with open(fileData, "w", newline="") as writefile:
-        header = ["eta", "B_values", "evalues", "E_level1", "E_level2", "m*_v", "m*_c", "ω_v", "ω_c"]
-        writer = csv.DictWriter(writefile, fieldnames=header, delimiter=",")
-        writer.writeheader()
-        for rows in results:
-            if rows is not None:
-                writer.writerows(rows)
-
-    return None
+    dataInit = {}
+    dataInit["numberWaveFunction"] = numberWaveFunction
+    dataInit["kpoint"] = kpoint
+    dataInit["qmax"] = qmax
+    dataInit["coeff"] = coeff
+    dataInit["modelNeighbor"] = modelNeighbor
+    dataInit["p"] = p
+    dataInit["alattice"] = dataParameters["alattice"]
+    # waveFunction(dataInit, irreducibleMatrix, fileSave["wave"])
+    calcMass(dataInit, irreducibleMatrix, fileSave["mass"])
 
 
 def main():
-    qmax = 797
-    n_levels = 8
-    choice = 0
+    qmax = 297
+    qrange = [3129]
+    # qrange = [2346, 1877, 1564, 1341, 1173, 1043, 939, 853, 782, 722, 670, 626, 587, 552, 521, 494, 469]
+    # qrange = [3129]
+    # 3129
+    material = "MoS2"
     bandNumber = 3
-    bandSelector = "A"
     modelPara = "GGA"
-    modelNeighbor = "NN"
+    modelNeighbor = "TNN"
     model = {"modelParameters": modelPara, "modelNeighbor": modelNeighbor}
     kpoint1 = "G"
-    # kpoint2 = "K1"
-    # kpoint3 = "K2"
-    # kpoint4 = "M"
-    # listKpoint = [kpoint1, kpoint2, kpoint3, kpoint4]
-    data = paraTNN(choice, model["modelParameters"])
-    matt = data["material"]
 
-    time_run = datetime.now().strftime("%a-%m-%Y")
+    time_run = datetime.now().strftime("%a-%m-%d")
     dir = f"./{time_run}/{modelNeighbor}/"
-    print("folder direction: ", dir)
-    print("Core available: ", mp.cpu_count())
     os.makedirs(os.path.dirname(dir), exist_ok=True)
 
-    fileButterflyK1 = f"{dir}{bandNumber}band_Lambda2q_dataHofstadterButterfly_q_{qmax}_{matt}_{modelPara}_{kpoint1}.dat"
-    # fileButterflyK2 = f"{dir}{bandNumber}band_Lambda2q_dataHofstadterButterfly_q_{qmax}_{matt}_{modelPara}_{kpoint2}.dat"
+    print("folder direction: ", dir)
 
-    filePlotC_k1 = f"{dir}{bandNumber}band_PlotEigenVectors_q_{qmax}_{matt}_{modelPara}_{kpoint1}_vals_vecs.dat"
-    filePlotC_k2 = f"{dir}{bandNumber}band_PlotEigenVectors_2q+1_{qmax}_{matt}_{modelPara}_{kpoint1}_vals_vecs.dat"
-    # filePlotC_k3 = f"{dir}{bandNumber}band_PlotEigenVectors_q_{qmax}_{matt}_{modelPara}_{kpoint3}_vals_vecs.dat"
-    # filePlotC_k4 = f"{dir}{bandNumber}band_PlotEigenVectors_q_{qmax}_{matt}_{modelPara}_{kpoint4}_vals_vecs.dat"
-
-    fileMatrix = f"{bandNumber}band_Matrix_q_{qmax}{time_run}.dat"
-    file_plot_Matrix_Gnu = f"{bandNumber}band_Matrix_q_{qmax}{time_run}_h0.gnuplot"
-
-    filegnu = f"{bandNumber}band_plotHofstadterButterfly_q={qmax}.gnuplot"
-
-    print("file data buttefly K1: ", fileButterflyK1)
-    # print("file data buttefly K2: ", fileButterflyK2)
-    print("file data: ", filePlotC_k1)
-    print("file gnuplot: ", filegnu)
-    print("file Matrix: ", fileMatrix)
-    print("file Matrix GNU: ", file_plot_Matrix_Gnu)
-
-    fileData = {
-        "fileButterfly_K1": fileButterflyK1,
-        "fileMatrix": fileMatrix,
-        "filePlotMatrix": file_plot_Matrix_Gnu,
-        "fileWriteGnu": filegnu,
-        "fileG": filePlotC_k1,
-    }
-
-    butterflyK1 = butterfly(bandNumber, choice, qmax, kpoint1, fileButterflyK1, model)
-    # butterflyK2 = butterfly(bandNumber, choice, qmax, kpoint2, fileData, model)
-
-    # dataK1 = waveFunction(bandNumber, choice, qmax, kpoint1, fileData, model)
-    # dataK2 = waveFunction(bandNumber, choice, qmax, kpoint2, fileData, model)
-    # dataK3 = waveFunction(bandNumber, choice, qmax, kpoint3, fileData, model)
-    # dataK4 = waveFunction(bandNumber, choice, qmax, kpoint4, fileData, model)
-
-    # PlotMatrixGNU(fileMatrix, file_plot_Matrix_Gnu)
-    # saveFunction(currentProg, "fileData")
+    # for qmax in tqdm(qrange, ascii=" #", desc=f"Wave function in diff B", colour="magenta"):
+    filePlotWaveFunction = f"{dir}WaveFunction_q_{qmax}_{material}_{modelPara}.dat"
+    fileMass = f"{dir}Mass_q_{qmax}_{material}_{modelPara}.dat"
+    fileSave = {"wave": filePlotWaveFunction, "mass": fileMass}
+    solver(qmax, material, model, fileSave)
 
     return None
 
