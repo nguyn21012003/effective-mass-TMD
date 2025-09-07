@@ -211,8 +211,8 @@ The new basis can be obtained from the old one by the transformation
 	W =
 	\begin{pNiceMatrix}
 		1 & 0                  & 0                   \\
-		0 & \frac{1}{\sqrt{2}} & \frac{i}{\sqrt{2}}  \\
-		0 & \frac{1}{\sqrt{2}} & -\frac{i}{\sqrt{2}}
+		0 & \frac{i}{\sqrt{2}} & \frac{1}{\sqrt{2}}  \\
+		0 & -\frac{i}{\sqrt{2}} & \frac{1}{\sqrt{2}}
 	\end{pNiceMatrix}.
 \end{gather}
 The TB Hamiltonian in new basis reads
@@ -262,11 +262,17 @@ và khối lượng hiệu dụng cyclotrong được tính bằng công thức
 	\end{aligned}
 \end{equation}
 trong đó $n$ là chỉ số mức Landau. Hàm sóng của 2 mức Landau kế tiếp nhau ở điểm $K$ được thể hiện qua Fig.3. Ở hình 3(a),(b),(c) là hàm sóng ở mức Landau $n=1$, với dải $2q+4$, hình 3(d),(e),(f) là hàm sóng ở mức Landau $n=2$ với dải $2q+8$
-\begin{figure*}[htb]
-	\centering
-	\includegraphics[width=0.75\linewidth]{imgs/landaulevel_ketiep.pdf}
+\begin{figure}[htb]
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{imgs/ButAndWave_c.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{imgs/ButAndWave_v.pdf}
+	\end{subfigure}
 	\caption{Hàm sóng của 2 mức Landau kế tiếp nhau.}
-\end{figure*}
+\end{figure}
 
 \begin{table}[h]
 	\label{Table 2.1}
@@ -368,6 +374,9 @@ Từ Eq.(6) ta tính ra được khối lượng hiệu dụng $m^{*}/m_{0}$ và
 	\end{equation*}
 	\caption{Dán nhãn cho từng band $\lambda$.}
 \end{table}
+
+
+
 
 
 \end{document}
