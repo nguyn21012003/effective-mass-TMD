@@ -17,7 +17,7 @@ set grid xtics ls 81
 # set label "(b)" at -1.8,4.7 font "Arial,40"
 set yrange [*:5.0]
 
-dir = "./Wed-09-03/NN/" 
+dir = "./Thu-09-04/NN/" 
 
 plot dir . "eigenvalue.csv" u 1:3 w l lw 4 lc "black" notitle,\
    dir . "eigenvalue.csv" u 1:4 w l lw 4 lc "black" notitle,\

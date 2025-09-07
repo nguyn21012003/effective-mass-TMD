@@ -66,7 +66,6 @@ def main():
     modelPara = "GGA"
     modelNeighbor = "NN"
     model = {"modelParameters": modelPara, "modelNeighbor": modelNeighbor}
-    kpoint1 = "G"
 
     time_run = datetime.now().strftime("%a-%m-%d")
     dir = f"./{time_run}/{modelNeighbor}/"

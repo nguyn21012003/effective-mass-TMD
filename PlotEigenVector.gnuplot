@@ -12,11 +12,11 @@ set ytics font "Arial,13"
 
 
 
-unset xtics
+set xtics
 # unset ytics
 
 
-dir = "./Thu-08-28/TNN/" 
+dir = "./Sat-09-06/NN/" 
 
 
 # set yrange [0:0.001]
@@ -24,8 +24,8 @@ dir = "./Thu-08-28/TNN/"
 
 #------- (a) --------
 set label "(a)" at graph 0.05,0.95 front font "Arial,20"
-plot dir . "B15.dat" \
-     using 1:175 w l lw 5 lc "#075d37" title "orbital d_{0} landau level n"
+plot dir . "B100.dat" \
+     using 1:13 w l lw 5 lc "#075d37" title "orbital d_{0} landau level n"
 unset label
 
 # # -------- (b) --------
