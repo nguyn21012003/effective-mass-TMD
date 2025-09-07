@@ -94,12 +94,12 @@ plot \
     ''  using 1:( $9/8 - 0.07092646598213989) w l lw 3 lc "#98c127" notitle,\
     ''  using 1:( $10/2 -0.07299133014948526) w l lw 3 lc "#1a70bb" notitle,\
     ''  using 1:( $12/6 -0.07751587635660425) w l lw 3 lc "#98c127" notitle,\
-    ''  using 1:( $17/1 -0.08382356967530796) w l lw 3 lc "#ea801c" notitle,\
-    ''  using 1:( $18/1 -0.08704535880988144) w l lw 3 lc "#1a70bb" notitle,\
-    ''  using 1:( $27/1 -0.09752809872044002) w l lw 3 lc "#ea801c" notitle,\
-    ''  using 1:( $29/1 -0.10011037750249099) w l lw 3 lc "#1a70bb" notitle,\
-    ''  using 1:( $36/1 -0.11144864768509424) w l lw 3 lc "#ea801c" notitle,\
-    ''  using 1:( $44/1 -0.12391433639860834) w l lw 3 lc "#ea801c" notitle
+    ''  using 1:( $17/2 -0.08382356967530796) w l lw 3 lc "#ea801c" notitle,\
+    ''  using 1:( $18/2 -0.08704535880988144) w l lw 3 lc "#1a70bb" notitle,\
+    ''  using 1:( $27/2 -0.09752809872044002) w l lw 3 lc "#ea801c" notitle,\
+    ''  using 1:( $29/3 -0.10011037750249099) w l lw 3 lc "#1a70bb" notitle,\
+    ''  using 1:( $36/3 -0.11144864768509424) w l lw 3 lc "#ea801c" notitle,\
+    ''  using 1:( $44/3 -0.12391433639860834) w l lw 3 lc "#ea801c" notitle
 
 unset label
 unset xrange
