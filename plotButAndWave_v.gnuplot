@@ -22,7 +22,7 @@ set mytics 2
 set mxtics 2
 set xlabel "B(T)" font "CMU Serif,20"
 set ylabel "Energy (eV)" offset -3,0 font "CMU Serif,20"
-
+set label "(d)" at 15,-0.0525 font "CMU Serif, 28"
 
 
 # plot for [i=2:200] NNdir . "But_q_297_MoS2_GGA.dat" u 1:i with points pt 7 ps 0.5 lc rgb "#bdbdbd" notitle ,\
@@ -84,6 +84,7 @@ set size 0.45,1
 set origin 0.45,0.0
 set xlabel "|0>" offset 0,-2 font "CMU Serif,20"
 set ylabel "|{/Symbol y}|^{2}" font "CMU Serif,20"
+set label "(e)" at 365,-0.0525 font "CMU Serif, 28"
 
 plot \
     NNdir . "B100.dat" \
@@ -100,12 +101,13 @@ plot \
     ''  using 1:( $36/1 -0.11144864768509424) w l lw 3 lc "#ea801c" notitle,\
     ''  using 1:( $44/1 -0.12391433639860834) w l lw 3 lc "#ea801c" notitle
 
+unset label
 unset xrange
 set xrange [350:600]
 unset ylabel
 unset xlabel
 set xlabel "|2>" offset 0,-2 font "CMU Serif,20"
-
+set label "(f)" at 365,-0.0525 font "CMU Serif, 28"
 set size 0.45,1
 set origin 0.65,0.0
 
