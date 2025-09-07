@@ -75,25 +75,11 @@ plot for [i=2:200] NNdir . "But_q_297_MoS2_GGA.dat" u 1:i with points pt 7 ps 0.
   NNdir . "But_q_297_MoS2_GGA.dat" u 1:13 with lines lw 2  lc rgb "#98c127" notitle
 
 unset label
-
-
 unset xlabel
 unset ylabel
 unset tics
 unset title
 set xrange [350:600]
-
-# cai nay danh cho conduction
-# plot \
-    NNdir . "WaveFunction_q_297_MoS2_GGA.dat" \
-        using 1:( $2/5 + 1.5857581221263746)    w l lw 3 lc "#1a70bb" notitle ,\
-    ''  using 1:( $5/5 + 1.6128998889188293)     w l lw 3 lc "#1a70bb"      notitle,\
-    ''  using 1:( $6/5 + 1.62636) w l lw 3 lc "#ea801c" notitle,\
-    ''  using 1:( $8/5 + 1.6385878397858133) w l lw 3 lc "#1a70bb" notitle,\
-    ''  using 1:( $10/5 +1.6521823253449328) w l lw 3 lc "#ea801c" notitle,\
-    ''  using 1:( $12/5 +1.6629376027272889) w l lw 3 lc "#1a70bb" notitle,\
-    ''  using 1:( $15/5 +1.6771735536318174) w l lw 3 lc "#ea801c" notitle
-
 set size 0.45,1
 set origin 0.45,0.0
 set xlabel "|0>" offset 0,-2 font "CMU Serif,20"

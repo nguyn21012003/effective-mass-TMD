@@ -17,10 +17,10 @@ unset xtics
 # unset ytics
 
 
-dir = "./Sat-09-06/NN/"
-do for [i=120:179] {
+dir = "./Sun-09-07/NN/"
+do for [i=40:79] {
     set label sprintf("(%d)", i+2) at graph 0.05,0.95 front font "Arial,20"
-    plot dir . "B100.dat" using 1:(column(i+2)) w l lw 2 lc "#0197f6" notitle
+    plot dir . "WaveFunction_q_297_MoS2_GGA.dat" using 1:(column(i+2)) w l lw 2 lc "#0197f6" notitle
     unset label
 }
 unset multiplot
