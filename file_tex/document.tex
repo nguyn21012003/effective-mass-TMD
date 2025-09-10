@@ -91,7 +91,7 @@
 \newlist{abbrv}{itemize}{1}
 \setlist[abbrv,1]{label=,labelwidth=1in,align=parleft,itemsep=0.1\baselineskip,leftmargin=!}
 \begin{document}
-%\setlength{\parindent}{20pt}
+\setlength{\parindent}{20pt}
 %\begin{titlepage}
 %	\begin{center}
 %		{\bfseries
@@ -176,30 +176,38 @@
 %\fancyfoot[C]{\hspace{0cm} \thepage}
 %\setcounter{page}{1}
 %\pagenumbering{arabic}
-\section{Solution}
-%\noindent In the presence of a magnetic field, the vector potential induces the Peierls phases to accumulate in the Bloch wave functions. A flux quantum $\Phi$ over a triangular TMDC's corresponds to a magnetic field of the order of 46,928 T. For smaller $\Phi_{0}$, the unit cell has contain $2q$ atoms and the Hamiltonian becomes an $6q \times 6q$ matrix. However the magnetic field $B\approx 500$~T in the calculation is extremely large compared to the maximum experimental value $B \approx 50$~T, so we need to have another way to diagonalize the Hamiltonian. For the field reachable in experimetnts, it requires huge computing time to solve the Hamiltonian.
+\section{Theory}
+\noindent In the model introduced by Liu~\textit{et al.}, only the orbitals of the M atom are included. We denote the wave functions of the three orbitals of the M atom as
+\begin{gather}
+	\ket{\phi_{1}} = \ket{d_{z^{2}}} , \quad \ket{\phi_{2}} = \ket{d_{xy}} , \quad \ket{\phi_{3}} = \ket{d_{x^{2} - y^{2}}}.
+\end{gather}
+The Bloch wavefunction in this model has the form
+\begin{gather}
+	\psi_{\mathbf{k}}^{\lambda} (\mathbf{r}) = \sum_{j=1}^{3} C_{j}^{\lambda}(\mathbf{k}) \sum_{\mathbf{R}} e^{i \mathbf{k \cdot R}} \phi_{j}(\mathbf{r} - \mathbf{R}).
+\end{gather}
+The coefficents $C_{j}^{\lambda}(\mathbf{k})$ are the solutions of the eigenvalue equation
+\begin{gather}
+	\sum_{jj'}^{3} \left[H_{jj'}^{\text{TB}}(\mathbf{k}) - \varepsilon_{\lambda}(\mathbf{k}) S_{jj'}(\mathbf{k})\right] C_{j}^{\lambda}(\mathbf{k}) = 0,
+\end{gather}
+where
+\begin{equation}
+	\begin{aligned}
+		H_{jj'}^{\text{TB}}(\mathbf{k}) = \sum_{\mathbf{R}} e^{i \mathbf{k \cdot R}} \bra{\phi_{j}(\mathbf{r})} H_{\text{1e}} \ket{\phi_{j'}(\mathbf{r - R})},
+	\end{aligned}
+\end{equation}
+and
+\begin{equation}
+	\begin{aligned}
+		S_{jj'}(\mathbf{k}) = \sum_{\mathbf{R}} \bra{\phi_{j}(\mathbf{r})} \ket{\phi_{j'}(\mathbf{r - R})} \approx \delta_{jj'}.
+	\end{aligned}
+\end{equation}
+
 In the case $B \neq 0$, wave function can be expressed as the coefficients of $C_{ji}^{\lambda}$ in the tight-binding wave function
 \begin{gather}
 	\psi_{\lambda,\mathbf{k}}(\mathbf{r}) = \sum_{j}^{3}\sum_{i}^{2q} C_{ji}^{\lambda}(\mathbf{k}) \sum_{{\alpha}}^{N_{\text{UC}}} e^{i\mathbf{k}\cdot(\mathbf{R}_{\alpha} + \mathbf{r}_{i})} \phi_{j}(\mathbf{r} - \mathbf{R}_{\alpha} - \mathbf{r}_{i}).
 \end{gather}
-where $i = 1 ... 2q$. We have shown that, under an uniform magnetic field, Bloch bands $\lambda$ construct Landau levels at small fields and become fractal-structured at strong fields, which is known as the Hofstadter butterfly.
+where $j=1,2,3$ and $i = 1 ... 2q$. We have shown that, under an uniform magnetic field, Bloch bands $\lambda$ construct Landau levels at small fields and become fractal-structured at strong fields, which is known as the Hofstadter butterfly.
 
-%\begin{figure*}[htb]
-%	\centering
-%	\includegraphics[width=\linewidth]{imgs/plotWaveFunction.pdf}
-%	\caption{band $d_{z^{2}}$}
-%\end{figure*}
-%\begin{figure*}[htb]
-%	\centering
-%	\includegraphics[width=0.9\linewidth]{imgs/plotWaveFunctiond2.pdf}
-%	\caption{band $d_{xy}$}
-%\end{figure*}
-%\begin{figure*}[htb]
-%	\centering
-%	\includegraphics[width=0.9\linewidth]{imgs/plotWaveFunctiond3.pdf}
-%	\caption{band $d_{x^{2} - y^{2}}$}
-%\end{figure*}
-%\newpage
 We now consider a new basis consisting of three eigenfunctions of the angular momentum operators $L^2$ and $L_{z}$, for $l = 2, m = 0, \pm 2$,
 \begin{gather}
 	\ket{\tilde{\phi}_{1}} = \ket{d_{m = 0}}, \quad
@@ -208,45 +216,41 @@ We now consider a new basis consisting of three eigenfunctions of the angular mo
 \end{gather}
 The new basis can be obtained from the old one by the transformation
 \begin{gather}
+	\ket{\tilde{\phi}_{j}} = \sum_{j'} W_{j'j} \ket{\phi_{j}},
+\end{gather}
+where
+\begin{gather}
 	W =
 	\begin{pNiceMatrix}
-		1 & 0                  & 0                   \\
-		0 & \frac{i}{\sqrt{2}} & \frac{1}{\sqrt{2}}  \\
-		0 & -\frac{i}{\sqrt{2}} & \frac{1}{\sqrt{2}}
+		1 & 0                   & 0                  \\
+		0 & \frac{i}{\sqrt{2}}  & -\frac{i}{\sqrt{2}} \\
+		0 & \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}}
 	\end{pNiceMatrix}.
+\end{gather}
+In particular, 
+\begin{gather}
+	\ket{\tilde{\phi}_{1}} = \ket{\phi_{1}},\\
+	\ket{\tilde{\phi}_{2}} = \frac{i}{\sqrt{2}} \ket{\phi_{2}} + \frac{1}{\sqrt{2}} \ket{\phi_{3}},\\
+	\ket{\tilde{\phi}_{3}} = -\frac{i}{\sqrt{2}} \ket{\phi_{2}} + \frac{1}{\sqrt{2}} \ket{\phi_{3}}.
 \end{gather}
 The TB Hamiltonian in new basis reads
 \begin{equation}
 	\begin{aligned}
-		\tilde{H}^{\text{NN}} (\mathbf{k}) & = W H^{NN}(\mathbf{k}) W^{\dagger} \\
-		                                   & =
-		\begin{pNiceMatrix}
-			h_{0}                                        & \frac{1}{\sqrt{2}} (h_{1} - i h_{2})          & \frac{1}{\sqrt{2}} (h_{1} + i h_{2})           \\
-			\frac{1}{\sqrt{2}} (h_{1}^{*} + i h_{2}^{*}) & \frac{1}{2} (h_{11} + h_{22} + 2 \Im{h_{12}}) & \frac{1}{2} (h_{11} - h_{22} + 2i \Re{h_{12}}) \\
-			\frac{1}{\sqrt{2}} (h_{1}^{*} - i h_{2}^{*}) & \frac{1}{2} (h_{11} - h_{22} - 2 \Im{h_{12}}) & \frac{1}{2} (h_{11} + h_{22} - 2i \Re{h_{12}})
-		\end{pNiceMatrix}.
+		\tilde{H}^{\text{TB}} (\mathbf{k}) & = W^{\dagger} H^{\text{TB}}(\mathbf{k}) W,
 	\end{aligned}
 \end{equation}
-\begin{figure*}[htb]
-	\centering
-	\includegraphics[width=0.75\linewidth]{imgs/BSDFT.pdf}
-	\caption{Bandstructure lấy từ bài Liu.}
-\end{figure*}
-\begin{figure*}[htb]
-	\centering
-	\includegraphics[width=0.75\linewidth]{imgs/NN-Tran-d0-d1-d2-2q-2q1.pdf}
-	\caption{Wavefunctions using NN model.}
-\end{figure*}
+where $H^{\text{TB}} = H^{\text{NN}}$ or $H^{\text{TNN}}$.
+
 %\begin{figure*}[htb]
 %	\centering
-%	\includegraphics[width=\linewidth]{imgs/TNN-Tran-d0-d1-d2-2q-2q1.pdf}
-%	\caption{Wavefunctions using TNN model.}
+%	\includegraphics[width=0.75\linewidth]{imgs/BSDFT.pdf}
+%	\caption{Adopted from Liu \textit{et al.}}
 %\end{figure*}
-Ở {Hình~1}, tại điểm $K$, dải hoá trị có đóng góp chủ yếu từ hai orbital $d_{xy}$ và $d_{x^{2} - y^{2}}$, trong khi dải dẫn chủ yếu đến từ orbital $d_{z^{2}}$. Khi có mặt từ trường, vùng Brillouin zone bị thu nhỏ lại $2q$ lần so với vùng Brillouin gốc, khiến các điểm $K$ và $K'$ co lại và nằm gần điểm $\Gamma$. Do đó, trong bài này, chúng tôi chỉ xét phổ Hofstadter butterfly tại điểm $\Gamma$.
+%
+%Ở {Hình~1}, tại điểm $K$, dải hoá trị có đóng góp chủ yếu từ hai orbital $d_{xy}$ và $d_{x^{2} - y^{2}}$, trong khi dải dẫn chủ yếu đến từ orbital $d_{z^{2}}$. Khi có mặt từ trường, vùng Brillouin zone bị thu nhỏ lại $2q$ lần so với vùng Brillouin gốc, khiến các điểm $K$ và $K'$ co lại và nằm gần điểm $\Gamma$. Do đó, trong bài này, chúng tôi chỉ xét phổ Hofstadter butterfly tại điểm $\Gamma$.
+%
+%Ở {Hình~2}, khi có từ trường, hàm sóng được biểu diễn tại $\Gamma = (0,0)$. Cụ thể, các hình {(a)}, {(b)}, {(c)} tương ứng với mức $2q$ (dải hoá trị), trong khi các hình {(d)}, {(e)}, {(f)} tương ứng với mức $2q+1$ (dải dẫn).
 
-Ở {Hình~2}, khi có từ trường, hàm sóng được biểu diễn tại $\Gamma = (0,0)$. Cụ thể, các hình {(a)}, {(b)}, {(c)} tương ứng với mức $2q$ (dải hoá trị), trong khi các hình {(d)}, {(e)}, {(f)} tương ứng với mức $2q+1$ (dải dẫn).
-
-\subsection{Cyclotron frequency}
 Tại $p = 1$, $q = 4723$, tần số cyclotron được tính theo công thức
 \begin{equation}
 	\begin{aligned}
@@ -262,121 +266,91 @@ và khối lượng hiệu dụng cyclotrong được tính bằng công thức
 	\end{aligned}
 \end{equation}
 trong đó $n$ là chỉ số mức Landau. Hàm sóng của 2 mức Landau kế tiếp nhau ở điểm $K$ được thể hiện qua Fig.3. Ở hình 3(a),(b),(c) là hàm sóng ở mức Landau $n=1$, với dải $2q+4$, hình 3(d),(e),(f) là hàm sóng ở mức Landau $n=2$ với dải $2q+8$
+
+\newpage
+\subsection{Effective mass}
+\subsubsection*{Monolayer MoS$_{2}$}
+
 \begin{figure}[htb]
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{imgs/ButAndWave_c.pdf}
+		\includegraphics[width=0.8\linewidth]{imgs/ButAndWave_c.pdf}
 	\end{subfigure}
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{imgs/ButAndWave_v.pdf}
+		\includegraphics[width=0.8\linewidth]{imgs/ButAndWave_v.pdf}
 	\end{subfigure}
 	\caption{Hàm sóng của 2 mức Landau kế tiếp nhau.}
 \end{figure}
 
-\begin{table}[h]
-	\label{Table 2.1}
-	\begin{equation*}
-		\renewcommand{\arraystretch}{1.5}
-		\begin{NiceArray}{c c | c c}
-			\hline
-			\hline
-			\text{Band} \; \lambda & \text{Label} & \text{Band} \; \lambda & \text{Label}  \\
-			\hline
-			2q+1                   & \ev{0,0}_{K'} & 2q+7                   & \ev{0,2}_{K}  \\
-			2q+2                   & \ev{0,0}_{K'} & 2q+8                   & \ev{0,2}_{K}  \\
-			2q+3                   & \ev{0,1}_{K}  & 2q+9                   & \ev{0,1}_{K'} \\
-			2q+4                   & \ev{0,1}_{K}  & 2q+10                  & \ev{0,1}_{K'} \\
-			2q+5                   & \ev{0,0}_{K'} & 2q+11                  & \ev{0,2}_{K}  \\
-			2q+6                   & \ev{0,0}_{K'} & 2q+12                  & \ev{0,3}_{K}  \\
-			\hline
-			\hline
-		\end{NiceArray}
-	\end{equation*}
-	\caption{Dán nhãn cho từng band $\lambda$.}
-\end{table}
-Từ Eq.(6) ta tính ra được khối lượng hiệu dụng $m^{*}/m_{0}$ và tần số cyclotron, được biểu diễn trong hình.4 và hình.5
-%\begin{figure*}[htb]
-%	\centering
-%	\includegraphics[width=0.5\linewidth]{imgs/meff1.pdf}
-%	\caption{Khối lượng hiệu dụng $m*/m_{0}$ tại $q = 4723$.}
-%\end{figure*}
-%\begin{figure*}[htb]
-%	\centering
-%	\includegraphics[width=0.5\linewidth]{imgs/meffTNN.pdf}
-%	\caption{Khối lượng hiệu dụng $m*/m_{0}$ tại $q = 4723$.}
-%\end{figure*}
-%trong đó $m_{0}$ là khối lượng electron.
+Khối lượng hiệu dụng cho MoS$_{2}$
 
-Ở hình.4 khối lượng hiệu dụng ở $B=40$~T đột ngột tăng lên bất thường là do năng lượng ở 2 mức Landau kết tiếp nhau $\Delta E \approxeq 0$ dẫn đến tăng lên đột ngột. Điều này có thể thấy ở hình.5 tần số Cyloctron giảm từ $\approx 3\times10^{13}$ xuống còn $5\times10^{12}$ Hz
+\begin{figure}[htb]
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/MoS2/massK1.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/MoS2/massK2.pdf}
+	\end{subfigure}
+	\caption{Khối lượng hiệu dụng.}
+\end{figure}
+\newpage
+\subsubsection*{Monolayer MoSe$_{2}$}
+\begin{figure}[htb]
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/MoSe2/ButAndWave_c.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/MoSe2/ButAndWave_v.pdf}
+	\end{subfigure}
+	\caption{Hàm sóng của 2 mức Landau kế tiếp nhau.}
+\end{figure}
+Khối lượng hiệu dụng
+
+\begin{figure}[htb]
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/MoSe2/massK1.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/MoSe2/massK2.pdf}
+	\end{subfigure}
+	\caption{Khối lượng hiệu dụng.}
+\end{figure}
 
 \newpage
+\subsubsection*{Monolayer MoTe$_{2}$}
+\begin{figure}[htb]
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/MoTe2/ButAndWave_c.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/MoTe2/ButAndWave_v.pdf}
+	\end{subfigure}
+	\caption{Hàm sóng của 2 mức Landau kế tiếp nhau.}
+\end{figure}
 
+Khối lượng hiệu dụng 
+\begin{figure}[htb]
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/MoTe2/massK1.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/MoTe2/massK2.pdf}
+	\end{subfigure}
+	\caption{Khối lượng hiệu dụng.}
+\end{figure}
 
-\begin{table}[h]
-	\begin{equation*}
-		\renewcommand{\arraystretch}{1.5}
-		\begin{NiceArray}{c c}
-			\hline
-			\hline
-			\text{Band} \; \lambda & \text{Label} \\
-			\hline
-			2q - 1 & \ev{2,0}_{K'} \\
-			2q - 2 & \ev{2,0}_{K'} \\
-			2q - 3 & \ev{0,0}_{\Gamma} \\
-			2q - 4 & \ev{0,0}_{\Gamma} \\
-			2q - 5 & \ev{0,1}_{\Gamma} \\
-			2q - 6 & \ev{0,1}_{\Gamma} \\
-			2q - 7 & \ev{2,1}_{K'} \\
-			2q - 8 & \ev{2,1}_{K'} \\
-			2q - 9 & \ev{2,2}_{\Gamma} \\
-			2q - 10 & \ev{0,2}_{\Gamma} \\
-			2q - 11 & \ev{0,3}_{\Gamma} \\
-			2q - 12 & \ev{0,3}_{\Gamma} \\
-			2q - 13 & \ev{0,4}_{\Gamma} \\
-			2q - 14 & \ev{0,4}_{\Gamma} \\
-			\cellcolor{yellow} 2q - 15 & \cellcolor{yellow} \ev{2,0}_{K} \\
-			\cellcolor{yellow} 2q - 16 & \cellcolor{yellow} \ev{2,0}_{K} \\
-			2q - 17 & \ev{2,2}_{K'} \\
-			2q - 18 & \ev{2,2}_{K'} \\
-			2q - 19 & \ev{0,5}_{\Gamma} \\
-			2q - 20 & \ev{0,5}_{\Gamma} \\
-			2q - 21 & \ev{0,6}_{\Gamma} \\
-			2q - 22 & \ev{0,6}_{\Gamma} \\
-			2q - 23 & \ev{0,7}_{\Gamma} \\
-			2q - 24 & \ev{0,7}_{\Gamma} \\
-			2q - 25 & \ev{2,3}_{K'} \\
-			2q - 26 & \ev{2,3}_{K'} \\
-			\cellcolor{yellow} 2q - 27 & \cellcolor{yellow} \ev{2,1}_{K} \\
-			\cellcolor{yellow} 2q - 28 & \cellcolor{yellow} \ev{2,1}_{K} \\
-			2q - 29 & \ev{0,8}_{\Gamma} \\
-			2q - 30 & \ev{0,8}_{\Gamma} \\
-			\hline
-			\hline
-		\end{NiceArray}
-	\end{equation*}
-	\caption{Dán nhãn cho từng band $\lambda$.}
-\end{table}
-
-\begin{table}[h]
-	\begin{equation*}
-		\renewcommand{\arraystretch}{1.5}
-		\begin{NiceArray}{c c}
-			\hline
-			\hline
-			\text{Band} \; \lambda & \text{Label} \\
-			\hline
-			2q + 1 & \ev{0,0}_{K'}\\
-			2q + 1 & \ev{0,0}_{K'}\\
-			\hline
-			\hline
-		\end{NiceArray}
-	\end{equation*}
-	\caption{Dán nhãn cho từng band $\lambda$.}
-\end{table}
-
-
-
-
+\newpage
+\subsubsection*{Monolayer WS$_{2}$}
 
 \end{document}
