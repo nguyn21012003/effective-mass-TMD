@@ -7,7 +7,7 @@ from file_python.HamTMD import HamNN
 from file_python.HamTMDNN import HamTNN
 
 
-def waveFunction(dataInit, irreducibleMatrix, fileSave):
+def waveFunction(dataInit: dict, irreducibleMatrix: list, fileSave: str):
     ##### chi so dau vao
     p = dataInit["p"]
     coeff = dataInit["coeff"]

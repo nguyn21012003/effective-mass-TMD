@@ -66,6 +66,8 @@ offsetK1 = {
     469: (1, 9, 17, 27),  # 100T → NN: 2q-1, 2q-9  | TNN: 2q-1, 2q-9
 }
 
+for i, v in enumerate(offsetK1):
+    print(i, v)
 
 offsetG = {
     3129: (1, 3, 5, 7),

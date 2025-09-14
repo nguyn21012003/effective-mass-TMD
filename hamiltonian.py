@@ -13,7 +13,7 @@ from file_python.parameters import paraNN, paraTNN
 from file_python.waveFunction import waveFunction
 
 
-def solver(qmax, material: str, model: dict, fileSave: dict):
+def solver(qmax: int, material: str, model: dict, fileSave: dict):
     tran = True
     p = 1
     coeff = 2
@@ -21,7 +21,7 @@ def solver(qmax, material: str, model: dict, fileSave: dict):
     ### the magnetic Brillouin zone now q times smaller than original Brillouin zone
     ### the K,K' points now are closed to the Gamma kpoint
     ### so we only consider the Gamma kpoint
-    numberWaveFunction = 40
+    numberWaveFunction = 60
     modelParameters = model["modelParameters"]
     modelNeighbor = model["modelNeighbor"]
 
@@ -72,6 +72,7 @@ def main():
     os.makedirs(os.path.dirname(dir), exist_ok=True)
 
     print("folder direction: ", dir)
+    print(material, modelNeighbor, modelPara)
 
     # for qmax in tqdm(qrange, ascii=" #", desc=f"Wave function in diff B", colour="magenta"):
     filePlotWaveFunction = f"{dir}WaveFunction_q_{qmax}_{material}_{modelPara}.dat"

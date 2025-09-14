@@ -17,19 +17,19 @@ set grid xtics ls 81
 # set label "(b)" at -1.8,4.7 font "Arial,40"
 set yrange [*:5.0]
 
-dir = "./Thu-09-04/NN/" 
+dir = "./Wed-09-10/NN/" 
 
-plot dir . "eigenvalue.csv" u 1:3 w l lw 4 lc "black" notitle,\
-   dir . "eigenvalue.csv" u 1:4 w l lw 4 lc "black" notitle,\
-   dir . "eigenvalue.csv" u 1:5 w l lw 4 lc "black" notitle
+plot dir . "MoTe2_eigenvalue.csv" u 1:3 w l lw 4 lc "black" notitle,\
+     dir . "MoTe2_eigenvalue.csv" u 1:4 w l lw 4 lc "black" notitle,\
+     dir . "MoTe2_eigenvalue.csv" u 1:5 w l lw 4 lc "black" notitle
 
 
-# plot "eigenvalueTNNup.txt" using 1:3 w l lw 4 lc "red" notitle "spin up" ,\
-    "eigenvalueTNNdown.txt" using 1:3  w l lw 4 lc rgb "blue" notitle "spin down",\
-    "eigenvalueTNNup.txt" using 1:4  w l lw 4 lc rgb "red"  notitle ,\
-    "eigenvalueTNNdown.txt" using 1:4  w l lw 4 lc rgb "blue" notitle ,\
-    "eigenvalueTNNup.txt" using 1:5  w l lw 4 lc rgb "red"  notitle ,\
-    "eigenvalueTNNdown.txt" using 1:5  w l lw 4 lc rgb "blue" notitle ,\
+# plot "MoS2_eigenvalueTNNup.txt" using 1:3 w l lw 4 lc "red" notitle "spin up" ,\
+    "MoS2_eigenvalueTNNdown.txt" using 1:3  w l lw 4 lc rgb "blue" notitle "spin down",\
+    "MoS2_eigenvalueTNNup.txt" using 1:4  w l lw 4 lc rgb "red"  notitle ,\
+    "MoS2_eigenvalueTNNdown.txt" using 1:4  w l lw 4 lc rgb "blue" notitle ,\
+    "MoS2_eigenvalueTNNup.txt" using 1:5  w l lw 4 lc rgb "red"  notitle ,\
+    "MoS2_eigenvalueTNNdown.txt" using 1:5  w l lw 4 lc rgb "blue" notitle ,\
      1/0 with points pt 7 ps 2 lc rgb 'red' title 'spin up' ,\
      1/0 with points pt 7 ps 2 lc rgb 'blue' title 'spin down'
 

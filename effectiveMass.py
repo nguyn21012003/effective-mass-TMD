@@ -128,7 +128,7 @@ def massNN(material: str, model: str):
 
 def main():
     modelParameter = "GGA"
-    material = "MoS2"
+    material = "WTe2"
     modelNeighbor = "TNN"
     if modelNeighbor == "NN":
         meff_e, meff_h, mr = massNN(material, modelParameter)
@@ -139,7 +139,7 @@ def main():
         por_mh = (mhB - meff_h) / meff_h * 100
         por_mr = (mrB - mr) / mr * 100
         print(meff_e, meff_h, mr, "\n")
-        print(por_me, por_mh, por_mr)
+        # print(por_me, por_mh, por_mr)
 
     elif modelNeighbor == "TNN":
         meff_e, meff_h, mr = massTNN(material, modelParameter)
@@ -150,8 +150,8 @@ def main():
         por_mh = (mhB - meff_h) / meff_h * 100
         por_mr = (mrB - mr) / mr * 100
         print(meff_e, meff_h, mr, "\n")
-        print(meB, mhB)
-        print(por_me, por_mh, por_mr)
+        # print(meB, mhB)
+        # print(por_me, por_mh, por_mr)
 
 
 if __name__ == "__main__":

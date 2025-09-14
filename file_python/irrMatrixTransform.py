@@ -5,11 +5,11 @@ from numpy import pi, sin, cos, sqrt
 W = np.array(
     [
         [1, 0, 0],
-        [0, 1j / sqrt(2), 1 / sqrt(2)],
-        [0, -1j / sqrt(2), 1 / sqrt(2)],
+        [0, 1j / sqrt(2), -1j / sqrt(2)],
+        [0, 1 / sqrt(2), 1 / sqrt(2)],
     ]
 )
-### d_0, d_-2, d_2
+### d_0, d_2, d_-2
 
 
 def IRTNN(data):
@@ -74,12 +74,12 @@ def IRTNN(data):
     E_R11 = D_2C3 @ E_R7 @ D_2C3.T
     E_R12 = D_S2 @ E_R7 @ D_S2.T
 
-    E_R7 = W @ E_R7 @ np.conjugate(W).T
-    E_R8 = W @ E_R8 @ np.conjugate(W).T
-    E_R9 = W @ E_R9 @ np.conjugate(W).T
-    E_R10 = W @ E_R10 @ np.conjugate(W).T
-    E_R11 = W @ E_R11 @ np.conjugate(W).T
-    E_R12 = W @ E_R12 @ np.conjugate(W).T
+    E_R7 = np.conjugate(W).T @ E_R7 @ W
+    E_R8 = np.conjugate(W).T @ E_R8 @ W
+    E_R9 = np.conjugate(W).T @ E_R9 @ W
+    E_R10 = np.conjugate(W).T @ E_R10 @ W
+    E_R11 = np.conjugate(W).T @ E_R11 @ W
+    E_R12 = np.conjugate(W).T @ E_R12 @ W
 
     return E_R7, E_R8, E_R9, E_R10, E_R11, E_R12
 
@@ -128,12 +128,12 @@ def IRNN(data):
     v5 = D5 @ v1 @ D5.T
     v6 = D4 @ v4 @ D4.T
 
-    v1 = W @ v1 @ np.conjugate(W).T
-    v2 = W @ v2 @ np.conjugate(W).T
-    v3 = W @ v3 @ np.conjugate(W).T
-    v4 = W @ v4 @ np.conjugate(W).T
-    v5 = W @ v5 @ np.conjugate(W).T
-    v6 = W @ v6 @ np.conjugate(W).T
+    v1 = np.conjugate(W).T @ v1 @ W
+    v2 = np.conjugate(W).T @ v2 @ W
+    v3 = np.conjugate(W).T @ v3 @ W
+    v4 = np.conjugate(W).T @ v4 @ W
+    v5 = np.conjugate(W).T @ v5 @ W
+    v6 = np.conjugate(W).T @ v6 @ W
 
     return v1, v2, v3, v4, v5, v6
 
@@ -210,12 +210,12 @@ def IR(data):
     E_R5 = D_2C3 @ E_R1 @ D_2C3.T
     E_R6 = D_S2 @ E_R1 @ D_S2.T
 
-    E_R0 = W @ E_R0 @ np.conjugate(W).T
-    E_R1 = W @ E_R1 @ np.conjugate(W).T
-    E_R2 = W @ E_R2 @ np.conjugate(W).T
-    E_R3 = W @ E_R3 @ np.conjugate(W).T
-    E_R4 = W @ E_R4 @ np.conjugate(W).T
-    E_R5 = W @ E_R5 @ np.conjugate(W).T
-    E_R6 = W @ E_R6 @ np.conjugate(W).T
+    E_R0 = np.conjugate(W).T @ E_R0 @ W
+    E_R1 = np.conjugate(W).T @ E_R1 @ W
+    E_R2 = np.conjugate(W).T @ E_R2 @ W
+    E_R3 = np.conjugate(W).T @ E_R3 @ W
+    E_R4 = np.conjugate(W).T @ E_R4 @ W
+    E_R5 = np.conjugate(W).T @ E_R5 @ W
+    E_R6 = np.conjugate(W).T @ E_R6 @ W
 
     return (E_R0, E_R1, E_R2, E_R3, E_R4, E_R5, E_R6)

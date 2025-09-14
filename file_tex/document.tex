@@ -251,21 +251,25 @@ where $H^{\text{TB}} = H^{\text{NN}}$ or $H^{\text{TNN}}$.
 %
 %Ở {Hình~2}, khi có từ trường, hàm sóng được biểu diễn tại $\Gamma = (0,0)$. Cụ thể, các hình {(a)}, {(b)}, {(c)} tương ứng với mức $2q$ (dải hoá trị), trong khi các hình {(d)}, {(e)}, {(f)} tương ứng với mức $2q+1$ (dải dẫn).
 
-Tại $p = 1$, $q = 4723$, tần số cyclotron được tính theo công thức
+The cyclotron frequency can be obtained from the energy difference between two Landau levels
 \begin{equation}
 	\begin{aligned}
-		\hbar \omega_{c}       & = E_{n+1} - E_{n}                \\
-		\Rightarrow \omega_{c} & = \frac{E_{n+1} - E_{n}}{\hbar},
+		\hbar \omega_{c}       & = E_{n+1} - E_{n}  ,
 	\end{aligned}
 \end{equation}
-và khối lượng hiệu dụng cyclotrong được tính bằng công thức
-\begin{equation}
-	\begin{aligned}
-		\omega_{c}        & = \frac{eB}{m^{*}}
-		\Rightarrow m^{*} & =  \frac{eB}{\omega_{c}} = \frac{eB}{\frac{E_{n+1} - E_{n}}{\hbar}} = \frac{eB \hbar}{E_{n+1} - E_{n}}
-	\end{aligned}
-\end{equation}
-trong đó $n$ là chỉ số mức Landau. Hàm sóng của 2 mức Landau kế tiếp nhau ở điểm $K$ được thể hiện qua Fig.3. Ở hình 3(a),(b),(c) là hàm sóng ở mức Landau $n=1$, với dải $2q+4$, hình 3(d),(e),(f) là hàm sóng ở mức Landau $n=2$ với dải $2q+8$
+which gives
+\begin{gather}
+	\omega_{c}  = \frac{E_{n+1} - E_{n}}{\hbar}.
+\end{gather}
+On the other hand, the cyclotron frequency is also defined as
+\begin{gather}
+	\omega_{c}         = \frac{eB}{m^{*}}.
+\end{gather}
+Combining the two expressions, the effective mas can be written as 
+\begin{gather}
+	m^{*}  =  \frac{eB}{\omega_{c}} = \frac{eB}{\frac{E_{n+1} - E_{n}}{\hbar}} = \frac{eB \hbar}{E_{n+1} - E_{n}}.
+\end{gather}
+
 
 \newpage
 \subsection{Effective mass}
@@ -274,11 +278,11 @@ trong đó $n$ là chỉ số mức Landau. Hàm sóng của 2 mức Landau kế
 \begin{figure}[htb]
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/ButAndWave_c.pdf}
+		\includegraphics[width=0.8\linewidth]{imgs/MoS2/ButAndWave_c.pdf}
 	\end{subfigure}
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/ButAndWave_v.pdf}
+		\includegraphics[width=0.8\linewidth]{imgs/MoS2/ButAndWave_v.pdf}
 	\end{subfigure}
 	\caption{Hàm sóng của 2 mức Landau kế tiếp nhau.}
 \end{figure}
@@ -352,5 +356,82 @@ Khối lượng hiệu dụng
 
 \newpage
 \subsubsection*{Monolayer WS$_{2}$}
+\begin{figure}[htb]
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/WS2/ButAndWave_c.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/WS2/ButAndWave_v.pdf}
+	\end{subfigure}
+	\caption{Hàm sóng của 2 mức Landau kế tiếp nhau.}
+\end{figure}
 
+Khối lượng hiệu dụng 
+\begin{figure}[htb]
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/WS2/massK1.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/WS2/massK2.pdf}
+	\end{subfigure}
+	\caption{Khối lượng hiệu dụng.}
+\end{figure}
+\newpage
+\subsubsection*{Monolayer WSe$_{2}$}
+\begin{figure}[htb]
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/WSe2/ButAndWave_c.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/WSe2/ButAndWave_v.pdf}
+	\end{subfigure}
+	\caption{Hàm sóng của 2 mức Landau kế tiếp nhau.}
+\end{figure}
+
+Khối lượng hiệu dụng 
+\begin{figure}[htb]
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/WSe2/massK1.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/WSe2/massK2.pdf}
+	\end{subfigure}
+	\caption{Khối lượng hiệu dụng.}
+\end{figure}
+
+
+\newpage
+\subsubsection*{Monolayer WTe$_{2}$}
+\begin{figure}[htb]
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/WTe2/ButAndWave_c.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/WTe2/ButAndWave_v.pdf}
+	\end{subfigure}
+	\caption{Hàm sóng của 2 mức Landau kế tiếp nhau.}
+\end{figure}
+
+Khối lượng hiệu dụng 
+\begin{figure}[htb]
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/WTe2/massK1.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{imgs/WTe2/massK2.pdf}
+	\end{subfigure}
+	\caption{Khối lượng hiệu dụng.}
+\end{figure}
 \end{document}

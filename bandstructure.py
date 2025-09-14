@@ -16,8 +16,8 @@ from file_python.parameters import paraNN, paraTNN
 
 
 def eigenvalue(choice, fileBandStruct):
-    N = 200
-    model = "LDA"
+    N = 500
+    model = "GGA"
     data = paraTNN(choice, model)
     # matt, a_lattice, e1, e2, t0, t1, t2, t11, t12, t22 = paraNN(argument)
     a_lattice = data["alattice"]
@@ -120,11 +120,12 @@ def eigenvalue(choice, fileBandStruct):
 
 def main():
     modelNeighbor = "TNN"
-    material = "MoS2"
+    material = "WS2"
+    print(material, modelNeighbor)
     time_run = datetime.now().strftime("%a-%m-%d")
     dir = f"./{time_run}/{modelNeighbor}/"
     os.makedirs(os.path.dirname(dir), exist_ok=True)
-    fileBandStruct = f"{dir}/eigenvalue.csv"
+    fileBandStruct = f"{dir}/{material}_eigenvalue.csv"
     eigenvalue(material, fileBandStruct)
 
 

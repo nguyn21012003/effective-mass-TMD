@@ -52,10 +52,10 @@ set label " |2,1>_{K'}" at 80,-0.09752809872044002 tc rgb "#ea801c" font "CMU Se
 set label " |2,2>_{K'}" at 80,-0.11144864768509424 tc rgb "#ea801c" font "CMU Serif, 20"
 set label " |2,3>_{K'}" at 80,-0.12391433639860834 tc rgb "#ea801c" font "CMU Serif, 20"
 
-set label " |2,0>_{Γ}" at 80,-0.061184980569793646 tc rgb "#98c127" font "CMU Serif, 20"
-set label " |2,1>_{Γ}" at 80,-0.06568314172560115 tc rgb  "#98c127" font "CMU Serif, 20"
-set label " |2,2>_{Γ}" at 80,-0.07072646598213989 tc rgb  "#98c127" font "CMU Serif, 20"
-set label " |2,3>_{Γ}" at 80,-0.07631587635660425 tc rgb  "#98c127" font "CMU Serif, 20"
+set label " |0,0>_{Γ}" at 80,-0.061184980569793646 tc rgb "#98c127" font "CMU Serif, 20"
+set label " |0,1>_{Γ}" at 80,-0.06568314172560115 tc rgb  "#98c127" font "CMU Serif, 20"
+set label " |0,2>_{Γ}" at 80,-0.07072646598213989 tc rgb  "#98c127" font "CMU Serif, 20"
+set label " |0,3>_{Γ}" at 80,-0.07631587635660425 tc rgb  "#98c127" font "CMU Serif, 20"
 
 set size 0.5,1
 set origin 0.0,0.0
@@ -88,8 +88,8 @@ set label "(e)" at 365,-0.0525 font "CMU Serif, 28"
 
 plot \
     NNdir . "B100.dat" \
-        using 1:( $3/8 - 0.058584980569793646)    w l lw 3 lc "#1a70bb" notitle ,\
-    ''  using 1:( $5/8 - 0.061184980569793646)     w l lw 3 lc "#98c127"      notitle,\
+        using 1:( $3/8 - 0.05858498056979364) w l lw 3 lc "#1a70bb" notitle,\
+    ''  using 1:( $5/8 - 0.06118498056979364) w l lw 3 lc "#98c127" notitle,\
     ''  using 1:( $7/8  -0.06668314172560115) w l lw 3 lc "#98c127" notitle,\
     ''  using 1:( $9/8 - 0.07092646598213989) w l lw 3 lc "#98c127" notitle,\
     ''  using 1:( $10/2 -0.07299133014948526) w l lw 3 lc "#1a70bb" notitle,\
@@ -113,18 +113,18 @@ set origin 0.65,0.0
 
 plot \
     NNdir . "B100.dat" \
-        using 1:( $62/8 - 0.058584980569793646)    w l lw 3 lc "#1a70bb" notitle ,\
-    ''  using 1:( $65*2 - 0.061184980569793646)     w l lw 3 lc "#98c127"      notitle,\
-    ''  using 1:( $67*2  -0.06668314172560115) w l lw 3 lc "#98c127" notitle,\
-    ''  using 1:( $69*2 - 0.07092646598213989) w l lw 3 lc "#98c127" notitle,\
-    ''  using 1:( $70/8 -0.07299133014948526) w l lw 3 lc "#1a70bb" notitle,\
-    ''  using 1:( $72*2 -0.07751587635660425) w l lw 3 lc "#98c127" notitle,\
-    ''  using 1:( $137/8 -0.08382356967530796) w l lw 3 lc "#ea801c" notitle,\
-    ''  using 1:( $78/8 -0.08704535880988144) w l lw 3 lc "#1a70bb" notitle,\
-    ''  using 1:( $147/8 -0.09752809872044002) w l lw 3 lc "#ea801c" notitle,\
-    ''  using 1:( $89/8 -0.10011037750249099) w l lw 3 lc "#1a70bb" notitle,\
-    ''  using 1:( $156/5 -0.11144864768509424) w l lw 3 lc "#ea801c" notitle,\
-    ''  using 1:( $167/5 -0.12391433639860834) w l lw 3 lc "#ea801c" notitle
+        using 1:( $62/8 - 0.058584980569793646)  w l lw 3 lc "#1a70bb" notitle,\
+    ''  using 1:( $65*2 - 0.061184980569793646)  w l lw 3 lc "#98c127" notitle,\
+    ''  using 1:( $67*2 -0.06668314172560115)    w l lw 3 lc "#98c127" notitle,\
+    ''  using 1:( $69*2 - 0.07092646598213989)   w l lw 3 lc "#98c127" notitle,\
+    ''  using 1:( $70/8 -0.07299133014948526)    w l lw 3 lc "#1a70bb" notitle,\
+    ''  using 1:( $72*2 -0.07751587635660425)    w l lw 3 lc "#98c127" notitle,\
+    ''  using 1:( $137/8 -0.08382356967530796)   w l lw 3 lc "#ea801c" notitle,\
+    ''  using 1:( $78/8 -0.08704535880988144)    w l lw 3 lc "#1a70bb" notitle,\
+    ''  using 1:( $147/8 -0.09752809872044002)   w l lw 3 lc "#ea801c" notitle,\
+    ''  using 1:( $89/8 -0.10011037750249099)    w l lw 3 lc "#1a70bb" notitle,\
+    ''  using 1:( $156/5 -0.11144864768509424)   w l lw 3 lc "#ea801c" notitle,\
+    ''  using 1:( $167/5 -0.12391433639860834)   w l lw 3 lc "#ea801c" notitle
 
 
 

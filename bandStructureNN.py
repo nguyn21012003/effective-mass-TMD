@@ -104,7 +104,7 @@ def main():
     time_run = datetime.now().strftime("%a-%m-%d")
     dir = f"./{time_run}/{modelNeighbor}/"
     os.makedirs(os.path.dirname(dir), exist_ok=True)
-    fileBandStruct = f"{dir}/eigenvalue.csv"
+    fileBandStruct = f"{dir}/{material}_eigenvalue.csv"
     eigenvalue(material, fileBandStruct)
 
 
