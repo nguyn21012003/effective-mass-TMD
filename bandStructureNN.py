@@ -25,24 +25,9 @@ def eigenvalue(material: str, fileBandStruct: str):
     L2 = np.zeros((N, N))
     L3 = np.zeros((N, N))
 
-    ak1 = np.zeros(N)
-    ak2 = np.zeros(N)
     G = 4 * pi / (sqrt(3) * a_lattice)
-
-    k1min = -G / 2
-    k1max = G / 2
-    k2min = -G / 2
-    k2max = G / 2
-
-    dk1 = (k1max - k1min) / (N - 1)
-    dk2 = (k2max - k2min) / (N - 1)
-
-    for i in range(N):
-        ak1[i] = k1min + i * dk1
-
-    for j in range(N):
-        ak2[j] = k2min + j * dk2
-
+    ak1 = np.linspace(-G / 2, G / 2, N)
+    ak2 = np.linspace(-G / 2, G / 2, N)
     akx = np.zeros((len(ak1), len(ak2)))
     aky = np.zeros((len(ak1), len(ak2)))
 

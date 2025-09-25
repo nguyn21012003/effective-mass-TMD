@@ -16,7 +16,7 @@ from file_python.parameters import paraNN, paraTNN
 
 
 def eigenvalue(choice, fileBandStruct):
-    N = 500
+    N = 101
     model = "GGA"
     data = paraTNN(choice, model)
     # matt, a_lattice, e1, e2, t0, t1, t2, t11, t12, t22 = paraNN(argument)
@@ -30,31 +30,12 @@ def eigenvalue(choice, fileBandStruct):
     L2 = np.zeros((N, N))
     L3 = np.zeros((N, N))
 
-    ak1 = np.zeros(N)
-    ak2 = np.zeros(N)
     G = 4 * pi / (sqrt(3) * a_lattice)
-
-    k1min = -G / 2
-    k1max = G / 2
-    k2min = -G / 2
-    k2max = G / 2
-
-    dk1 = (k1max - k1min) / (N - 1)
-    dk2 = (k2max - k2min) / (N - 1)
-
-    for i in range(N):
-        ak1[i] = k1min + i * dk1
-
-    for j in range(N):
-        ak2[j] = k2min + j * dk2
-
+    ak1 = np.linspace(-G / 2, G / 2, N)
+    ak2 = np.linspace(-G / 2, G / 2, N)
     akx = np.zeros((len(ak1), len(ak2)))
     aky = np.zeros((len(ak1), len(ak2)))
 
-    # kx = np.zeros((N, N))
-    # ky = np.zeros((N, N))
-    # dki = 4 * pi * sqrt(3) / (3 * (N - 1) * a_lattice)
-    # dkj = 4 * pi * sqrt(3) / (3 * (N - 1) * a_lattice)
     for i in tqdm(range(N)):
         for j in range(N):
             akx[i][j] = sqrt(3) / 2 * (ak1[i] + ak2[j])
