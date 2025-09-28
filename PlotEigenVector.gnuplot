@@ -15,7 +15,6 @@ set ytics font "Arial,13"
 set xtics
 # unset ytics
 
-
 dir = "./Mon-09-08/NN/" 
 
 

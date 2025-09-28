@@ -68,7 +68,7 @@
 	filecolor=magenta,      
 	urlcolor=cyan,
 	pdftitle={UT},
-	citecolor=green,
+	citecolor=black,
 	pdfpagemode=FullScreen,
 }
 
@@ -278,25 +278,46 @@ Combining the two expressions, the effective mas can be written as
 \begin{figure}[htb]
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/MoS2/ButAndWave_c.pdf}
+		\includegraphics[width=\linewidth]{imgs/MoS2/ButAndWave_c.pdf}
 	\end{subfigure}
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/MoS2/ButAndWave_v.pdf}
+		\includegraphics[width=\linewidth]{imgs/MoS2/ButAndWave_v.pdf}
 	\end{subfigure}
-	\caption{Hàm sóng của 2 mức Landau kế tiếp nhau.}
+	\caption{Hàm sóng của 2 mức Landau kế tiếp nhau. (a) là dải dẫn, (b) là dải hoá trị.}
 \end{figure}
 
-Khối lượng hiệu dụng cho MoS$_{2}$
+Cấu trúc dải năng lượng của MoS$_{2}$ khi chưa có từ trường cho thấy rằng ở dải hoá trị điểm $\Gamma$ có mức năng lượng là $E \approx -0.058$ (eV), vậy nên khi ở có sự xuất hiện của từ trường thì mức năng lượng của điểm $\Gamma$ này vẫn xuất hiện ở đây. 
+
+Khối lượng hiệu dụng cho MoS$_{2}$ khi chưa có từ trường được tính bằng công thức $\frac{1}{m_{ij}*} =\frac{1}{\hbar^{2}} \frac{\partial^{2} E(\mathbf{k})}{\partial k_{i} k_{j}}$ cho biết rằng $m_{e} \approx 0.4178 m_{0}, m_{h} \approx 0.5325 m_{0}$ và $m_{r} \approx 0.2341$ cho trường hợp TNN và $m_{e} \approx 0.450 m_{0}, m_{h} \approx 0.6487 m_{0}$ và $m_{r} \approx 0.2659m_{0}$ cho trường hợp NN. Trong khi đó, ở bài của Goryca \textit{et al.}\cite{goryca2019}, họ đưa ra rằng $m_{r} \approx 0.27 \pm 0.01 m_{0}$.\\
+Khi có từ trường lớn ví dụ như $B = 100 $T:
+\begin{itemize}
+	\item[a)] Nearest neighbor
+	\begin{itemize}
+		\item Ở thung lũng K, $m_{h} \approx 0.7011 m_{0},\; m_{e} \approx 0.4763 m_{0}$. 
+		Trong đó $m_{r} \approx 0.2836 m_{0}$ tăng $\approx 6.7\%$.
+		
+		\item Ở thung lũng K', $m_{h} \approx 0.6597 m_{0},\; m_{e} \approx 0.4606 m_{0}$. 
+		Trong đó $m_{r} \approx 0.2713 m_{0}$ tăng $\approx 2.0\%$.
+	\end{itemize}
+	\item[b)] Third nearest neighbor
+	\begin{itemize}
+		\item Ở thung lũng K, $m_{h} \approx 0.4205 m_{0},\; m_{e} \approx 0.3275 m_{0}$. 
+		Trong đó $m_{r} \approx 0.1841 m_{0}$ tăng $\approx 10.17\%$.
+		
+		\item Ở thung lũng K', $m_{h} \approx 0.4043 m_{0},\; m_{e} \approx 0.3023 m_{0}$. 
+		Trong đó $m_{r} \approx 0.1730 m_{0}$ tăng $\approx 3.53\%$.
+	\end{itemize}
+\end{itemize}
 
 \begin{figure}[htb]
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/MoS2/massK1.pdf}
+		\includegraphics[width=\linewidth]{imgs/MoS2/massK1.pdf}
 	\end{subfigure}
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/MoS2/massK2.pdf}
+		\includegraphics[width=\linewidth]{imgs/MoS2/massK2.pdf}
 	\end{subfigure}
 	\caption{Khối lượng hiệu dụng.}
 \end{figure}
@@ -305,24 +326,44 @@ Khối lượng hiệu dụng cho MoS$_{2}$
 \begin{figure}[htb]
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/MoSe2/ButAndWave_c.pdf}
+		\includegraphics[width=\linewidth]{imgs/MoSe2/ButAndWave_c.pdf}
 	\end{subfigure}
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/MoSe2/ButAndWave_v.pdf}
+		\includegraphics[width=\linewidth]{imgs/MoSe2/ButAndWave_v.pdf}
 	\end{subfigure}
 	\caption{Hàm sóng của 2 mức Landau kế tiếp nhau.}
 \end{figure}
-Khối lượng hiệu dụng
+Cấu trúc dải năng lượng của MoSe$_{2}$ khi chưa có từ trường cho thấy rằng điểm $\Gamma$ không xuất hiện gần điểm K, vậy nên khi ở có sự xuất hiện của từ trường thì mức năng lượng của điểm $\Gamma$ này không xuất hiện ở đây. Bên cạnh đó, ba mức Landau đầu tiên sẽ là của điểm K', khác với WSe$_{2}$ là hai mức Landau đầu tiên là của điểm K'.
+
+Khối lượng hiệu dụng cho MoSe$_{2}$ khi chưa có từ trường được tính bằng công thức $\frac{1}{m_{ij}*} =\frac{1}{\hbar^{2}} \frac{\partial^{2} E(\mathbf{k})}{\partial k_{i} k_{j}}$ cho biết rằng $m_{e} \approx 0.4770 m_{0}, m_{h} \approx 0.5887 m_{0}$ và $m_{r} \approx 0.2634 m_{0}$ cho trường hợp TNN và $m_{e} \approx 0.5226 m_{0}, m_{h} \approx 0.7512 m_{0}$ và $m_{r} \approx 0.3082m_{0}$ cho trường hợp NN.
+
+Khi ở từ trường lớn ví dụ như $B = 100 $T
+\begin{itemize}
+	\item[a)] Nearest neighbor
+	\begin{itemize}
+		\item Ở thung lũng K, $m_{h} \approx 0.8100 m_{0},\; m_{e} \approx 0.5529 m_{0}$. Trong đó $m_{r} \approx 0.3286 m_{0}$ tăng $\approx 6.62\%$.
+		
+		\item Ở thung lũng K', $m_{h} \approx 0.7632 m_{0},\; m_{e} \approx 0.5331 m_{0}$. Trong đó $m_{r} \approx 0.3138 m_{0}$ tăng $\approx 1.82\%$.
+	\end{itemize}
+	\item[b)] Third nearest neighbor
+	\begin{itemize}
+		\item Ở thung lũng K, $m_{h} \approx 0.4205 m_{0},\; m_{e} \approx 0.3275 m_{0}$. 
+		Trong đó $m_{r} \approx 0.1841 m_{0}$ tăng $\approx 10.17\%$.
+		
+		\item Ở thung lũng K', $m_{h} \approx 0.4043 m_{0},\; m_{e} \approx 0.3023 m_{0}$. 
+		Trong đó $m_{r} \approx 0.1730 m_{0}$ tăng $\approx 3.53\%$.
+	\end{itemize}
+\end{itemize}
 
 \begin{figure}[htb]
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/MoSe2/massK1.pdf}
+		\includegraphics[width=\linewidth]{imgs/MoSe2/massK1.pdf}
 	\end{subfigure}
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/MoSe2/massK2.pdf}
+		\includegraphics[width=\linewidth]{imgs/MoSe2/massK2.pdf}
 	\end{subfigure}
 	\caption{Khối lượng hiệu dụng.}
 \end{figure}
@@ -332,24 +373,45 @@ Khối lượng hiệu dụng
 \begin{figure}[htb]
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/MoTe2/ButAndWave_c.pdf}
+		\includegraphics[width=\linewidth]{imgs/MoTe2/ButAndWave_c.pdf}
 	\end{subfigure}
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/MoTe2/ButAndWave_v.pdf}
+		\includegraphics[width=\linewidth]{imgs/MoTe2/ButAndWave_v.pdf}
 	\end{subfigure}
 	\caption{Hàm sóng của 2 mức Landau kế tiếp nhau.}
 \end{figure}
+Cấu trúc dải năng lượng của MoTe$_{2}$ khi chưa có từ trường cho thấy rằng điểm $\Gamma$ có mức năng lượng là $E \approx -0.1075$ (eV), vậy nên khi ở có sự xuất hiện của từ trường thì mức năng lượng của điểm $\Gamma$ này vẫn xuất hiện ở đây. 
 
-Khối lượng hiệu dụng 
+Khối lượng hiệu dụng cho MoTe$_{2}$ khi chưa có từ trường được tính bằng công thức $\frac{1}{m_{ij}*} =\frac{1}{\hbar^{2}} \frac{\partial^{2} E(\mathbf{k})}{\partial k_{i} k_{j}}$ cho biết rằng $m_{e} \approx 0.4318 m_{0}, m_{h} \approx 0.6044 m_{0}$ và $m_{r} \approx 0.2519 m_{0}$ cho trường hợp TNN và $m_{e} \approx 0.5913 m_{0}, m_{h} \approx 0.8975 m_{0}$ và $m_{r} \approx 0.3565 m_{0}$ cho trường hợp NN, đã được đưa ra trong công trình của Goryca \textit{et al.}\cite{goryca2019}. Khi chưa có từ trường, khối lượng hiệu dụng $m_{e}, m_{h}$ của MoTe$_{2}$ là lớn nhất trong 6 loại vật liệu. \\
+Khi ở từ trường lớn ví dụ như $B = 90 $T
+\begin{itemize}
+	\item[a)] Nearest neighbor
+	\begin{itemize}
+		\item Ở thung lũng K, $m_{h} \approx 0.9774 m_{0},\; m_{e} \approx 0.6304 m_{0}$. 
+		Trong đó $m_{r} \approx 0.3832 m_{0}$ tăng $\approx 7.49\%$.
+		
+		\item Ở thung lũng K', $m_{h} \approx 0.9142 m_{0},\; m_{e} \approx 0.6034 m_{0}$. 
+		Trong đó $m_{r} \approx 0.3635 m_{0}$ tăng $\approx 1.96\%$.
+	\end{itemize}
+	\item[b)] Third nearest neighbor
+	\begin{itemize}
+		\item Ở thung lũng K, $m_{h} \approx 0.7704 m_{0},\; m_{e} \approx 0.4850 m_{0}$. 
+		Trong đó $m_{r} \approx 0.2976 m_{0}$ tăng $\approx 18.14\%$.
+		
+		\item Ở thung lũng K', $m_{h} \approx 0.6322 m_{0},\; m_{e} \approx 0.4463 m_{0}$. 
+		Trong đó $m_{r} \approx 0.2616 m_{0}$ tăng $\approx 3.85\%$.
+	\end{itemize}
+\end{itemize}
+Trong bài nghiên cứu của Goryca \textit{et al.} \cite{goryca2019}, họ đưa ra rằng $m_{r} = 0.36 \pm 0.04 m_{0}$, tăng 25\% so với bài nghiên cứu của Korm\'{a}nyos \textit{et al.} \cite{kormanyos2015}. Trong bài này, với trường hợp TNN, khối lượng rút gọn $m_{r} = 0.2976 m_{0}$ tăng $\approx 18\%$ so với khi chưa có từ trường, với $m_{r} = 0.2519 m_{0}$
 \begin{figure}[htb]
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/MoTe2/massK1.pdf}
+		\includegraphics[width=\linewidth]{imgs/MoTe2/massK1.pdf}
 	\end{subfigure}
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/MoTe2/massK2.pdf}
+		\includegraphics[width=\linewidth]{imgs/MoTe2/massK2.pdf}
 	\end{subfigure}
 	\caption{Khối lượng hiệu dụng.}
 \end{figure}
@@ -359,24 +421,47 @@ Khối lượng hiệu dụng
 \begin{figure}[htb]
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/WS2/ButAndWave_c.pdf}
+		\includegraphics[width=\linewidth]{imgs/WS2/ButAndWave_c.pdf}
 	\end{subfigure}
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/WS2/ButAndWave_v.pdf}
+		\includegraphics[width=\linewidth]{imgs/WS2/ButAndWave_v.pdf}
 	\end{subfigure}
 	\caption{Hàm sóng của 2 mức Landau kế tiếp nhau.}
 \end{figure}
 
-Khối lượng hiệu dụng 
+Cấu trúc dải năng lượng của WS$_{2}$ khi chưa có từ trường cho thấy rằng điểm $\Gamma$ có mức năng lượng là $E \approx -0.1075$ (eV), vậy nên khi ở có sự xuất hiện của từ trường thì mức năng lượng của điểm $\Gamma$ này vẫn xuất hiện ở đây. 
+
+Khối lượng hiệu dụng cho WS$_{2}$ khi chưa có từ trường được tính bằng công thức $\frac{1}{m_{ij}*} =\frac{1}{\hbar^{2}} \frac{\partial^{2} E(\mathbf{k})}{\partial k_{i} k_{j}}$ cho biết rằng $m_{e} \approx 0.2956 m_{0}, m_{h} \approx 0.3845 m_{0}$ và $m_{r} \approx 0.1671 m_{0}$ cho trường hợp TNN và $m_{e} \approx 0.3195 m_{0}, m_{h} \approx 0.4348 m_{0}$ và $m_{r} \approx 0.1841 m_{0}$ cho trường hợp NN, đã được đưa ra trong công trình của Goryca \textit{et al.}\cite{goryca2019}. \\
+Khi ở từ trường lớn ví dụ như $B = 100 $T
+\begin{itemize}
+	\item[a)] Nearest neighbor
+	\begin{itemize}
+		\item Ở thung lũng K, $m_{h} \approx 0.4735 m_{0},\; m_{e} \approx 0.3389 m_{0}$. 
+		Trong đó $m_{r} \approx 0.1974 m_{0}$ tăng $\approx 7.2\%$.
+		
+		\item Ở thung lũng K', $m_{h} \approx 0.4438 m_{0},\; m_{e} \approx 0.3273 m_{0}$. 
+		Trong đó $m_{r} \approx 0.1885 m_{0}$ tăng $\approx 2.3\%$.
+	\end{itemize}
+	\item[b)] Third nearest neighbor
+	\begin{itemize}
+		\item Ở thung lũng K, $m_{h} \approx 0.4205 m_{0},\; m_{e} \approx 0.3275 m_{0}$. 
+		Trong đó $m_{r} \approx 0.1841 m_{0}$ tăng $\approx 10.17\%$.
+		
+		\item Ở thung lũng K', $m_{h} \approx 0.4043 m_{0},\; m_{e} \approx 0.3023 m_{0}$. 
+		Trong đó $m_{r} \approx 0.1730 m_{0}$ tăng $\approx 3.53\%$.
+	\end{itemize}
+\end{itemize}
+Như vậy ở thung lũng K trong trường hợp TNN cho kết quả chính xác khi so sánh $m_{r}$ khi có từ trường tăng $\approx 10\%$ với $m_{r}$ khi chưa có từ trường, điều này đã được đưa ra trong bài của Goryca \textit{et al.}\cite{goryca2019} trước đó.
+
 \begin{figure}[htb]
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/WS2/massK1.pdf}
+		\includegraphics[width=\linewidth]{imgs/WS2/massK1.pdf}
 	\end{subfigure}
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/WS2/massK2.pdf}
+		\includegraphics[width=\linewidth]{imgs/WS2/massK2.pdf}
 	\end{subfigure}
 	\caption{Khối lượng hiệu dụng.}
 \end{figure}
@@ -385,24 +470,45 @@ Khối lượng hiệu dụng
 \begin{figure}[htb]
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/WSe2/ButAndWave_c.pdf}
+		\includegraphics[width=\linewidth]{imgs/WSe2/ButAndWave_c.pdf}
 	\end{subfigure}
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/WSe2/ButAndWave_v.pdf}
+		\includegraphics[width=\linewidth]{imgs/WSe2/ButAndWave_v.pdf}
 	\end{subfigure}
 	\caption{Hàm sóng của 2 mức Landau kế tiếp nhau.}
 \end{figure}
+Cấu trúc dải năng lượng của WSe$_{2}$ khi chưa có từ trường cho thấy rằng điểm $\Gamma$ có mức rất thấp hơn điểm K, vậy nên khi áp dụng từ trường thì mức năng lượng của điểm $\Gamma$ này không xuất hiện ở đây. 
 
-Khối lượng hiệu dụng 
+Khối lượng hiệu dụng cho WSe$_{2}$ khi chưa có từ trường được tính bằng công thức $\frac{1}{m_{ij}*} =\frac{1}{\hbar^{2}} \frac{\partial^{2} E(\mathbf{k})}{\partial k_{i} k_{j}}$ cho biết rằng $m_{e} \approx 0.3124 m_{0}, m_{h} \approx 0.4022 m_{0}$ và $m_{r} \approx 0.1758 m_{0}$ cho trường hợp TNN và $m_{e} \approx 0.3487 m_{0}, m_{h} \approx 0.4792 m_{0}$ và $m_{r} \approx 0.2018 m_{0}$ cho trường hợp NN, đã được đưa ra trong nghiên cứu của Kyl\"{a}np\"{a}\"{a} \textit{et al.} và Berkelbach \textit{et al.} \cite{kylanpaa2015,berkelbach2013}. \\
+Khi ở từ trường lớn ví dụ như $B = 100 $T
+\begin{itemize}
+	\item[a)] Nearest neighbor
+	\begin{itemize}
+		\item Ở thung lũng K, $m_{h} \approx 0.5220 m_{0},\; m_{e} \approx 0.3702 m_{0}$. 
+		Trong đó $m_{r} \approx 0.2166 m_{0}$ tăng $\approx 7.34\%$.
+		
+		\item Ở thung lũng K', $m_{h} \approx 0.4888 m_{0},\; m_{e} \approx 0.3573 m_{0}$. 
+		Trong đó $m_{r} \approx 0.2064 m_{0}$ tăng $\approx 2.28\%$.
+	\end{itemize}
+	\item[b)] Third nearest neighbor
+	\begin{itemize}
+		\item Ở thung lũng K, $m_{h} \approx 0.4417 m_{0},\; m_{e} \approx 0.3494 m_{0}$. 
+		Trong đó $m_{r} \approx 0.1951 m_{0}$ tăng $\approx 10.98\%$.
+		
+		\item Ở thung lũng K', $m_{h} \approx 0.4257 m_{0},\; m_{e} \approx 0.3199 m_{0}$. 
+		Trong đó $m_{r} \approx 0.1826 m_{0}$ tăng $\approx 3.87\%$.
+	\end{itemize}
+\end{itemize}
+Trong bài nghiên cứu của Stier \textit{et al.} \cite{stier2018} đã đưa ra rằng, $m_{r}$ sẽ lớn hơn sấp sĩ 15\% so với dự đoán của những lý thuyết gần đây \cite{berkelbach2013,kylanpaa2015}, với $m_{r} \approx 0.20 \pm 0.01 m_{0}$.  Như vậy ở thung lũng K trong trường hợp TNN cho kết quả chính xác khi so sánh $m_{r}$ khi có từ trường tăng $\approx 11\%$ với $m_{r}$ khi chưa có từ trường, điều này đã được đưa ra trong bài của Stier \textit{et al.}\cite{stier2018} trước đó.
 \begin{figure}[htb]
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/WSe2/massK1.pdf}
+		\includegraphics[width=\linewidth]{imgs/WSe2/massK1.pdf}
 	\end{subfigure}
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/WSe2/massK2.pdf}
+		\includegraphics[width=\linewidth]{imgs/WSe2/massK2.pdf}
 	\end{subfigure}
 	\caption{Khối lượng hiệu dụng.}
 \end{figure}
@@ -413,25 +519,53 @@ Khối lượng hiệu dụng
 \begin{figure}[htb]
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/WTe2/ButAndWave_c.pdf}
+		\includegraphics[width=\linewidth]{imgs/WTe2/ButAndWave_c.pdf}
 	\end{subfigure}
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/WTe2/ButAndWave_v.pdf}
+		\includegraphics[width=\linewidth]{imgs/WTe2/ButAndWave_v.pdf}
 	\end{subfigure}
 	\caption{Hàm sóng của 2 mức Landau kế tiếp nhau.}
 \end{figure}
 
-Khối lượng hiệu dụng 
+Cấu trúc dải năng lượng của WTe$_{2}$ khi chưa có từ trường cho thấy rằng điểm $\Gamma$ có mức rất thấp hơn điểm K, vậy nên khi áp dụng từ trường thì mức năng lượng của điểm $\Gamma$ này không xuất hiện ở đây.  
+
+Khối lượng hiệu dụng cho WTe$_{2}$ khi chưa có từ trường được tính bằng công thức $\frac{1}{m_{ij}*} =\frac{1}{\hbar^{2}} \frac{\partial^{2} E(\mathbf{k})}{\partial k_{i} k_{j}}$ cho biết rằng $m_{e} \approx 0.2478 m_{0}, m_{h} \approx 0.3332 m_{0}$ và $m_{r} \approx 0.1421 m_{0}$ cho trường hợp TNN và $m_{e} \approx 0.3169 m_{0}, m_{h} \approx 0.4559 m_{0}$ và $m_{r} \approx 0.187 m_{0}$ cho trường hợp NN. Cho tới nay thì chưa tìm thấy được bài nào có nói về khối lượng hiệu dụng WTe$_{2}$. \\
+Khi ở từ trường lớn ví dụ như $B = 80 $T
+\begin{itemize}
+	\item[a)] Nearest neighbor
+	\begin{itemize}
+		\item Ở thung lũng K, $m_{h} \approx 0.5093 m_{0},\; m_{e} \approx 0.3413 m_{0}$. 
+		Trong đó $m_{r} \approx 0.2044 m_{0}$ tăng $\approx 9.3\%$.
+		
+		\item Ở thung lũng K', $m_{h} \approx 0.4681 m_{0},\; m_{e} \approx 0.3264 m_{0}$. 
+		Trong đó $m_{r} \approx 0.1923 m_{0}$ tăng $\approx 2.83\%$.
+	\end{itemize}
+	\item[b)] Third nearest neighbor
+	\begin{itemize}
+		\item Ở thung lũng K, $m_{h} \approx 0.387 m_{0},\; m_{e} \approx 0.2824 m_{0}$. 
+		Trong đó $m_{r} \approx 0.1633 m_{0}$ tăng $\approx 14.92\%$.
+		
+		\item Ở thung lũng K', $m_{h} \approx 0.3562 m_{0},\; m_{e} \approx 0.2577 m_{0}$. 
+		Trong đó $m_{r} \approx 0.1495 m_{0}$ tăng $\approx 5.21\%$.
+	\end{itemize}
+\end{itemize}
+Như vậy ở thung lũng K trong trường hợp TNN cho kết quả khối lượng rút gọn $m_r$ của WTe$_{2}$ là cho kết quả tăng khoảng 15\%, tương tự với các vật liệu trên.
 \begin{figure}[htb]
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/WTe2/massK1.pdf}
+		\includegraphics[width=\linewidth]{imgs/WTe2/massK1.pdf}
 	\end{subfigure}
 	\begin{subfigure}{0.495\textwidth}
 		\centering
-		\includegraphics[width=0.8\linewidth]{imgs/WTe2/massK2.pdf}
+		\includegraphics[width=\linewidth]{imgs/WTe2/massK2.pdf}
 	\end{subfigure}
 	\caption{Khối lượng hiệu dụng.}
 \end{figure}
+
+\newpage
+
+\bibliographystyle{unsrt}
+\bibliography{refs}
+
 \end{document}
