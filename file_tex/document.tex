@@ -24,7 +24,7 @@
 \usepackage[thinc]{esdiff}
 \usepackage{hyperref,tikz}
 \usepackage{bm,physics,nicematrix}
-\usepackage[numbers,comma,sort&compress]{natbib}
+% \usepackage[numbers,comma,sort&compress]{natbib}
 %footnote
 \usepackage{fancyhdr}
 \usepackage{array,tocbibind}
@@ -258,9 +258,11 @@ The cyclotron frequency can be obtained from the energy difference between two L
 	\end{aligned}
 \end{equation}
 which gives
-\begin{gather}
-	\omega_{c}  = \frac{E_{n+1} - E_{n}}{\hbar}.
-\end{gather}
+\begin{equation}
+  \begin{aligned}
+    \omega_{c}  = \frac{E_{n+1} - E_{n}}{\hbar}.
+  \end{aligned}
+\end{equation}
 On the other hand, the cyclotron frequency is also defined as
 \begin{gather}
 	\omega_{c}         = \frac{eB}{m^{*}}.
@@ -289,7 +291,7 @@ Combining the two expressions, the effective mas can be written as
 
 Cấu trúc dải năng lượng của MoS$_{2}$ khi chưa có từ trường cho thấy rằng ở dải hoá trị điểm $\Gamma$ có mức năng lượng là $E \approx -0.058$ (eV), vậy nên khi ở có sự xuất hiện của từ trường thì mức năng lượng của điểm $\Gamma$ này vẫn xuất hiện ở đây. 
 
-Khối lượng hiệu dụng cho MoS$_{2}$ khi chưa có từ trường được tính bằng công thức $\frac{1}{m_{ij}*} =\frac{1}{\hbar^{2}} \frac{\partial^{2} E(\mathbf{k})}{\partial k_{i} k_{j}}$ cho biết rằng $m_{e} \approx 0.4178 m_{0}, m_{h} \approx 0.5325 m_{0}$ và $m_{r} \approx 0.2341$ cho trường hợp TNN và $m_{e} \approx 0.450 m_{0}, m_{h} \approx 0.6487 m_{0}$ và $m_{r} \approx 0.2659m_{0}$ cho trường hợp NN. Trong khi đó, ở bài của Goryca \textit{et al.}\cite{goryca2019}, họ đưa ra rằng $m_{r} \approx 0.27 \pm 0.01 m_{0}$.\\
+Khối lượng hiệu dụng cho MoS$_{2}$ khi chưa có từ trường được tính bằng công thức $\frac{1}{m_{ij}*} =\frac{1}{\hbar^{2}} \frac{\partial^{2} E(\mathbf{k})}{\partial k_{i} k_{j}}$ cho biết rằng $m_{e} \approx 0.4178 m_{0}, m_{h} \approx 0.5325 m_{0}$ và $m_{r} \approx 0.2341$ cho trường hợp TNN và $m_{e} \approx 0.4508 m_{0}, m_{h} \approx 0.6487 m_{0}$ và $m_{r} \approx 0.2659m_{0}$ cho trường hợp NN. \\
 Khi có từ trường lớn ví dụ như $B = 100 $T:
 \begin{itemize}
 	\item[a)] Nearest neighbor
@@ -302,11 +304,11 @@ Khi có từ trường lớn ví dụ như $B = 100 $T:
 	\end{itemize}
 	\item[b)] Third nearest neighbor
 	\begin{itemize}
-		\item Ở thung lũng K, $m_{h} \approx 0.4205 m_{0},\; m_{e} \approx 0.3275 m_{0}$. 
-		Trong đó $m_{r} \approx 0.1841 m_{0}$ tăng $\approx 10.17\%$.
+		\item Ở thung lũng K, $m_{h} \approx 0.5739 m_{0},\; m_{e} \approx 0.4573 m_{0}$. 
+		Trong đó $m_{r} \approx 0.2545 m_{0}$ tăng $\approx 8.71\%$.
 		
-		\item Ở thung lũng K', $m_{h} \approx 0.4043 m_{0},\; m_{e} \approx 0.3023 m_{0}$. 
-		Trong đó $m_{r} \approx 0.1730 m_{0}$ tăng $\approx 3.53\%$.
+		\item Ở thung lũng K', $m_{h} \approx 0.5584 m_{0},\; m_{e} \approx 0.4263 m_{0}$. 
+		Trong đó $m_{r} \approx 0.2417 m_{0}$ tăng $\approx 3.25\%$.
 	\end{itemize}
 \end{itemize}
 
@@ -321,6 +323,9 @@ Khi có từ trường lớn ví dụ như $B = 100 $T:
 	\end{subfigure}
 	\caption{Khối lượng hiệu dụng.}
 \end{figure}
+Trong khi đó, ở bài của Goryca \textit{et al.}\cite{goryca2019}, họ đưa ra rằng $m_{r} \approx 0.27 \pm 0.01 m_{0}$, tăng $4\%-10.2\%$ so với bài nghiên cứu trước đó của Berkelbach \textit{et al.} \cite{berkelbach2013} là $m_{r} = 0.245 \pm 0.005 m_{0}$.\\
+Với những gì được tính ở trên thì chúng tôi đưa ra quan điểm rằng, ở thung lũng K thì khối lượng $m_{r} \approx 0.2545 m_{0}$ của chúng tôi tăng 8.71\% là hợp lý với thực nghiệm của Goryca \textit{et al.}
+
 \newpage
 \subsubsection*{Monolayer MoSe$_{2}$}
 \begin{figure}[htb]
@@ -348,11 +353,11 @@ Khi ở từ trường lớn ví dụ như $B = 100 $T
 	\end{itemize}
 	\item[b)] Third nearest neighbor
 	\begin{itemize}
-		\item Ở thung lũng K, $m_{h} \approx 0.4205 m_{0},\; m_{e} \approx 0.3275 m_{0}$. 
-		Trong đó $m_{r} \approx 0.1841 m_{0}$ tăng $\approx 10.17\%$.
+		\item Ở thung lũng K, $m_{h} \approx 0.7168 m_{0},\; m_{e} \approx 0.532 m_{0}$. 
+		Trong đó $m_{r} \approx 0.3052 m_{0}$ tăng $\approx 15.87\%$.
 		
-		\item Ở thung lũng K', $m_{h} \approx 0.4043 m_{0},\; m_{e} \approx 0.3023 m_{0}$. 
-		Trong đó $m_{r} \approx 0.1730 m_{0}$ tăng $\approx 3.53\%$.
+		\item Ở thung lũng K', $m_{h} \approx 0.6251 m_{0},\; m_{e} \approx 0.4874 m_{0}$. 
+		Trong đó $m_{r} \approx 0.2738 m_{0}$ tăng $\approx 3.95\%$.
 	\end{itemize}
 \end{itemize}
 
@@ -367,6 +372,10 @@ Khi ở từ trường lớn ví dụ như $B = 100 $T
 	\end{subfigure}
 	\caption{Khối lượng hiệu dụng.}
 \end{figure}
+Trong khi đó, ở bài của Goryca \textit{et al.}\cite{goryca2019}, họ đưa ra rằng $m_{r} \approx 0.350 \pm 0.015 m_{0}$, tăng $24.1\%-35.2\%$ so với bài nghiên cứu trước đó của Berkelbach \textit{et al.} \cite{berkelbach2013} là $m_{r} = 0.27 m_{0}$.\\
+Với những gì được tính ở trên thì chúng tôi đưa ra quan điểm rằng, ở thung lũng K thì khối lượng $m_{r} \approx 0.3052 m_{0}$ của chúng tôi tăng 15.87\% là chưa hợp lý với thực nghiệm của Goryca \textit{et al.}
+
+
 
 \newpage
 \subsubsection*{Monolayer MoTe$_{2}$}
@@ -384,7 +393,7 @@ Khi ở từ trường lớn ví dụ như $B = 100 $T
 Cấu trúc dải năng lượng của MoTe$_{2}$ khi chưa có từ trường cho thấy rằng điểm $\Gamma$ có mức năng lượng là $E \approx -0.1075$ (eV), vậy nên khi ở có sự xuất hiện của từ trường thì mức năng lượng của điểm $\Gamma$ này vẫn xuất hiện ở đây. 
 
 Khối lượng hiệu dụng cho MoTe$_{2}$ khi chưa có từ trường được tính bằng công thức $\frac{1}{m_{ij}*} =\frac{1}{\hbar^{2}} \frac{\partial^{2} E(\mathbf{k})}{\partial k_{i} k_{j}}$ cho biết rằng $m_{e} \approx 0.4318 m_{0}, m_{h} \approx 0.6044 m_{0}$ và $m_{r} \approx 0.2519 m_{0}$ cho trường hợp TNN và $m_{e} \approx 0.5913 m_{0}, m_{h} \approx 0.8975 m_{0}$ và $m_{r} \approx 0.3565 m_{0}$ cho trường hợp NN, đã được đưa ra trong công trình của Goryca \textit{et al.}\cite{goryca2019}. Khi chưa có từ trường, khối lượng hiệu dụng $m_{e}, m_{h}$ của MoTe$_{2}$ là lớn nhất trong 6 loại vật liệu. \\
-Khi ở từ trường lớn ví dụ như $B = 90 $T
+Khi ở từ trường lớn ví dụ như $B = 90 $T:
 \begin{itemize}
 	\item[a)] Nearest neighbor
 	\begin{itemize}
@@ -403,7 +412,7 @@ Khi ở từ trường lớn ví dụ như $B = 90 $T
 		Trong đó $m_{r} \approx 0.2616 m_{0}$ tăng $\approx 3.85\%$.
 	\end{itemize}
 \end{itemize}
-Trong bài nghiên cứu của Goryca \textit{et al.} \cite{goryca2019}, họ đưa ra rằng $m_{r} = 0.36 \pm 0.04 m_{0}$, tăng 25\% so với bài nghiên cứu của Korm\'{a}nyos \textit{et al.} \cite{kormanyos2015}. Trong bài này, với trường hợp TNN, khối lượng rút gọn $m_{r} = 0.2976 m_{0}$ tăng $\approx 18\%$ so với khi chưa có từ trường, với $m_{r} = 0.2519 m_{0}$
+Trong bài nghiên cứu của Goryca \textit{et al.} \cite{goryca2019}, họ đưa ra rằng $m_{r} = 0.36 \pm 0.04 m_{0}$, tăng 25\% so với bài nghiên cứu của Korm\'{a}nyos \textit{et al.} \cite{kormanyos2015}. Trong bài này của chúng tôi, với trường hợp TNN, khối lượng rút gọn $m_{r} = 0.2976 m_{0}$ tăng $\approx 18\%$ so với khi chưa có từ trường, với $m_{r} = 0.2519 m_{0}$
 \begin{figure}[htb]
 	\begin{subfigure}{0.495\textwidth}
 		\centering
@@ -432,7 +441,7 @@ Trong bài nghiên cứu của Goryca \textit{et al.} \cite{goryca2019}, họ đ
 
 Cấu trúc dải năng lượng của WS$_{2}$ khi chưa có từ trường cho thấy rằng điểm $\Gamma$ có mức năng lượng là $E \approx -0.1075$ (eV), vậy nên khi ở có sự xuất hiện của từ trường thì mức năng lượng của điểm $\Gamma$ này vẫn xuất hiện ở đây. 
 
-Khối lượng hiệu dụng cho WS$_{2}$ khi chưa có từ trường được tính bằng công thức $\frac{1}{m_{ij}*} =\frac{1}{\hbar^{2}} \frac{\partial^{2} E(\mathbf{k})}{\partial k_{i} k_{j}}$ cho biết rằng $m_{e} \approx 0.2956 m_{0}, m_{h} \approx 0.3845 m_{0}$ và $m_{r} \approx 0.1671 m_{0}$ cho trường hợp TNN và $m_{e} \approx 0.3195 m_{0}, m_{h} \approx 0.4348 m_{0}$ và $m_{r} \approx 0.1841 m_{0}$ cho trường hợp NN, đã được đưa ra trong công trình của Goryca \textit{et al.}\cite{goryca2019}. \\
+Khối lượng hiệu dụng cho WS$_{2}$ khi chưa có từ trường được tính bằng công thức $\frac{1}{m_{ij}*} =\frac{1}{\hbar^{2}} \frac{\partial^{2} E(\mathbf{k})}{\partial k_{i} k_{j}}$ cho biết rằng $m_{e} \approx 0.2956 m_{0}, m_{h} \approx 0.3845 m_{0}$ và $m_{r} \approx 0.1671 m_{0}$ cho trường hợp TNN và $m_{e} \approx 0.3195 m_{0}, m_{h} \approx 0.4348 m_{0}$ và $m_{r} \approx 0.1841 m_{0}$ cho trường hợp NN.\\
 Khi ở từ trường lớn ví dụ như $B = 100 $T
 \begin{itemize}
 	\item[a)] Nearest neighbor
@@ -452,7 +461,9 @@ Khi ở từ trường lớn ví dụ như $B = 100 $T
 		Trong đó $m_{r} \approx 0.1730 m_{0}$ tăng $\approx 3.53\%$.
 	\end{itemize}
 \end{itemize}
-Như vậy ở thung lũng K trong trường hợp TNN cho kết quả chính xác khi so sánh $m_{r}$ khi có từ trường tăng $\approx 10\%$ với $m_{r}$ khi chưa có từ trường, điều này đã được đưa ra trong bài của Goryca \textit{et al.}\cite{goryca2019} trước đó.
+Trong bài nghiên cứu của Goryca \textit{et al.} \cite{goryca2019}, họ đã sử dụng $m_{r} = 0.175 \pm 0.007 m_{0}$ lớn hơn 10\% khi so sánh với $m_{r} = 0.15 - 0.16 m_{0}$ ở trong bài nghiên cứu của Berkelbach \textit{et al.} \cite{berkelbach2013}.
+
+Như vậy ở thung lũng K trong trường hợp TNN cho kết quả chính xác khi so sánh $m_{r} =0.1841 m_{0}$ khi có từ trường tăng $\approx 10\%$ với $m_{r} = 0.1671$ khi chưa có từ trường, điều này là hợp lí khi so với bài của Goryca \textit{et al.}\cite{goryca2019} trước đó.
 
 \begin{figure}[htb]
 	\begin{subfigure}{0.495\textwidth}
@@ -500,7 +511,7 @@ Khi ở từ trường lớn ví dụ như $B = 100 $T
 		Trong đó $m_{r} \approx 0.1826 m_{0}$ tăng $\approx 3.87\%$.
 	\end{itemize}
 \end{itemize}
-Trong bài nghiên cứu của Stier \textit{et al.} \cite{stier2018} đã đưa ra rằng, $m_{r}$ sẽ lớn hơn sấp sĩ 15\% so với dự đoán của những lý thuyết gần đây \cite{berkelbach2013,kylanpaa2015}, với $m_{r} \approx 0.20 \pm 0.01 m_{0}$.  Như vậy ở thung lũng K trong trường hợp TNN cho kết quả chính xác khi so sánh $m_{r}$ khi có từ trường tăng $\approx 11\%$ với $m_{r}$ khi chưa có từ trường, điều này đã được đưa ra trong bài của Stier \textit{et al.}\cite{stier2018} trước đó.
+Trong bài nghiên cứu của Stier \textit{et al.} \cite{stier2018} đã đưa ra rằng, $m_{r} \approx 0.20 \pm 0.01 m_{0}$ sẽ lớn hơn sấp sĩ 15\% so với dự đoán của những lý thuyết gần đây \cite{berkelbach2013,kylanpaa2015}, với $m_{r}$.  Như vậy ở thung lũng K trong trường hợp TNN cho kết quả tiệm cận khi so sánh $m_{r}$ khi có từ trường tăng $\approx 11\%$ với $m_{r}$ khi chưa có từ trường, điều này đã được đưa ra trong bài của Stier \textit{et al.}\cite{stier2018} trước đó.
 \begin{figure}[htb]
 	\begin{subfigure}{0.495\textwidth}
 		\centering
