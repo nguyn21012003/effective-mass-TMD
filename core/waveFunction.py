@@ -3,8 +3,8 @@ from numpy import linalg as LA
 from tqdm import tqdm
 import csv
 
-from file_python.HamTMD import HamNN
-from file_python.HamTMDNN import HamTNN
+from core.HamTMD import HamNN
+from core.HamTMDNN import HamTNN
 
 
 def waveFunction(dataInit: dict, irreducibleMatrix, fileSave: str):

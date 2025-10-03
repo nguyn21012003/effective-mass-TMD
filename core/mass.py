@@ -1,8 +1,8 @@
 import csv
 
 import numpy as np
-from file_python.HamTMD import HamNN
-from file_python.HamTMDNN import HamTNN
+from core.HamTMD import HamNN
+from core.HamTMDNN import HamTNN
 from numpy import linalg as LA
 from numpy import pi, sqrt
 from tqdm import tqdm

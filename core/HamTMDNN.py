@@ -2,7 +2,7 @@ import numpy as np
 from numpy import complex128, exp, pi, sqrt
 from numpy.typing import NDArray
 
-from file_python.condition import pbc
+from core.condition import pbc
 
 
 def HamTNN(alattice, p, q, kx, ky, IM) -> NDArray[np.complex128]:

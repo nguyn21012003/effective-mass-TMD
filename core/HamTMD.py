@@ -3,7 +3,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 
-from file_python.condition import pbc
+from core.condition import pbc
 
 
 def HamNN(alattice, p, q, kx, ky, IM) -> NDArray[np.complex128]:

@@ -8,11 +8,11 @@ from numpy import linalg as LA
 from numpy import pi, sqrt
 from tqdm import tqdm
 
-from file_python.irrMatrix import IR, IRNN, IRTNN
-from file_python.irrMatrixTransform import IR as IR_tran
-from file_python.irrMatrixTransform import IRNN as IRNN_tran
-from file_python.irrMatrixTransform import IRTNN as IRTNN_tran
-from file_python.parameters import paraNN, paraTNN
+from core.irrMatrix import IR, IRNN, IRTNN
+from core.irrMatrixTransform import IR as IR_tran
+from core.irrMatrixTransform import IRNN as IRNN_tran
+from core.irrMatrixTransform import IRTNN as IRTNN_tran
+from core.parameters import paraNN, paraTNN
 
 
 def eigenvalue(choice, fileBandStruct):

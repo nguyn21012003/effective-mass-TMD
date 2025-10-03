@@ -1,9 +1,7 @@
 import os
 from datetime import datetime
-from time import time
 
-import matplotlib.pyplot as plt
-
+from core.butterfly import butterfly
 from core.irrMatrix import IR, IRNN, IRTNN
 from core.irrMatrixTransform import IR as IR_tran
 from core.irrMatrixTransform import IRNN as IRNN_tran
@@ -55,8 +53,9 @@ def solver(qmax: int, material: str, model: dict, fileSave: dict):
     dataInit["modelNeighbor"] = modelNeighbor
     dataInit["p"] = p
     dataInit["alattice"] = dataParameters["alattice"]
-    waveFunction(dataInit, irreducibleMatrix, fileSave["wave"])
+    # waveFunction(dataInit, irreducibleMatrix, fileSave["wave"])
     # calcMass(dataInit, irreducibleMatrix, fileSave["mass"])
+    butterfly(dataInit, irreducibleMatrix, fileSave["butterfly"])
 
 
 def main():
@@ -77,7 +76,9 @@ def main():
     # for qmax in tqdm(qrange, ascii=" #", desc=f"Wave function in diff B", colour="magenta"):
     filePlotWaveFunction = f"{dir}WaveFunction_q_{qmax}_{material}_{modelPara}.dat"
     fileMass = f"{dir}Mass_q_{qmax}_{material}_{modelPara}.dat"
-    fileSave = {"wave": filePlotWaveFunction, "mass": fileMass}
+    fileBut = f"{dir}Butterfly_q_{qmax}_{material}_{modelPara}.dat"
+
+    fileSave = {"wave": filePlotWaveFunction, "mass": fileMass, "butterfly": fileBut}
     solver(qmax, material, model, fileSave)
 
     return None

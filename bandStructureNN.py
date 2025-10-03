@@ -8,8 +8,8 @@ from numpy import linalg as LA
 from numpy import pi, sqrt
 from tqdm import tqdm
 
-from file_python.irrMatrixTransform import IR as IR_tran
-from file_python.parameters import paraNN, paraTNN
+from core.irrMatrixTransform import IR as IR_tran
+from core.parameters import paraNN, paraTNN
 
 
 def eigenvalue(material: str, fileBandStruct: str):
