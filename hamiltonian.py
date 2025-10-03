@@ -4,13 +4,13 @@ from time import time
 
 import matplotlib.pyplot as plt
 
-from file_python.irrMatrix import IR, IRNN, IRTNN
-from file_python.irrMatrixTransform import IR as IR_tran
-from file_python.irrMatrixTransform import IRNN as IRNN_tran
-from file_python.irrMatrixTransform import IRTNN as IRTNN_tran
-from file_python.mass import calcMass
-from file_python.parameters import paraNN, paraTNN
-from file_python.waveFunction import waveFunction
+from core.irrMatrix import IR, IRNN, IRTNN
+from core.irrMatrixTransform import IR as IR_tran
+from core.irrMatrixTransform import IRNN as IRNN_tran
+from core.irrMatrixTransform import IRTNN as IRTNN_tran
+from core.mass import calcMass
+from core.parameters import paraNN, paraTNN
+from core.waveFunction import waveFunction
 
 
 def solver(qmax: int, material: str, model: dict, fileSave: dict):
