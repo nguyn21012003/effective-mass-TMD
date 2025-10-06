@@ -58,9 +58,9 @@ def waveFunction(dataInit: dict, irreducibleMatrix, fileSave: str):
         for i in tqdm(range(numberWave), desc="Calc eigenvectors", colour="green"):
             # print(i)
             #### i la chi so 2q + i trong so band 6q
-            arrContainer[f"psi_band2q_d0_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax + i][0 * coeff * qmax : 1 * coeff * qmax]
-            arrContainer[f"psi_band2q_d1_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax + i][1 * coeff * qmax : 2 * coeff * qmax]
-            arrContainer[f"psi_band2q_d2_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax + i][2 * coeff * qmax : 3 * coeff * qmax]
+            arrContainer[f"psi_band2q_d0_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax - i - 1][0 * coeff * qmax : 1 * coeff * qmax]
+            arrContainer[f"psi_band2q_d1_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax - i - 1][1 * coeff * qmax : 2 * coeff * qmax]
+            arrContainer[f"psi_band2q_d2_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax - i - 1][2 * coeff * qmax : 3 * coeff * qmax]
 
             arrContainer[f"absPsi_band2q_d0_{i}"] = np.abs(arrContainer[f"psi_band2q_d0_{i}"]) ** 2
             arrContainer[f"absPsi_band2q_d1_{i}"] = np.abs(arrContainer[f"psi_band2q_d1_{i}"]) ** 2

@@ -53,9 +53,9 @@ def solver(qmax: int, material: str, model: dict, fileSave: dict):
     dataInit["modelNeighbor"] = modelNeighbor
     dataInit["p"] = p
     dataInit["alattice"] = dataParameters["alattice"]
-    # waveFunction(dataInit, irreducibleMatrix, fileSave["wave"])
+    waveFunction(dataInit, irreducibleMatrix, fileSave["wave"])
     # calcMass(dataInit, irreducibleMatrix, fileSave["mass"])
-    butterfly(dataInit, irreducibleMatrix, fileSave["butterfly"])
+    # butterfly(dataInit, irreducibleMatrix, fileSave["butterfly"])
 
 
 def main():
