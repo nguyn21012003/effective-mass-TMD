@@ -313,13 +313,31 @@ On the other hand, the cyclotron frequency is also defined as
 \end{gather}
 Combining the two expressions, the effective mas can be written as 
 \begin{gather}
-	m^{*}  =  \frac{eB}{\omega_{c}} = \frac{eB}{\frac{E_{n+1} - E_{n}}{\hbar}} = \frac{eB \hbar}{E_{n+1} - E_{n}}.
+	m^{*}  =  \frac{eB}{\omega_{c}} = \frac{eB}{\frac{E_{n+1} - E_{n}}{\hbar}} = \frac{eB \hbar}{E_{n+1} - E_{n}},
 \end{gather}
+and
+\begin{gather}
+	\omega_{c} = \frac{E_{n+1} - E_{n}}{\hbar}.
+\end{gather}
+The radius of cyclotron orbit can be written as
+\begin{gather}
+	r_{c} = \frac{v_{\perp}}{\omega_{c}} = \frac{v_{\perp} \hbar}{E_{n+1} - E_{n}} = \frac{v_{\perp} m^{*}}{eB},
+\end{gather}
+where $v_{\perp}$ is choosen to be equal to $3 \times 10^{7}$ m/s.
+
+
+
+
 \section{Methods}
 
 When a magnetic field is applied to the crystal lattice, the magnetic unit cell is enlarged $q$ times for square lattice ($2q$ times for hexagonal lattice). As a consequence, the magnetic Brillouin zone smaller $2q$ times than the orginal Brillouin zone.
 
-In addition, the three bases $d_{z^{2}}, d_{xy}, d_{x^{2}-y^{2}}$, which were introduced by Liu \textit{et al.}, cannot clearly distinguish the $K$ and $K'$ points in the valence and conduction bands for two reasons. First, the squared amplitudes $|\psi|^{2}$ are identical. Second, in the magnetic Brillouin zone, the $K$ and $K'$ valleys cannot be intuitively distinguished by the dispersion relation $E(\mathbf{k})$; instead, one needs to examine the properties of the wave functions. Specifically, the electron wave function at the $K$ valley is mainly contributed by $d_{z^{2}}$, while at the $K'$ valley it is $d_{xy} + d_{x^{2}-y^{2}}$. Therefore, it is necessary to adopt another basis set. We now consider a new basis consisting of the three eigenfunctions of the angular momentum operators $L^{2}$ and $L_{z}$, corresponding to $l = 2$ and $m = 0, \pm 2$.
+In addition, the three bases $d_{z^{2}}, d_{xy}, d_{x^{2}-y^{2}}$, which were introduced by Liu \textit{et al.}, cannot clearly distinguish the $K$ and $K'$ points in the valence and conduction bands for two reasons. First, the squared amplitudes $|\psi|^{2}$ are identical. Second, in the magnetic Brillouin zone, the $K$ and $K'$ valleys cannot be intuitively distinguished by the dispersion relation $E(\mathbf{k})$; instead, one needs to examine the properties of the wave functions. Specifically, the electron wave function at the $K$ valley in conduction band is mainly contributed by $d_{z^{2}}$, while at the valence band it is $d_{xy} + d_{x^{2}-y^{2}}$. Furthemore, we can distingushed $K$ and $K'$ valleys at the valence by using bases
+\begin{gather}
+	\ket{\psi_{v}^{K}} = \frac{1}{\sqrt{2}} \left( \ket{d_{x^{2} - y^{2}}} + i \ket{d_{xy}} \right),\\
+	\ket{\psi_{v}^{K'}} = \frac{1}{\sqrt{2}} \left( \ket{d_{x^{2} - y^{2}}} - i \ket{d_{xy}} \right).
+\end{gather}
+Therefore, it is necessary to adopt another basis set. We now consider a new basis consisting of the three eigenfunctions of the angular momentum operators $L^{2}$ and $L_{z}$, corresponding to $l = 2$ and $m = 0, \pm 2$.
 
 \begin{gather}
 	\ket{\tilde{\phi}_{1}} = \ket{d_{m = 0}}, \quad
@@ -357,7 +375,7 @@ To distinguish the states that originate from the original Brillouin zone, we fo
 
 When diagonalizing the Hamiltonian in Eq.~(14), we obtain $2q$ eigenvalues for each orbital $\phi_{j}(\mathbf{r})$, with $j = 1,2,3$. In total, this gives $6q$ eigenvalues. The eigenvalues corresponding to the valence band range from $0$ to $2q$, while those of the conduction band range from $2q+1$ to $4q$. 
 
-For instance, in Fig.~1(a), the first Landau level is labeled as $\ket{0,0}_{K'}$. This level is degenerate, i.e., $E_{2q+1} = E_{2q+2}$, corresponding to the same energy value. Similarly, the second Landau level is labeled as $\ket{0,1}_{K'}$, which corresponds to the two degenerate eigenvalues $E_{2q+3} = E_{2q+4}$, and so on for the subsequent Landau levels. In Fig.~1(d), for the valence band, we clearly observe the evidence of the Brillouin zone shrinking. At a given value of $B$, the same energy value is obtained simultaneously at the $K$, $K'$, and $\Gamma$ points. The first Landau level in the valence band corresponds to the eigenvalue $E_{2q}$ (labeled as $\ket{2,0}_{K'}$), which is degenerate with $E_{2q-1}$. The second Landau level then corresponds to $E_{2q-2}$ and $E_{2q-3}$, and so on for the lower levels.
+For instance, in Fig.~1(a), the first Landau level is labeled as $\ket{0,0}_{K'}$. This level is degenerate, i.e., $E_{2q+1} = E_{2q+2}$, corresponding to the same energy value. Similarly, the second Landau level is labeled as $\ket{0,1}_{K'}$, which corresponds to the two degenerate eigenvalues $E_{2q+3} = E_{2q+4}$, and so on for the subsequent Landau levels. In Fig.~1(e), for the valence band, we clearly observe the evidence of the Brillouin zone shrinking. At a given value of $B$, the energy value is obtained simultaneously at the $K$, $K'$ and $\Gamma$ points. The first Landau level in the valence band corresponds to the eigenvalue $E_{2q}$ (labeled as $\ket{0,0}_{\Gamma}$), which is degenerate with $E_{2q-1}$. The second Landau level then corresponds to $E_{2q-2}$ and $E_{2q-3}$, and so on for the lower levels.
 
 In terms of Eq.~(22), we have
 \begin{equation}
@@ -365,7 +383,7 @@ In terms of Eq.~(22), we have
 		m_{e}^{*} & = \frac{e B \hbar}{E_{2q+3} - E_{2q+1}}.
 	\end{aligned}
 \end{equation}
-However, for $m_{h}^{*}$, the situation is quite different and more complicated than for $m_{e}^{*}$. This difficulty arises because the energy of the $\Gamma$ point lies close to the $K$ and $K'$ valleys. 
+However, for $m_{h}^{*}$, the situation is quite different and more complicated than for $m_{e}^{*}$. For some cases, like MoS$_{2}$, this difficulty arises because the energy of the $\Gamma$ point lies close to the $K$ and $K'$ valleys. 
 As a consequence, in Fig.~1(d), the eigenvalues are no longer linear or follow the sequential index $2q-n$ as in the case of $m_{e}^{*}$, but instead exhibit level crossings due to numerical issues. 
 To address this, first, we need to determine the energy value $E_{n}$ at a given $B$ that corresponds to the envelope function. 
 This can be done by plotting all the wave functions from $0$ to $2q$, since each wave function provides information about the Landau level labeling. 
@@ -508,7 +526,7 @@ Based on our calculations, we argue that at valley $K$, the reduced mass $m_{r} 
 		\centering
 		\includegraphics[width=\linewidth]{imgs/MoTe2/ButAndWave_v.pdf}
 	\end{subfigure}
-	\caption{Landau levels (a) and the corresponding envelope-function components (b),(c) for conduction electrons at valleys $K$ and $K'$. Panels (d)–(f) show the same as (a)–(c) but for valence electrons..}
+	\caption{Landau levels (a) and the corresponding envelope-function components (b),(c) for conduction electrons at valleys $K$ and $K'$. Figs (d)–(f) show the same as (a)–(c) but for valence electrons.}
 \end{figure}
 The band structure of MoTe$_{2}$ without a magnetic field shows that the $\Gamma$ point has an energy level of $E \approx -0.1075$ eV. Therefore, when a magnetic field is applied, this $\Gamma$-point energy level still appears.  
 
@@ -566,7 +584,7 @@ In the study of Goryca \textit{et al.} \cite{goryca2019}, the reduced mass was r
 		\centering
 		\includegraphics[width=\linewidth]{imgs/WS2/ButAndWave_v.pdf}
 	\end{subfigure}
-	\caption{Landau levels (a) and the corresponding envelope-function components (b),(c) for conduction electrons at valleys $K$ and $K'$. Panels (d)–(f) show the same as (a)–(c) but for valence electrons.}
+	\caption{Landau levels (a) and the corresponding envelope-function components (b),(c) for conduction electrons at valleys $K$ and $K'$. Figs (d)–(f) show the same as (a)–(c) but for valence electrons.}
 \end{figure}
 
 The band structure of WS$_{2}$ without a magnetic field shows that the $\Gamma$ point has an energy level of $E \approx -0.1075$ (eV). Therefore, when a magnetic field is applied, the energy level at the $\Gamma$ point still appears.  
@@ -618,7 +636,7 @@ In our case, for the K valley under the TNN approximation, we obtain $m_{r} \app
 		\centering
 		\includegraphics[width=\linewidth]{imgs/WSe2/ButAndWave_v.pdf}
 	\end{subfigure}
-	\caption{Landau levels (a) and the corresponding envelope-function components (b),(c) for conduction electrons at valleys $K$ and $K'$. Panels (d)–(f) show the same as (a)–(c) but for valence electrons.}
+	\caption{Landau levels (a) and the corresponding envelope-function components (b),(c) for conduction electrons at valleys $K$ and $K'$. Figs (d)–(f) show the same as (a)–(c) but for valence electrons.}
 \end{figure}
 The band structure of WSe$_{2}$ without a magnetic field shows that the $\Gamma$ point lies much lower in energy than the K point. Therefore, when a magnetic field is applied, the energy level at the $\Gamma$ point does not appear here.  
 
@@ -668,7 +686,7 @@ In the study of Stier \textit{et al.} \cite{stier2018}, they reported $m_{r} \ap
 		\centering
 		\includegraphics[width=\linewidth]{imgs/WTe2/ButAndWave_v.pdf}
 	\end{subfigure}
-	\caption{Landau levels (a) and the corresponding envelope-function components (b),(c) for conduction electrons at valleys $K$ and $K'$. Panels (d)–(f) show the same as (a)–(c) but for valence electrons.}
+	\caption{Landau levels (a) and the corresponding envelope-function components (b),(c) for conduction electrons at valleys $K$ and $K'$. Figs (d)–(f) show the same as (a)–(c) but for valence electrons.}
 \end{figure}
 
 The band structure of WTe$_{2}$ in the absence of a magnetic field shows that the $\Gamma$ point lies significantly lower in energy than the K point. Therefore, under an applied magnetic field, the Landau levels associated with the $\Gamma$ point do not appear in this regime.  

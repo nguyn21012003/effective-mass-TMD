@@ -3,6 +3,7 @@
 !file_tex/
 !file_python/
 !core/
+core/__pycache__
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
