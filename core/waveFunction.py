@@ -41,7 +41,7 @@ def waveFunction(dataInit: dict, irreducibleMatrix, fileSave: str):
         arrContainer[f"psi_band2q1_d1_{i}"] = np.zeros(coeff * qmax, dtype=complex)
         arrContainer[f"psi_band2q1_d2_{i}"] = np.zeros(coeff * qmax, dtype=complex)
 
-    Hamiltonian = None
+    Hamiltonian = 0
 
     if modelNeighbor == "NN":
         Hamiltonian = HamNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
@@ -86,7 +86,6 @@ def waveFunction(dataInit: dict, irreducibleMatrix, fileSave: str):
                     row[f"d0_lambda_{i}"] = arrContainer[f"absPsi_band2q_d0_{i}"][q]
                     row[f"d1_lambda_{i}"] = arrContainer[f"absPsi_band2q_d1_{i}"][q]
                     row[f"d2_lambda_{i}"] = arrContainer[f"absPsi_band2q_d2_{i}"][q]
-
                 writer.writerow(row)
 
     elif np.gcd(p, qmax) != 1:  # check coprime

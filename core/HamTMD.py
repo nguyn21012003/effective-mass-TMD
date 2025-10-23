@@ -7,8 +7,7 @@ from core.condition import pbc
 
 
 def HamNN(alattice, p, q, kx, ky, IM) -> NDArray[np.complex128]:
-    # matt, alattice, e1, e2, t0, t1, t2, t11, t12, t22 = para(argument)
-    eta = p / (1 * q)
+    eta = p / q
 
     alpha = 1 / 2 * kx * alattice
     beta = sqrt(3) / 2 * ky * alattice
@@ -37,7 +36,6 @@ def HamNN(alattice, p, q, kx, ky, IM) -> NDArray[np.complex128]:
     h22 = np.zeros([q, q], dtype=complex)
     h12 = np.zeros([q, q], dtype=complex)
     h12T = np.zeros([q, q], dtype=complex)
-    H2band = np.zeros([2 * q, 2 * q], dtype=complex)
     H = np.zeros([3 * q, 3 * q], dtype=complex)
 
     for m in range(0, q):
