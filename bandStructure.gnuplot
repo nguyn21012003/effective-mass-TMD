@@ -17,11 +17,11 @@ set grid xtics ls 81
 # set label "(b)" at -1.8,4.7 font "Arial,40"
 set yrange [*:5.0]
 
-dir = "./Wed-09-10/NN/" 
+dir = "./Wed-10-15/TNN/"
 
-plot dir . "MoTe2_eigenvalue.csv" u 1:3 w l lw 4 lc "black" notitle,\
-     dir . "MoTe2_eigenvalue.csv" u 1:4 w l lw 4 lc "black" notitle,\
-     dir . "MoTe2_eigenvalue.csv" u 1:5 w l lw 4 lc "black" notitle
+plot dir . "WS2_eigenvalue.csv" u 1:3 w l lw 4 lc "red" notitle,\
+     dir . "WS2_eigenvalue.csv" u 1:4 w l lw 4 lc "black" notitle,\
+     dir . "WS2_eigenvalue.csv" u 1:5 w l lw 4 lc "black" notitle
 
 
 # plot "MoS2_eigenvalueTNNup.txt" using 1:3 w l lw 4 lc "red" notitle "spin up" ,\

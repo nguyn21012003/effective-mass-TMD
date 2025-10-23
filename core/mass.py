@@ -11,7 +11,6 @@ from tqdm import tqdm
 def calcMass(dataInit, irreducibleMatrix, fileSave):
     p = dataInit["p"]
     coeff = dataInit["coeff"]
-    print(coeff)
     numberWave = dataInit["numberWaveFunction"]  # so ham song can khao sat
     modelNeighbor = dataInit["modelNeighbor"]
     kx, ky = dataInit["kpoint"]
@@ -34,17 +33,11 @@ def calcMass(dataInit, irreducibleMatrix, fileSave):
 
     with open(fileSave, "w", newline="") as writefile:
         header = [
-            # "eta",
             "B_values",
-            # "evalues",
-            # "m_hK1",
-            # "m_hK2",
-            # "m_eK1",
-            # "m_eK2",
-            "r_vK1",
-            "r_vK2",
-            "r_cK1",
-            "r_cK2",
+            "m_hK1",
+            "m_hK2",
+            "m_eK1",
+            "m_eK2",
         ]
 
         # header.extend(["EKp1", "EKp2", "EKp3", "EKp4", "EKm1", "EKm2", "EKm3", "EKm4", "EG1", "EG2", "EG3", "EG4"])
@@ -52,7 +45,6 @@ def calcMass(dataInit, irreducibleMatrix, fileSave):
         #    header.append(f"E2q{i}")
         writer = csv.DictWriter(writefile, fieldnames=header, delimiter=",")
         writer.writeheader()
-        # for qmax in qrange:
         for B, qmax in tqdm(
             zip(B_values, qrange),
             ascii=" #",
@@ -62,8 +54,6 @@ def calcMass(dataInit, irreducibleMatrix, fileSave):
         ):
             if np.gcd(p, qmax) != 1:
                 continue
-            eta = p / (qmax)  ## the magnetic ratio require that p and q must be co-prime
-            # B = eta * phi0 / S  ## the actually B which are taken from eta
 
             if modelNeighbor == "NN":
                 Hamiltonian = HamNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
@@ -81,6 +71,7 @@ def calcMass(dataInit, irreducibleMatrix, fileSave):
             EKp1_con = EKp2_con = EKp3_con = EKp4_con = 0
             EKm1_con = EKm2_con = EKm3_con = EKm4_con = 0
             EG1 = EG2 = EG3 = EG4 = 0
+            meff_vK1, meff_cK1, meff_vK2, meff_cK2 = 0, 0, 0, 0
             if qmax in offsetK2:
                 off1K1, off2K1, off3K1, off4K1 = offsetK1[qmax]
                 off1K2, off2K2, off3K2, off4K2 = offsetK2[qmax]

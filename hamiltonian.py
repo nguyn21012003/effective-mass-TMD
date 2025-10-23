@@ -14,7 +14,7 @@ from core.waveFunction import waveFunction
 def solver(qmax: int, material: str, model: dict, fileSave: dict):
     tran = True
     p = 1
-    coeff = 2
+    coeff = 1
     kpoint = [0, 0]  # Gamma
     ### the magnetic Brillouin zone now q times smaller than original Brillouin zone
     ### the K,K' points now are closed to the Gamma kpoint
@@ -60,7 +60,6 @@ def solver(qmax: int, material: str, model: dict, fileSave: dict):
 
 def main():
     qmax = 297
-    qrange = [2346, 1877, 1564, 1341, 1173, 1043, 939]
     material = "MoS2"
     modelPara = "GGA"
     modelNeighbor = "NN"
