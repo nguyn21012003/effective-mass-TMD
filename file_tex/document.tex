@@ -334,11 +334,11 @@ where $v_{F}$ is given in Table 1.
 	\renewcommand{\arraystretch}{2.0}
 	\begin{tabular}{c c c | c c c}
 		\hline\hline
-		& $\hbar v_{F}$ (eV\AA) & $v_{F}$ (m/s) & & $\hbar v_{F}$ (eV\AA) & $v_{F}$ (m/s) \\ 
+		                      & $\hbar v_{F}$ (eV\AA) & $v_{F}$ (m/s)        &                      & $\hbar v_{F}$ (eV\AA) & $v_{F}$ (m/s)        \\
 		\hline
-		MoS\textsubscript{2}  & 2.76 & 4.19 $\times 10^{5}$ & WS\textsubscript{2}  & 4.38 & 6.65 $\times 10^{5}$ \\ \hline
-		MoSe\textsubscript{2} & 2.53 & 3.84 $\times 10^{5}$ & WSe\textsubscript{2} & 3.94 & 5.99 $\times 10^{5}$ \\ \hline
-		MoTe\textsubscript{2} & 0.87 & 1.32 $\times 10^{5}$ & WTe\textsubscript{2} & 2.03 & 3.09 $\times 10^{5}$ \\ 
+		MoS\textsubscript{2}  & 2.76                  & 4.19 $\times 10^{5}$ & WS\textsubscript{2}  & 4.38                  & 6.65 $\times 10^{5}$ \\ \hline
+		MoSe\textsubscript{2} & 2.53                  & 3.84 $\times 10^{5}$ & WSe\textsubscript{2} & 3.94                  & 5.99 $\times 10^{5}$ \\ \hline
+		MoTe\textsubscript{2} & 0.87                  & 1.32 $\times 10^{5}$ & WTe\textsubscript{2} & 2.03                  & 3.09 $\times 10^{5}$ \\
 		\hline\hline
 	\end{tabular}
 	\caption{Parameters of the effective Hamiltonian for the four common types of TMDs. The Fermi velocities are taken from Ref.~\cite{have2019,luo2016}.}
@@ -348,7 +348,7 @@ where $v_{F}$ is given in Table 1.
 
 \section{Methods}
 
-When a magnetic field is applied to the crystal lattice, the magnetic unit cell is enlarged $q$ times for square lattice ($2q$ times for hexagonal lattice). As a consequence, the magnetic Brillouin zone smaller $2q$ times than the orginal Brillouin zone.
+When a magnetic field is applied to the crystal lattice, the magnetic unit cell is enlarged $q$ times for square lattice ($2q$ times for hexagonal lattice). As a consequence, the magnetic Brillouin zone smaller $2q$ times than the orginal Brillouin zone \cite{xiao2010}. 
 
 In addition, the three bases $d_{z^{2}}, d_{xy}, d_{x^{2}-y^{2}}$, which were introduced by Liu \textit{et al.}, cannot clearly distinguish the $K$ and $K'$ points in the valence and conduction bands for two reasons. First, the squared amplitudes $|\psi|^{2}$ are identical. Second, in the magnetic Brillouin zone, the $K$ and $K'$ valleys cannot be intuitively distinguished by the dispersion relation $E(\mathbf{k})$; instead, one needs to examine the properties of the wave functions. Specifically, the electron wave function at the $K$ valley in conduction band is mainly contributed by $d_{z^{2}}$, while at the valence band it is $d_{xy} + d_{x^{2}-y^{2}}$. Furthemore, we can distingushed $K$ and $K'$ valleys at the valence by using bases
 \begin{gather}
@@ -391,9 +391,12 @@ where $H^{\text{TB}} = H^{\text{NN}}$ or $H^{\text{TNN}}$.
 
 To distinguish the states that originate from the original Brillouin zone, we follow the convention of Ho \textit{et al.}~\cite{ho2014}. Each Landau level is then labeled as $\ket{j, n}_{\tau}$, where $j$, $n$, and $\tau$ denote the orbital, Landau, and valley indices, respectively.
 
-When diagonalizing the Hamiltonian in Eq.~(14), we obtain $2q$ eigenvalues for each orbital $\phi_{j}(\mathbf{r})$, with $j = 1,2,3$. In total, this gives $6q$ eigenvalues. The eigenvalues corresponding to the valence band range from $0$ to $2q$, while those of the conduction band range from $2q+1$ to $4q$.
+When diagonalizing the Hamiltonian in Eq.~(14), we obtain $2q$ eigenvalues for each orbital $\phi_{j}(\mathbf{r})$, with $j = 1,2,3$. In total, this gives $6q$ eigenvalues. The eigenvalues corresponding to the valence band range from $1$ to $2q$, while those of the conduction band range from $2q+1$ to $4q$.
 
-For instance, in Fig.~1(a), the first Landau level is labeled as $\ket{0,0}_{K'}$. This level is degenerate, i.e., $E_{2q+1} = E_{2q+2}$, corresponding to the same energy value. Similarly, the second Landau level is labeled as $\ket{0,1}_{K'}$, which corresponds to the two degenerate eigenvalues $E_{2q+3} = E_{2q+4}$, and so on for the subsequent Landau levels. In Fig.~1(e), for the valence band, we clearly observe the evidence of the Brillouin zone shrinking. At a given value of $B$, the energy value is obtained simultaneously at the $K$, $K'$ and $\Gamma$ points. The first Landau level in the valence band corresponds to the eigenvalue $E_{2q}$ (labeled as $\ket{0,0}_{\Gamma}$), which is degenerate with $E_{2q-1}$. The second Landau level then corresponds to $E_{2q-2}$ and $E_{2q-3}$, and so on for the lower levels.
+For instance, in Fig.~1(a), the first Landau level is labeled as $\ket{0,0}_{K'}$. This level is degenerate, i.e., $E_{2q+1} = E_{2q+2}$, corresponding to the same energy value. Similarly, the second Landau level is labeled as $\ket{0,1}_{K'}$, which corresponds to the two degenerate eigenvalues $E_{2q+3} = E_{2q+4}$, and so on for the subsequent Landau levels. In Fig.~1(e), for the valence band, we clearly observe the evidence of the Brillouin zone shrinking. At a given value of $B$, the energy value is obtained simultaneously at the $K$, $K'$ and $\Gamma$ points. The first Landau level in the valence band corresponds to the eigenvalue $E_{2q}$ (labeled as $\ket{0,0}_{\Gamma}$), which is degenerate with $E_{2q-1}$. The second Landau level then corresponds to $E_{2q-2}$ and $E_{2q-3}$, and so on for the lower levels. The twofold degeneracy can be addressed by two reasons, first arises from the motion of electrons in a 2D system and second comes from the magnetic Brillouin zone.
+We have known that the magnetic Brillouin zone is $2q$ smaller than the orginal one. When magnetic field is turned on, we might obtained at least doublet degeneracy in Landau level. Second, in the absence of magnetic field, electron moving in periodic lattice crystal, but when a magnetic field is applied, electrons follow circular orbits. Due to translational symmetry, these orbits can be positioned anywhere within the sample without changing their energy \cite{kittel2018}. 
+
+
 
 In terms of Eq.~(22), we have
 \begin{equation}
@@ -885,7 +888,7 @@ Thus, at the K valley in the TNN case, the reduced mass $m_r$ of WTe$_{2}$ exhib
 		\centering
 		\includegraphics[width=\linewidth]{imgs/WTe2/radiusK2.pdf}
 	\end{subfigure}
-	\caption{The ratio of the cyclotron radius $r_c$ to the lattice constant $a$ as a function of magnetic field $B$.}
+	\caption{The ratio of the cyclotron radius $r_{c}$ to the lattice constant $a$ as a function of magnetic field $B$.}
 \end{figure}
 
 \newpage
