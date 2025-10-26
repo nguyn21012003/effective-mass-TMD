@@ -1,6 +1,7 @@
 */
 */
 !file_tex/
+!file_tex/script_figs
 !file_python/
 !core/
 core/__pycache__
