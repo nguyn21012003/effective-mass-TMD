@@ -319,15 +319,25 @@ and
 \begin{gather}
 	\omega_{c} = \frac{E_{n+1} - E_{n}}{\hbar}.
 \end{gather}
-
-When an electron moves in a periodic crystal lattice under a magnetic field $B$, its motion is governed by two distinct types of periodic dynamics. The first originates from the periodic lattice potential, while the second is the cyclotron motion induced by the Lorentz force, which drives the electron into circular orbits with a cyclotron radius $r_{c} \propto \frac{1}{B}$. At weak magnetic fields, the cyclotron radius $r_{c}$ is much larger than the lattice constant $a$ (see Fig.~4). In this regime, the two motions---lattice periodic motion and cyclotron motion---are essentially independent, and the effective mass $m^{*}$ remains nearly constant. At strong magnetic fields, however, the cyclotron radius $r_{c}$ becomes comparable to the lattice constant $r_{0}$. Consequently, the electron dynamics are strongly influenced by the interplay between the Lorentz force and the periodic lattice potential. This coupling gives rise to a variety of rich physical phenomena, such as the Hofstadter butterfly, where the Landau levels form a fractal-like structure, and modifications of the effective mass $m^{*}$. These effects may exhibit distinct behaviors in the $K$ and $K'$ valleys.
-
-
 The radius of cyclotron orbit can be written as
 \begin{gather}
 	r_{c} = \frac{v_{F}}{\omega_{c}} = \frac{v_{F} \hbar}{E_{n+1} - E_{n}} = \frac{v_{F} m^{*}}{eB},
 \end{gather}
 where $v_{F}$ is given in Table 1.
+
+\begin{figure}[htb]
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{script_figs/square_orbit.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=0.8\linewidth]{script_figs/circle_orbit.pdf}
+	\end{subfigure}
+	\caption{(a) Electron motion in two dimensions without magnetic field. (b) Under magnetic field, electrons move in circular orbits in the ${k}$-plane.}
+\end{figure}
+
+When an electron moves in a periodic crystal lattice under a magnetic field $B$, its motion is governed by two distinct types of periodic dynamics. The first originates from the periodic lattice potential, while the second is the cyclotron motion induced by the Lorentz force, which drives the electron into circular orbits with a cyclotron radius $r_{c} \propto \frac{1}{B}$. At weak magnetic fields, the cyclotron radius $r_{c}$ is much larger than the lattice constant $a$. In this regime, the two motions---lattice periodic motion and cyclotron motion---are essentially independent, and the effective mass $m^{*}$ remains nearly constant. At strong magnetic fields, however, the cyclotron radius $r_{c}$ becomes comparable to the lattice constant $r_{0}$. Consequently, the electron dynamics are strongly influenced by the interplay between the Lorentz force and the periodic lattice potential. This coupling gives rise to a variety of rich physical phenomena, such as the Hofstadter butterfly, where the Landau levels form a fractal-like structure, and modifications of the effective mass $m^{*}$. These effects may exhibit distinct behaviors in the $K$ and $K'$ valleys.
 
 \begin{table}[!h]
 	\centering
@@ -391,14 +401,26 @@ where $H^{\text{TB}} = H^{\text{NN}}$ or $H^{\text{TNN}}$.
 
 To distinguish the states that originate from the original Brillouin zone, we follow the convention of Ho \textit{et al.}~\cite{ho2014}. Each Landau level is then labeled as $\ket{j, n}_{\tau}$, where $j$, $n$, and $\tau$ denote the orbital, Landau, and valley indices, respectively.
 
+\textbf{Degeneracy:} The degeneracy of Landau levels can be addressed by two reasons, first arises from the motion of electrons in a 2D system and second comes from the magnetic Brillouin zone.
+We have known that the magnetic Brillouin zone is $2q$ smaller than the orginal one. When magnetic field is turned on, we might obtained at least doublet degeneracy in Landau level. Second, in the absence of magnetic field, electron moving in periodic lattice crystal, but when a magnetic field is applied, electrons follow circular orbits (see in Fig.~2(a)). Here the Lorentz force are dominant, and the lattice potential is considered as slightly perturbation. Due to translational symmetry, these orbits can be positioned anywhere within the sample without changing their energy \cite{kittel2018}. 
+
+\begin{figure}[htb]
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{script_figs/weak_BZ.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.495\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{script_figs/strong_BZ.pdf}
+	\end{subfigure}
+	\caption{Periodic zone scheme, adapted from Kittel \textit{et al.}~\cite{kittel2018}. The straight lines indicate the Brillouin zones, the curved lines in (a) represent the band structure, and the elliptical lines correspond to the cyclotron orbits.}
+\end{figure}
+
 When diagonalizing the Hamiltonian in Eq.~(14), we obtain $2q$ eigenvalues for each orbital $\phi_{j}(\mathbf{r})$, with $j = 1,2,3$. In total, this gives $6q$ eigenvalues. The eigenvalues corresponding to the valence band range from $1$ to $2q$, while those of the conduction band range from $2q+1$ to $4q$.
 
-For instance, in Fig.~1(a), the first Landau level is labeled as $\ket{0,0}_{K'}$. This level is degenerate, i.e., $E_{2q+1} = E_{2q+2}$, corresponding to the same energy value. Similarly, the second Landau level is labeled as $\ket{0,1}_{K'}$, which corresponds to the two degenerate eigenvalues $E_{2q+3} = E_{2q+4}$, and so on for the subsequent Landau levels. In Fig.~1(e), for the valence band, we clearly observe the evidence of the Brillouin zone shrinking. At a given value of $B$, the energy value is obtained simultaneously at the $K$, $K'$ and $\Gamma$ points. The first Landau level in the valence band corresponds to the eigenvalue $E_{2q}$ (labeled as $\ket{0,0}_{\Gamma}$), which is degenerate with $E_{2q-1}$. The second Landau level then corresponds to $E_{2q-2}$ and $E_{2q-3}$, and so on for the lower levels. The twofold degeneracy can be addressed by two reasons, first arises from the motion of electrons in a 2D system and second comes from the magnetic Brillouin zone.
-We have known that the magnetic Brillouin zone is $2q$ smaller than the orginal one. When magnetic field is turned on, we might obtained at least doublet degeneracy in Landau level. Second, in the absence of magnetic field, electron moving in periodic lattice crystal, but when a magnetic field is applied, electrons follow circular orbits. Due to translational symmetry, these orbits can be positioned anywhere within the sample without changing their energy \cite{kittel2018}. 
+For instance, in Fig.~3(a), the first Landau level is labeled as $\ket{0,0}_{K'}$. This level is degenerate, i.e., $E_{2q+1} = E_{2q+2}$, corresponding to the same energy value. Similarly, the second Landau level is labeled as $\ket{0,1}_{K'}$, which corresponds to the two degenerate eigenvalues $E_{2q+3} = E_{2q+4}$, and so on for the subsequent Landau levels. In Fig.~3(e), for the valence band, we clearly observe the evidence of the Brillouin zone shrinking. At a given value of $B$, the energy value is obtained simultaneously at the $K$, $K'$ and $\Gamma$ points. The first Landau level in the valence band corresponds to the eigenvalue $E_{2q}$ (labeled as $\ket{0,0}_{\Gamma}$), which is degenerate with $E_{2q-1}$. The second Landau level then corresponds to $E_{2q-2}$ and $E_{2q-3}$, and so on for the lower levels. 
 
-
-
-In terms of Eq.~(22), we have
+In terms of Eq.~(18), we have
 \begin{equation}
 	\begin{aligned}
 		m_{e}^{*} & = \frac{e B \hbar}{E_{2q+3} - E_{2q+1}}.
