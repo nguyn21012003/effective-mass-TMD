@@ -43,6 +43,6 @@ set label "n=3" at -0.25,2.75 font "CMU Serif,28"
 set label "(b)" at -2.5,2.75 font "CMU Serif,28"
 
 plot for [n=1:3] n*cos(t), n*sin(t) w l lw 2 lc rgb "black" notitle, \
-     for [i=1:N] x1[i], y1[i] with points pt 7 ps 2 lc rgb "#bdbdbd" notitle,\
-     for [i=1:N] x2[i], y2[i] with points pt 7 ps 2 lc rgb "#bdbdbd" notitle,\
-     for [i=1:N] x3[i], y3[i] with points pt 7 ps 2 lc rgb "#bdbdbd" notitle
+     for [i=1:N] x1[i], y1[i] with points pt 7 ps 2 lc rgb "#1a80bb" notitle,\
+     for [i=1:N] x2[i], y2[i] with points pt 7 ps 2 lc rgb "#1a80bb" notitle,\
+     for [i=1:N] x3[i], y3[i] with points pt 7 ps 2 lc rgb "#1a80bb" notitle

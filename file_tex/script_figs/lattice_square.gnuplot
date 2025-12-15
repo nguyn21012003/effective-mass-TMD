@@ -46,4 +46,4 @@ do for [R=0:5] {
     }
 }
 
-plot for [i=1:N_total] x[i], y[i] with points pt 7 ps 2 lc rgb "#bdbdbd" notitle
+plot for [i=1:N_total] x[i], y[i] with points pt 7 ps 2 lc rgb "#1a80bb" notitle
