@@ -13,7 +13,7 @@ from core.parameters import paraNN, paraTNN
 
 
 def eigenvalue(material: str, fileBandStruct: str):
-    N = 101
+    N = 301
     model = "GGA"
     data = paraNN(material, model)
     # matt, a_lattice, e1, e2, t0, t1, t2, t11, t12, t22 = paraNN(argument)

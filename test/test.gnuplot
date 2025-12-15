@@ -1,3 +1,4 @@
+
 set terminal qt size 1920,1080
 set datafile separator ","
 
@@ -17,10 +18,9 @@ unset xtics
 # unset ytics
 
 
-dir = "./Thu-10-30/TNN/"
-do for [i=0:59] {
+do for [i = 0:59] {
     set label sprintf("(%d)", i+2) at graph 0.05,0.95 front font "Arial,20"
-    plot dir . "WaveFunction_q_93_WTe2_GGA.dat" using 1:(column(i+2)) w l lw 2 lc "#0197f6" notitle
+    plot  "test.dat" using 1:(column(i+2)) w l lw 2 lc "#0197f6" notitle
     unset label
 }
 unset multiplot

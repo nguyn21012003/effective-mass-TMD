@@ -1,5 +1,5 @@
-import os
 from datetime import datetime
+import os
 
 from core.butterfly import butterfly
 from core.irrMatrix import IR, IRNN, IRTNN
@@ -11,10 +11,10 @@ from core.parameters import paraNN, paraTNN
 from core.waveFunction import waveFunction
 
 
-def solver(qmax: int, material: str, model: dict, fileSave: dict):
+def solver(qmax: int, material: str, model: dict, fileSave: dict[str, str]):
     tran = True
     p = 1
-    coeff = 1
+    coeff = 2
     kpoint = [0, 0]  # Gamma
     ### the magnetic Brillouin zone now q times smaller than original Brillouin zone
     ### the K,K' points now are closed to the Gamma kpoint
@@ -59,10 +59,10 @@ def solver(qmax: int, material: str, model: dict, fileSave: dict):
 
 
 def main():
-    qmax = 297
-    material = "MoS2"
+    qmax = 93
+    material = "WTe2"
     modelPara = "GGA"
-    modelNeighbor = "NN"
+    modelNeighbor = "TNN"
     model = {"modelParameters": modelPara, "modelNeighbor": modelNeighbor}
 
     time_run = datetime.now().strftime("%a-%m-%d")

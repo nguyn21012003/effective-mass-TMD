@@ -1,13 +1,14 @@
+import csv
+
 import numpy as np
 from numpy import linalg as LA
 from tqdm import tqdm
-import csv
 
 from core.HamTMD import HamNN
 from core.HamTMDNN import HamTNN
 
 
-def waveFunction(dataInit: dict, irreducibleMatrix, fileSave: str):
+def waveFunction(dataInit, irreducibleMatrix, fileSave):
     ##### chi so dau vao
     p = dataInit["p"]
     coeff = dataInit["coeff"]
@@ -41,14 +42,12 @@ def waveFunction(dataInit: dict, irreducibleMatrix, fileSave: str):
         arrContainer[f"psi_band2q1_d1_{i}"] = np.zeros(coeff * qmax, dtype=complex)
         arrContainer[f"psi_band2q1_d2_{i}"] = np.zeros(coeff * qmax, dtype=complex)
 
-    Hamiltonian = 0
+    Hamiltonian = None
 
     if modelNeighbor == "NN":
         Hamiltonian = HamNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
     elif modelNeighbor == "TNN":
         Hamiltonian = HamTNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
-
-    #### Tracking gia tri rieng theo ham rieng
 
     if np.gcd(p, qmax) == 1:
 
@@ -58,9 +57,9 @@ def waveFunction(dataInit: dict, irreducibleMatrix, fileSave: str):
         for i in tqdm(range(numberWave), desc="Calc eigenvectors", colour="green"):
             # print(i)
             #### i la chi so 2q + i trong so band 6q
-            arrContainer[f"psi_band2q_d0_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax - i - 1][0 * coeff * qmax : 1 * coeff * qmax]
-            arrContainer[f"psi_band2q_d1_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax - i - 1][1 * coeff * qmax : 2 * coeff * qmax]
-            arrContainer[f"psi_band2q_d2_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax - i - 1][2 * coeff * qmax : 3 * coeff * qmax]
+            arrContainer[f"psi_band2q_d0_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax + i][0 * coeff * qmax : 1 * coeff * qmax]
+            arrContainer[f"psi_band2q_d1_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax + i][1 * coeff * qmax : 2 * coeff * qmax]
+            arrContainer[f"psi_band2q_d2_{i}"][: coeff * qmax] += eigenvecs[:, coeff * qmax + i][2 * coeff * qmax : 3 * coeff * qmax]
 
             arrContainer[f"absPsi_band2q_d0_{i}"] = np.abs(arrContainer[f"psi_band2q_d0_{i}"]) ** 2
             arrContainer[f"absPsi_band2q_d1_{i}"] = np.abs(arrContainer[f"psi_band2q_d1_{i}"]) ** 2
@@ -80,15 +79,17 @@ def waveFunction(dataInit: dict, irreducibleMatrix, fileSave: str):
             writer.writeheader()
             iPosition = dataArr["PositionAtoms"]
 
-            for q in tqdm(range(coeff * qmax), desc="Write file", colour="blue"):
+            # for q in tqdm(range(coeff * qmax), desc="Write file", colour="blue"):
+            for q in range(coeff * qmax):
                 row = {"x": iPosition[q]}
                 for i in range(numberWave):
                     row[f"d0_lambda_{i}"] = arrContainer[f"absPsi_band2q_d0_{i}"][q]
                     row[f"d1_lambda_{i}"] = arrContainer[f"absPsi_band2q_d1_{i}"][q]
                     row[f"d2_lambda_{i}"] = arrContainer[f"absPsi_band2q_d2_{i}"][q]
+
                 writer.writerow(row)
 
     elif np.gcd(p, qmax) != 1:  # check coprime
-        raise ValueError(f"{p} & {qmax} not co-prime")
+        print("p,q pairs not co-prime!")
 
     return None

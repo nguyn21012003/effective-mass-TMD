@@ -12,7 +12,6 @@ from core.HamTMDNN import HamTNN
 def calcRadius(dataInit, irreducibleMatrix, fileSave):
     p = dataInit["p"]
     coeff = dataInit["coeff"]
-    print(coeff)
     modelNeighbor = dataInit["modelNeighbor"]
     kx, ky = dataInit["kpoint"]
     qmax = dataInit["qmax"]
@@ -28,13 +27,12 @@ def calcRadius(dataInit, irreducibleMatrix, fileSave):
 
     Hamiltonian = 0
     B_values = list(range(15, 505, 5))  # đơn vị là Tesla
-    print(B_values, "\n")
     qrange = [round(phi0 / (S * B)) for B in B_values]
+    print(B_values, "\n")
     print(qrange)
 
     with open(fileSave, "w", newline="") as writefile:
         header = [
-            # "eta",
             "B_values",
             "r_vK1",
             "r_vK2",
@@ -52,7 +50,6 @@ def calcRadius(dataInit, irreducibleMatrix, fileSave):
         ):
             if np.gcd(p, qmax) != 1:
                 continue
-            eta = p / (qmax)  ## the magnetic ratio require that p and q must be co-prime
             if modelNeighbor == "NN":
                 Hamiltonian = HamNN(alattice, p, coeff * qmax, kx, ky, irreducibleMatrix)
             elif modelNeighbor == "TNN":
@@ -92,13 +89,10 @@ def calcRadius(dataInit, irreducibleMatrix, fileSave):
 
                 omega_cK2 = (En1_conduction_K2 - En_conduction_K2) * charge / hbar
                 meff_cK2 = charge * B / omega_cK2
-            row = {
-                "B_values": B,
-            }
+            row = {"B_values": B}
 
             row["r_vK1"] = (meff_vK1 * v_f / (charge * B)) / alattice
             row["r_vK2"] = (meff_vK2 * v_f / (charge * B)) / alattice
-
             row["r_cK1"] = (meff_cK2 * v_f / (charge * B)) / alattice
             row["r_cK2"] = (meff_cK1 * v_f / (charge * B)) / alattice
 

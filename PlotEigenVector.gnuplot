@@ -15,7 +15,7 @@ set ytics font "Arial,13"
 set xtics
 # unset ytics
 
-dir = "./Mon-09-08/NN/" 
+dir = "./Mon-10-27/NN/" 
 
 
 # set yrange [0:0.001]
@@ -23,8 +23,8 @@ dir = "./Mon-09-08/NN/"
 
 #------- (a) --------
 set label "(a)" at graph 0.05,0.95 front font "Arial,20"
-plot dir . "WaveFunction_q_297_MoSe2_GGA.dat" \
-     using 1:63 w l lw 5 lc "#075d37" title "orbital d_{0} landau level n"
+plot dir . "WaveFunction_q_297_MoS2_GGA.dat" \
+     using 1:56 w l lw 5 lc "#075d37" title "orbital d_{0} landau level n"
 unset label
 
 # # -------- (b) --------

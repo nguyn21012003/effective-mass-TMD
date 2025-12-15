@@ -16,7 +16,7 @@ from core.parameters import paraNN, paraTNN
 
 
 def eigenvalue(choice, fileBandStruct):
-    N = 101
+    N = 501
     model = "GGA"
     data = paraTNN(choice, model)
     # matt, a_lattice, e1, e2, t0, t1, t2, t11, t12, t22 = paraNN(argument)
@@ -101,7 +101,7 @@ def eigenvalue(choice, fileBandStruct):
 
 def main():
     modelNeighbor = "TNN"
-    material = "WS2"
+    material = "MoS2"
     print(material, modelNeighbor)
     time_run = datetime.now().strftime("%a-%m-%d")
     dir = f"./{time_run}/{modelNeighbor}/"

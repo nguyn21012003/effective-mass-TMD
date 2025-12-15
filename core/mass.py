@@ -19,10 +19,10 @@ def calcMass(dataInit, irreducibleMatrix, fileSave):
 
     h = 6.62607007e-34  # kg m**2 / s**2
     hbar = h / (2 * pi)
+    m_e = 9.10938356e-31  # kg
     charge = 1.602176621e-19  # Coulomb
     phi0 = h / charge
     S = sqrt(3) * alattice**2 / 2
-    m_e = 9.10938356e-31  # kg
     v_f = 6.65e5  # Vận tốc Fermi trong chất rắn, đơn vị là m/s
 
     Hamiltonian = None
