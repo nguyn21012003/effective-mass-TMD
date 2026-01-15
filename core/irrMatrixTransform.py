@@ -1,12 +1,18 @@
 import numpy as np
-from numpy import pi, sin, cos, sqrt
-
+from numpy import cos, pi, sin, sqrt
 
 W = np.array(
     [
         [1, 0, 0],
         [0, 1j / sqrt(2), -1j / sqrt(2)],
         [0, 1 / sqrt(2), 1 / sqrt(2)],
+    ]
+)
+Lz = np.array(
+    [
+        [0, 0, 0],
+        [0, 0, 2j],
+        [0, -2j, 0],
     ]
 )
 ### d_0, d_2, d_-2
@@ -218,4 +224,15 @@ def IR(data):
     E_R5 = np.conjugate(W).T @ E_R5 @ W
     E_R6 = np.conjugate(W).T @ E_R6 @ W
 
+    Lz = np.array(
+        [
+            [0, 0, 0],
+            [0, 0, 2j],
+            [0, -2j, 0],
+        ]
+    )
+    print(Lz)
+
+    Lz = np.conjugate(W).T @ Lz @ W
+    print(Lz)
     return (E_R0, E_R1, E_R2, E_R3, E_R4, E_R5, E_R6)

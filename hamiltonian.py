@@ -1,5 +1,7 @@
-from datetime import datetime
 import os
+from datetime import datetime
+
+import numpy as np
 
 from core.butterfly import butterfly
 from core.irrMatrix import IR, IRNN, IRTNN
@@ -53,16 +55,17 @@ def solver(qmax: int, material: str, model: dict, fileSave: dict[str, str]):
     dataInit["modelNeighbor"] = modelNeighbor
     dataInit["p"] = p
     dataInit["alattice"] = dataParameters["alattice"]
-    waveFunction(dataInit, irreducibleMatrix, fileSave["wave"])
+    dataInit["lambda"] = dataParameters["lambda"]
+    waveFunction(dataInit, irreducibleMatrix, fileSave)
     # calcMass(dataInit, irreducibleMatrix, fileSave["mass"])
     # butterfly(dataInit, irreducibleMatrix, fileSave["butterfly"])
 
 
 def main():
     qmax = 93
-    material = "WTe2"
+    material = "MoS2"
     modelPara = "GGA"
-    modelNeighbor = "TNN"
+    modelNeighbor = "NN"
     model = {"modelParameters": modelPara, "modelNeighbor": modelNeighbor}
 
     time_run = datetime.now().strftime("%a-%m-%d")
@@ -73,11 +76,19 @@ def main():
     print(material, modelNeighbor, modelPara)
 
     # for qmax in tqdm(qrange, ascii=" #", desc=f"Wave function in diff B", colour="magenta"):
-    filePlotWaveFunction = f"{dir}WaveFunction_q_{qmax}_{material}_{modelPara}.dat"
+    wave1 = f"{dir}WaveFunction_q_{qmax}_{material}_{modelPara}.dat"
+    waveUp = f"{dir}up.dat"
+    waveDown = f"{dir}down.dat"
     fileMass = f"{dir}Mass_q_{qmax}_{material}_{modelPara}.dat"
     fileBut = f"{dir}Butterfly_q_{qmax}_{material}_{modelPara}.dat"
 
-    fileSave = {"wave": filePlotWaveFunction, "mass": fileMass, "butterfly": fileBut}
+    fileSave = {
+        "wave": wave1,
+        "mass": fileMass,
+        "butterfly": fileBut,
+        "waveUp": waveUp,
+        "waveDown": waveDown,
+    }
     solver(qmax, material, model, fileSave)
 
     return None

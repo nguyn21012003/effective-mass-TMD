@@ -12,6 +12,7 @@ def paraNN(material: str, model: str) -> dict:
             "t11": [0.250, 0.324, 0.244, 0.305, 0.241, 0.272],
             "t12": [0.360, 0.405, 0.314, 0.353, 0.263, 0.295],
             "t22": [0.047, -0.076, 0.129, 0.025, 0.269, 0.200],
+            "lambda": [0.073, 0.211, 0.091, 0.228, 0.107, 0.237],
         },
         "GGA": {
             "alattice": [3.190, 3.191, 3.326, 3.325, 3.357, 3.560],
@@ -23,6 +24,7 @@ def paraNN(material: str, model: str) -> dict:
             "t11": [0.218, 0.286, 0.211, 0.263, 0.207, 0.233],
             "t12": [0.338, 0.384, 0.290, 0.329, 0.239, 0.270],
             "t22": [0.057, -0.061, 0.130, 0.034, 0.252, 0.190],
+            "lambda": [0.073, 0.211, 0.091, 0.228, 0.107, 0.237],
         },
     }
     e1 = dataModel[model]["e1"][choice]
@@ -34,7 +36,7 @@ def paraNN(material: str, model: str) -> dict:
     t12 = dataModel[model]["t12"][choice]
     t22 = dataModel[model]["t22"][choice]
     alattice = dataModel[model]["alattice"][choice]
-
+    lambd = dataModel[model]["lambda"][choice]
     data = {
         "material": matt[choice],
         "alattice": alattice,
@@ -46,6 +48,7 @@ def paraNN(material: str, model: str) -> dict:
         "t11": t11,
         "t12": t12,
         "t22": t22,
+        "lambda": lambd,
     }
 
     return data
@@ -77,6 +80,7 @@ def paraTNN(material: str, model: str) -> dict:
             "u11": [0.304, 0.374, 0.327, 0.392, 0.145, 0.361],
             "u12": [-0.192, -0.224, -0.194, -0.224, -0.078, -0.193],
             "u22": [-0.162, -0.177, -0.151, -0.165, 0.035, -0.129],
+            "lambda": [0.073, 0.211, 0.091, 0.228, 0.107, 0.237],
         },
         "GGA": {
             "alattice": [3.190, 3.191, 3.326, 3.325, 3.357, 3.560],
@@ -99,6 +103,7 @@ def paraTNN(material: str, model: str) -> dict:
             "u11": [0.266, 0.325, 0.272, 0.329, -0.045, 0.312],
             "u12": [-0.176, -0.206, -0.172, -0.202, -0.141, -0.177],
             "u22": [-0.150, -0.163, -0.150, -0.164, 0.087, -0.132],
+            "lambda": [0.073, 0.211, 0.091, 0.228, 0.107, 0.237],
         },
     }
     e1 = dataModel[model]["e1"][choice]
@@ -121,6 +126,7 @@ def paraTNN(material: str, model: str) -> dict:
     u12 = dataModel[model]["u12"][choice]
     u22 = dataModel[model]["u22"][choice]
     a = dataModel[model]["alattice"][choice]
+    lambd = dataModel[model]["lambda"][choice]
 
     data = {
         "material": matt[choice],
@@ -144,6 +150,7 @@ def paraTNN(material: str, model: str) -> dict:
         "u11": u11,
         "u12": u12,
         "u22": u22,
+        "lambda": lambd,
     }
 
     return data
