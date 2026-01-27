@@ -15,7 +15,7 @@ Lz = np.array(
         [0, -2j, 0],
     ]
 )
-### d_0, d_2, d_-2
+### d_0, d_-2, d_2
 
 
 def IRTNN(data):
@@ -231,8 +231,8 @@ def IR(data):
             [0, -2j, 0],
         ]
     )
-    print(Lz)
+    # print(Lz)
 
     Lz = np.conjugate(W).T @ Lz @ W
-    print(Lz)
+    # print(Lz)
     return (E_R0, E_R1, E_R2, E_R3, E_R4, E_R5, E_R6)

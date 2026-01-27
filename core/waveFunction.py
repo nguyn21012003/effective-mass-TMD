@@ -2,6 +2,7 @@ import csv
 
 import numpy as np
 from numpy import linalg as LA
+from scipy.signal import find_peaks
 from tqdm import tqdm
 
 from core.HamTMD import HamNN
@@ -9,178 +10,205 @@ from core.HamTMDNN import HamTNN
 
 
 def waveFunction(dataInit, irreducibleMatrix, fileSave):
-    ##### chi so dau vao
+
     p = dataInit["p"]
-    fileWave = fileSave["wave"]
-    fileUp = fileSave["waveUp"]
-    fileDown = fileSave["waveDown"]
     coeff = dataInit["coeff"]
-    numberWave = dataInit["numberWaveFunction"]  # so ham song can khao sat
+    numberWave = dataInit["numberWaveFunction"]
     modelNeighbor = dataInit["modelNeighbor"]
     alattice = dataInit["alattice"]
     k = dataInit["kpoint"]
     qmax = dataInit["qmax"]
     lambd = dataInit["lambda"]
-    ##### tao array de luu ket qua
-    dataArr = {"PositionAtoms": []}
+
+    fileUpV = fileSave["waveUpV"]
+    fileDownV = fileSave["waveDownV"]
+    fileUpC = fileSave["waveUpC"]
+    fileDownC = fileSave["waveDownC"]
+
+    size = coeff * qmax
+    iArr = np.arange(size)
+
+    # ---------------- init arrays ----------------
+    waveArrUpV, waveArrDownV = {}, {}
+    waveArrUpC, waveArrDownC = {}, {}
+
     for i in range(numberWave):
-        dataArr[f"lambda2q_band_{i}"] = []
+        # valence
+        waveArrUpV[f"psi_band2q_d0_{i}"] = np.zeros(size, complex)
+        waveArrUpV[f"absPsi_band2q_d0_{i}"] = np.zeros(size, float)
+        waveArrUpV[f"psi_band2q_d1_{i}"] = np.zeros(size, complex)
+        waveArrUpV[f"absPsi_band2q_d1_{i}"] = np.zeros(size, float)
+        waveArrUpV[f"psi_band2q_d2_{i}"] = np.zeros(size, complex)
+        waveArrUpV[f"absPsi_band2q_d2_{i}"] = np.zeros(size, float)
 
-    #### tinh toan chi tiet
-    #### bat dau bang viec khoi tao mang de chua psi va abs(psi)**2
-    waveArr = {}
-    waveArrUp = {}
-    waveArrDown = {}
-    iArr = np.arange(
-        coeff * qmax
-    )  # chi so atom thu i, do 3 ham song thi la 3*2*qmax = 6qmax, nhung 1 ham song thi la 2qmax
-    for i in range(numberWave):
-        #### Tinh cho d_z^2
-        waveArr[f"psi_band2q_d0_{i}"] = np.zeros(coeff * qmax, dtype=complex)
-        waveArr[f"absPsi_band2q_d0_{i}"] = np.zeros(coeff * qmax, dtype=float)
-        #### Tinh cho d_-2
-        waveArr[f"psi_band2q_d1_{i}"] = np.zeros(coeff * qmax, dtype=complex)
-        waveArr[f"absPsi_band2q_d1_{i}"] = np.zeros(coeff * qmax, dtype=float)
-        #### Tinh cho d_2
-        waveArr[f"psi_band2q_d2_{i}"] = np.zeros(coeff * qmax, dtype=complex)
-        waveArr[f"absPsi_band2q_d2_{i}"] = np.zeros(coeff * qmax, dtype=float)
+        waveArrDownV[f"psi_band2q_d0_{i}"] = np.zeros(size, complex)
+        waveArrDownV[f"absPsi_band2q_d0_{i}"] = np.zeros(size, float)
+        waveArrDownV[f"psi_band2q_d1_{i}"] = np.zeros(size, complex)
+        waveArrDownV[f"absPsi_band2q_d1_{i}"] = np.zeros(size, float)
+        waveArrDownV[f"psi_band2q_d2_{i}"] = np.zeros(size, complex)
+        waveArrDownV[f"absPsi_band2q_d2_{i}"] = np.zeros(size, float)
 
-        ############ Spin up
-        waveArrUp[f"psi_band2q_d0_{i}"] = np.zeros(coeff * qmax, dtype=complex)
-        waveArrUp[f"absPsi_band2q_d0_{i}"] = np.zeros(coeff * qmax, dtype=float)
-        #### Tinh cho d_-2
-        waveArrUp[f"psi_band2q_d1_{i}"] = np.zeros(coeff * qmax, dtype=complex)
-        waveArrUp[f"absPsi_band2q_d1_{i}"] = np.zeros(coeff * qmax, dtype=float)
-        #### Tinh cho d_2
-        waveArrUp[f"psi_band2q_d2_{i}"] = np.zeros(coeff * qmax, dtype=complex)
-        waveArrUp[f"absPsi_band2q_d2_{i}"] = np.zeros(coeff * qmax, dtype=float)
+        # conduction
+        waveArrUpC[f"psi_band2q_d0_{i}"] = np.zeros(size, complex)
+        waveArrUpC[f"absPsi_band2q_d0_{i}"] = np.zeros(size, float)
+        waveArrUpC[f"psi_band2q_d1_{i}"] = np.zeros(size, complex)
+        waveArrUpC[f"absPsi_band2q_d1_{i}"] = np.zeros(size, float)
+        waveArrUpC[f"psi_band2q_d2_{i}"] = np.zeros(size, complex)
+        waveArrUpC[f"absPsi_band2q_d2_{i}"] = np.zeros(size, float)
 
-        ############ Spin down
-        waveArrDown[f"psi_band2q_d0_{i}"] = np.zeros(coeff * qmax, dtype=complex)
-        waveArrDown[f"absPsi_band2q_d0_{i}"] = np.zeros(coeff * qmax, dtype=float)
-        #### Tinh cho d_-2
-        waveArrDown[f"psi_band2q_d1_{i}"] = np.zeros(coeff * qmax, dtype=complex)
-        waveArrDown[f"absPsi_band2q_d1_{i}"] = np.zeros(coeff * qmax, dtype=float)
-        #### Tinh cho d_2
-        waveArrDown[f"psi_band2q_d2_{i}"] = np.zeros(coeff * qmax, dtype=complex)
-        waveArrDown[f"absPsi_band2q_d2_{i}"] = np.zeros(coeff * qmax, dtype=float)
-    ham, hamu, hamd = None, None, None
+        waveArrDownC[f"psi_band2q_d0_{i}"] = np.zeros(size, complex)
+        waveArrDownC[f"absPsi_band2q_d0_{i}"] = np.zeros(size, float)
+        waveArrDownC[f"psi_band2q_d1_{i}"] = np.zeros(size, complex)
+        waveArrDownC[f"absPsi_band2q_d1_{i}"] = np.zeros(size, float)
+        waveArrDownC[f"psi_band2q_d2_{i}"] = np.zeros(size, complex)
+        waveArrDownC[f"absPsi_band2q_d2_{i}"] = np.zeros(size, float)
+
+    # ---------------- Hamiltonian ----------------
     if modelNeighbor == "NN":
-        ham, hamu, hamd = HamNN(alattice, p, coeff * qmax, k, lambd, irreducibleMatrix)
-    elif modelNeighbor == "TNN":
-        ham, hamu, hamd = HamTNN(alattice, p, coeff * qmax, k, lambd, irreducibleMatrix)
+        _, hamu, hamd = HamNN(alattice, p, size, k, lambd, irreducibleMatrix)
+    else:
+        _, hamu, hamd = HamTNN(alattice, p, size, k, lambd, irreducibleMatrix)
 
-    if np.gcd(p, qmax) == 1:
-        # eigenvals, eigenvecs = LA.eigh(ham)
-        _, vecs_u = LA.eigh(hamu)
-        _, vecs_d = LA.eigh(hamd)
-        # print(eigenvecs.shape)
-        for i in tqdm(range(numberWave), desc="Calc eigenvectors", colour="green"):
-            # print(i)
-            #### i la chi so 2q + i trong so band 6q
-            # waveArr[f"psi_band2q_d0_{i}"][: coeff * qmax] += eigenvecs[
-            #     :, coeff * qmax + i
-            # ][0 * coeff * qmax : 1 * coeff * qmax]
-            # waveArr[f"psi_band2q_d1_{i}"][: coeff * qmax] += eigenvecs[
-            #     :, coeff * qmax + i
-            # ][1 * coeff * qmax : 2 * coeff * qmax]
-            # waveArr[f"psi_band2q_d2_{i}"][: coeff * qmax] += eigenvecs[
-            #     :, coeff * qmax + i
-            # ][2 * coeff * qmax : 3 * coeff * qmax]
-            #
-            # waveArr[f"absPsi_band2q_d0_{i}"] = (
-            #     np.abs(waveArr[f"psi_band2q_d0_{i}"]) ** 2
-            # )
-            # waveArr[f"absPsi_band2q_d1_{i}"] = (
-            #     np.abs(waveArr[f"psi_band2q_d1_{i}"]) ** 2
-            # )
-            # waveArr[f"absPsi_band2q_d2_{i}"] = (
-            #     np.abs(waveArr[f"psi_band2q_d2_{i}"]) ** 2
-            # )
-            ################ Spin up
-            waveArrUp[f"psi_band2q_d0_{i}"][: coeff * qmax] = vecs_u[
-                :, coeff * qmax + i
-            ][0 * coeff * qmax : 1 * coeff * qmax]
-            waveArrUp[f"psi_band2q_d1_{i}"][: coeff * qmax] = vecs_u[
-                :, coeff * qmax + i
-            ][1 * coeff * qmax : 2 * coeff * qmax]
-            waveArrUp[f"psi_band2q_d2_{i}"][: coeff * qmax] = vecs_u[
-                :, coeff * qmax + i
-            ][2 * coeff * qmax : 3 * coeff * qmax]
-            ################ abs Spin up
-            waveArrUp[f"absPsi_band2q_d0_{i}"] = (
-                np.abs(waveArrUp[f"psi_band2q_d0_{i}"]) ** 2
-            )
-            waveArrUp[f"absPsi_band2q_d1_{i}"] = (
-                np.abs(waveArrUp[f"psi_band2q_d1_{i}"]) ** 2
-            )
-            waveArrUp[f"absPsi_band2q_d2_{i}"] = (
-                np.abs(waveArrUp[f"psi_band2q_d2_{i}"]) ** 2
-            )
-            ################ Spin down
-            waveArrDown[f"psi_band2q_d0_{i}"][: coeff * qmax] = vecs_d[
-                :, coeff * qmax + i
-            ][0 * coeff * qmax : 1 * coeff * qmax]
-            waveArrDown[f"psi_band2q_d1_{i}"][: coeff * qmax] = vecs_d[
-                :, coeff * qmax + i
-            ][1 * coeff * qmax : 2 * coeff * qmax]
-            waveArrDown[f"psi_band2q_d2_{i}"][: coeff * qmax] = vecs_d[
-                :, coeff * qmax + i
-            ][2 * coeff * qmax : 3 * coeff * qmax]
-            ################ abs Spin down
-            waveArrDown[f"absPsi_band2q_d0_{i}"] = (
-                np.abs(waveArrDown[f"psi_band2q_d0_{i}"]) ** 2
-            )
-            waveArrDown[f"absPsi_band2q_d1_{i}"] = (
-                np.abs(waveArrDown[f"psi_band2q_d1_{i}"]) ** 2
-            )
-            waveArrDown[f"absPsi_band2q_d2_{i}"] = (
-                np.abs(waveArrDown[f"psi_band2q_d2_{i}"]) ** 2
-            )
+    if np.gcd(p, qmax) != 1:
+        return None
 
-        for i in range(coeff * qmax):
-            dataArr["PositionAtoms"].append(iArr[i])
+    _, vecs_u = LA.eigh(hamu)
+    _, vecs_d = LA.eigh(hamd)
 
-        with open(fileWave, "w", newline="") as f_wave, open(
-            fileUp, "w", newline=""
-        ) as f_up, open(fileDown, "w", newline="") as f_down:
-            header = ["x"]
-            orbitals = ["d0", "d1", "d2"]
-            for d in orbitals:
+    # ---------------- eigenvectors ----------------
+    for i in tqdm(range(numberWave), desc="Calc eigenvectors", colour="green"):
+
+        idx_v = size - i - 1  # valence
+        idx_c = size + i  # conduction
+
+        # ===== SPIN UP =====
+        # valence
+        waveArrUpV[f"psi_band2q_d0_{i}"][:] = vecs_u[:, idx_v][0 * size : 1 * size]
+        waveArrUpV[f"psi_band2q_d1_{i}"][:] = vecs_u[:, idx_v][1 * size : 2 * size]
+        waveArrUpV[f"psi_band2q_d2_{i}"][:] = vecs_u[:, idx_v][2 * size : 3 * size]
+
+        waveArrUpV[f"absPsi_band2q_d0_{i}"] = (
+            np.abs(waveArrUpV[f"psi_band2q_d0_{i}"]) ** 2
+        )
+        waveArrUpV[f"absPsi_band2q_d1_{i}"] = (
+            np.abs(waveArrUpV[f"psi_band2q_d1_{i}"]) ** 2
+        )
+        waveArrUpV[f"absPsi_band2q_d2_{i}"] = (
+            np.abs(waveArrUpV[f"psi_band2q_d2_{i}"]) ** 2
+        )
+
+        # conduction
+        waveArrUpC[f"psi_band2q_d0_{i}"][:] = vecs_u[:, idx_c][0 * size : 1 * size]
+        waveArrUpC[f"psi_band2q_d1_{i}"][:] = vecs_u[:, idx_c][1 * size : 2 * size]
+        waveArrUpC[f"psi_band2q_d2_{i}"][:] = vecs_u[:, idx_c][2 * size : 3 * size]
+
+        waveArrUpC[f"absPsi_band2q_d0_{i}"] = (
+            np.abs(waveArrUpC[f"psi_band2q_d0_{i}"]) ** 2
+        )
+        waveArrUpC[f"absPsi_band2q_d1_{i}"] = (
+            np.abs(waveArrUpC[f"psi_band2q_d1_{i}"]) ** 2
+        )
+        waveArrUpC[f"absPsi_band2q_d2_{i}"] = (
+            np.abs(waveArrUpC[f"psi_band2q_d2_{i}"]) ** 2
+        )
+
+        # ===== SPIN DOWN =====
+        # valence
+        waveArrDownV[f"psi_band2q_d0_{i}"][:] = vecs_d[:, idx_v][0 * size : 1 * size]
+        waveArrDownV[f"psi_band2q_d1_{i}"][:] = vecs_d[:, idx_v][1 * size : 2 * size]
+        waveArrDownV[f"psi_band2q_d2_{i}"][:] = vecs_d[:, idx_v][2 * size : 3 * size]
+
+        waveArrDownV[f"absPsi_band2q_d0_{i}"] = (
+            np.abs(waveArrDownV[f"psi_band2q_d0_{i}"]) ** 2
+        )
+        waveArrDownV[f"absPsi_band2q_d1_{i}"] = (
+            np.abs(waveArrDownV[f"psi_band2q_d1_{i}"]) ** 2
+        )
+        waveArrDownV[f"absPsi_band2q_d2_{i}"] = (
+            np.abs(waveArrDownV[f"psi_band2q_d2_{i}"]) ** 2
+        )
+
+        # conduction
+        waveArrDownC[f"psi_band2q_d0_{i}"][:] = vecs_d[:, idx_c][0 * size : 1 * size]
+        waveArrDownC[f"psi_band2q_d1_{i}"][:] = vecs_d[:, idx_c][1 * size : 2 * size]
+        waveArrDownC[f"psi_band2q_d2_{i}"][:] = vecs_d[:, idx_c][2 * size : 3 * size]
+
+        waveArrDownC[f"absPsi_band2q_d0_{i}"] = (
+            np.abs(waveArrDownC[f"psi_band2q_d0_{i}"]) ** 2
+        )
+        waveArrDownC[f"absPsi_band2q_d1_{i}"] = (
+            np.abs(waveArrDownC[f"psi_band2q_d1_{i}"]) ** 2
+        )
+        waveArrDownC[f"absPsi_band2q_d2_{i}"] = (
+            np.abs(waveArrDownC[f"psi_band2q_d2_{i}"]) ** 2
+        )
+    offsets = {
+        "Up_Conduction": find_landau_offsets(waveArrUpC, numberWave),
+        "Up_Valence": find_landau_offsets(waveArrUpV, numberWave),
+        "Down_Conduction": find_landau_offsets(waveArrDownC, numberWave),
+        "Down_Valence": find_landau_offsets(waveArrDownV, numberWave),
+    }
+
+    for key, data in offsets.items():
+        print(f"\n[{key}]")
+        for orb in ["d0", "d1", "d2"]:
+            print(f"{orb}: {data[orb]}")
+
+    # ---------------- write files ----------------
+    header = ["x"]
+    for orb in ["d0", "d1", "d2"]:
+        for i in range(numberWave):
+            header.append(f"{orb}_lambda_{i}")
+
+    def write_block(filename, waveDict):
+        with open(filename, "w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=header)
+            writer.writeheader()
+
+            for q in range(size):
+                row = {"x": iArr[q]}
                 for i in range(numberWave):
-                    header.append(f"{d}_lambda_{i}")
+                    row[f"d0_lambda_{i}"] = waveDict[f"absPsi_band2q_d0_{i}"][q]
+                    row[f"d1_lambda_{i}"] = waveDict[f"absPsi_band2q_d1_{i}"][q]
+                    row[f"d2_lambda_{i}"] = waveDict[f"absPsi_band2q_d2_{i}"][q]
+                writer.writerow(row)
 
-            writer_wave = csv.DictWriter(f_wave, fieldnames=header)
-            writer_up = csv.DictWriter(f_up, fieldnames=header)
-            writer_down = csv.DictWriter(f_down, fieldnames=header)
-
-            writer_wave.writeheader()
-            writer_up.writeheader()
-            writer_down.writeheader()
-
-            iPosition = dataArr["PositionAtoms"]
-            for q in range(coeff * qmax):
-                row_wave = {"x": iPosition[q]}
-                row_up = {"x": iPosition[q]}
-                row_down = {"x": iPosition[q]}
-                for i in range(numberWave):
-                    row_wave[f"d0_lambda_{i}"] = waveArr[f"absPsi_band2q_d0_{i}"][q]
-                    row_wave[f"d1_lambda_{i}"] = waveArr[f"absPsi_band2q_d1_{i}"][q]
-                    row_wave[f"d2_lambda_{i}"] = waveArr[f"absPsi_band2q_d2_{i}"][q]
-
-                    row_up[f"d0_lambda_{i}"] = waveArrUp[f"absPsi_band2q_d0_{i}"][q]
-                    row_up[f"d1_lambda_{i}"] = waveArrUp[f"absPsi_band2q_d1_{i}"][q]
-                    row_up[f"d2_lambda_{i}"] = waveArrUp[f"absPsi_band2q_d2_{i}"][q]
-
-                    row_down[f"d0_lambda_{i}"] = waveArrDown[f"absPsi_band2q_d0_{i}"][q]
-                    row_down[f"d1_lambda_{i}"] = waveArrDown[f"absPsi_band2q_d1_{i}"][q]
-                    row_down[f"d2_lambda_{i}"] = waveArrDown[f"absPsi_band2q_d2_{i}"][q]
-
-                writer_wave.writerow(row_wave)
-                writer_up.writerow(row_up)
-                writer_down.writerow(row_down)
-
-    elif np.gcd(p, qmax) != 1:  # check coprime
-        print("p,q pairs not co-prime!")
+    write_block(fileUpV, waveArrUpV)
+    write_block(fileDownV, waveArrDownV)
+    write_block(fileUpC, waveArrUpC)
+    write_block(fileDownC, waveArrDownC)
 
     return None
+
+
+def find_landau_offsets(
+    waveArr,
+    numberWave,
+    orbital_keys=("d0", "d1", "d2"),
+    amp_threshold=1e-2,
+    prominence_ratio=0.1,
+    peak_distance=10,
+):
+    offsets = {orb: [] for orb in orbital_keys}
+    for orb in orbital_keys:
+        i = 0
+        offset_list = []
+        while i < numberWave:
+            key = f"absPsi_band2q_{orb}_{i}"
+            psi_abs = waveArr[key]
+            max_val = np.max(psi_abs)
+            if max_val < amp_threshold:
+                i += 1
+                continue
+            peaks, _ = find_peaks(
+                psi_abs, prominence=max_val * prominence_ratio, distance=peak_distance
+            )
+            if 1 <= len(peaks) <= 4:
+                offset_list.append(i)
+                i += 2
+            else:
+                i += 1
+
+        offsets[orb] = offset_list
+
+    return offsets

@@ -1,14 +1,13 @@
 import os
 from datetime import datetime
 
-import numpy as np
-
-from core.butterfly import butterfly
+# from core.butterfly import butterfly
 from core.irrMatrix import IR, IRNN, IRTNN
 from core.irrMatrixTransform import IR as IR_tran
 from core.irrMatrixTransform import IRNN as IRNN_tran
 from core.irrMatrixTransform import IRTNN as IRTNN_tran
-from core.mass import calcMass
+
+# from core.mass import calcMass
 from core.parameters import paraNN, paraTNN
 from core.waveFunction import waveFunction
 
@@ -21,7 +20,7 @@ def solver(qmax: int, material: str, model: dict, fileSave: dict[str, str]):
     ### the magnetic Brillouin zone now q times smaller than original Brillouin zone
     ### the K,K' points now are closed to the Gamma kpoint
     ### so we only consider the Gamma kpoint
-    numberWaveFunction = 60
+    numberWaveFunction = 100
     modelParameters = model["modelParameters"]
     modelNeighbor = model["modelNeighbor"]
 
@@ -62,23 +61,36 @@ def solver(qmax: int, material: str, model: dict, fileSave: dict[str, str]):
 
 
 def main():
-    qmax = 93
+    qmax = 113
+    print(qmax)
     material = "MoS2"
     modelPara = "GGA"
     modelNeighbor = "NN"
     model = {"modelParameters": modelPara, "modelNeighbor": modelNeighbor}
 
     time_run = datetime.now().strftime("%a-%m-%d")
-    dir = f"./{time_run}/{modelNeighbor}/"
+    dir = f"./{time_run}/{modelNeighbor}"
+
+    dir_conduction_up = f"./{time_run}/{modelNeighbor}/conduction/up/"
+    dir_conduction_down = f"./{time_run}/{modelNeighbor}/conduction/down/"
+    dir_valence_up = f"./{time_run}/{modelNeighbor}/valence/up/"
+    dir_valence_down = f"./{time_run}/{modelNeighbor}/valence/down/"
     os.makedirs(os.path.dirname(dir), exist_ok=True)
+    os.makedirs(os.path.dirname(dir_conduction_up), exist_ok=True)
+    os.makedirs(os.path.dirname(dir_conduction_down), exist_ok=True)
+    os.makedirs(os.path.dirname(dir_valence_up), exist_ok=True)
+    os.makedirs(os.path.dirname(dir_valence_down), exist_ok=True)
 
     print("folder direction: ", dir)
     print(material, modelNeighbor, modelPara)
 
     # for qmax in tqdm(qrange, ascii=" #", desc=f"Wave function in diff B", colour="magenta"):
     wave1 = f"{dir}WaveFunction_q_{qmax}_{material}_{modelPara}.dat"
-    waveUp = f"{dir}up.dat"
-    waveDown = f"{dir}down.dat"
+    waveUpC = f"{dir_conduction_up}/wave_up.dat"
+    waveDownC = f"{dir_conduction_down}/wave_down.dat"
+    waveUpV = f"{dir_valence_up}/wave_up.dat"
+    waveDownV = f"{dir_valence_down}/wave_down.dat"
+
     fileMass = f"{dir}Mass_q_{qmax}_{material}_{modelPara}.dat"
     fileBut = f"{dir}Butterfly_q_{qmax}_{material}_{modelPara}.dat"
 
@@ -86,11 +98,14 @@ def main():
         "wave": wave1,
         "mass": fileMass,
         "butterfly": fileBut,
-        "waveUp": waveUp,
-        "waveDown": waveDown,
+        "waveUpV": waveUpV,
+        "waveDownV": waveDownV,
+        "waveUpC": waveUpC,
+        "waveDownC": waveDownC,
     }
     solver(qmax, material, model, fileSave)
 
+    
     return None
 
 
