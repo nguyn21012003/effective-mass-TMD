@@ -1,4 +1,5 @@
 import csv
+from pathlib import Path
 
 import numpy as np
 from numpy import linalg as LA
@@ -10,7 +11,6 @@ from core.HamTMDNN import HamTNN
 
 
 def waveFunction(dataInit, irreducibleMatrix, fileSave):
-
     p = dataInit["p"]
     coeff = dataInit["coeff"]
     numberWave = dataInit["numberWaveFunction"]
@@ -142,6 +142,7 @@ def waveFunction(dataInit, irreducibleMatrix, fileSave):
         waveArrDownC[f"absPsi_band2q_d2_{i}"] = (
             np.abs(waveArrDownC[f"psi_band2q_d2_{i}"]) ** 2
         )
+
     offsets = {
         "Up_Conduction": find_landau_offsets(waveArrUpC, numberWave),
         "Up_Valence": find_landau_offsets(waveArrUpV, numberWave),
@@ -149,16 +150,34 @@ def waveFunction(dataInit, irreducibleMatrix, fileSave):
         "Down_Valence": find_landau_offsets(waveArrDownV, numberWave),
     }
 
+    print(offsets["Down_Valence"]["d1"])
+
+    def write_offset(qmax, offset_list, file):
+        path = Path(file)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with open(file, "a") as uv:
+
+            uv.write(f"{qmax}: {tuple(offset_list[:4])},\n")
+
+    write_offset(qmax, offsets["Up_Conduction"]["d0"], "./offset/Up_Conduction.py")
+    write_offset(qmax, offsets["Down_Conduction"]["d0"], "./offset/Down_Conduction.py")
+
+    write_offset(qmax, offsets["Down_Valence"]["d1"], "./offset/km_d_v.py")
+    write_offset(qmax, offsets["Down_Valence"]["d2"], "./offset/kp_d_v.py")
+
+    write_offset(qmax, offsets["Up_Valence"]["d1"], "./offset/km_u_v.py")
+    write_offset(qmax, offsets["Up_Valence"]["d2"], "./offset/kp_u_v.py")
+
     for key, data in offsets.items():
         print(f"\n[{key}]")
-        for orb in ["d0", "d1", "d2"]:
-            print(f"{orb}: {data[orb]}")
+        for orbital in ["d0", "d1", "d2"]:
+            print(f"{orbital}: {data[orbital]}")
 
     # ---------------- write files ----------------
     header = ["x"]
-    for orb in ["d0", "d1", "d2"]:
+    for orbital in ["d0", "d1", "d2"]:
         for i in range(numberWave):
-            header.append(f"{orb}_lambda_{i}")
+            header.append(f"{orbital}_lambda_{i}")
 
     def write_block(filename, waveDict):
         with open(filename, "w", newline="") as f:
@@ -178,7 +197,7 @@ def waveFunction(dataInit, irreducibleMatrix, fileSave):
     write_block(fileUpC, waveArrUpC)
     write_block(fileDownC, waveArrDownC)
 
-    return None
+    return offsets
 
 
 def find_landau_offsets(

@@ -166,6 +166,7 @@ def calcMass(dataInit, irreducibleMatrix, fileSave):
 
             eigenvals = LA.eigvalsh(ham)
             vals_up = LA.eigvalsh(hamu)
+            print(np.shape(vals_up))
             vals_down = LA.eigvalsh(hamd)
 
             valuesBandLambda = {}
